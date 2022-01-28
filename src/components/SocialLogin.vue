@@ -14,8 +14,8 @@
 </template>
 
 <script>
-// import AuthServices from '@/services/AuthServices.js';
-// import Utils from '@/config/utils';
+import AuthServices from '@/services/AuthServices.js';
+import Utils from '@/config/utils';
 export default {
   name: 'login_signup_social',
   data() {
@@ -35,22 +35,22 @@ export default {
           console.log('getBasicProfile', GoogleUser.getBasicProfile());
           console.log('getAuthResponse', GoogleUser.getAuthResponse());
       
-          // var userInfo = {
-          //   email : GoogleUser.getBasicProfile().Wt,
-          //   accessToken: GoogleUser.getAuthResponse().id_token
-          // };
-//           AuthServices.login(userInfo)
-//             .then(response => {
-//                 var user = response.data;
-//                 console.log("Returned User:"+user);
-//  //               this.$store.commit('setLoginUser', user);
-//                 Utils.setStore("user",user);
-//                 this.$router.push({ name: 'home' });
-//               })
-//             .catch(error => {
-//                     console.log(error);
-//                     this.message = error.response.data.message;
-//             });
+          var userInfo = {
+            email : GoogleUser.getBasicProfile().Wt,
+            accessToken: GoogleUser.getAuthResponse().id_token
+          };
+          AuthServices.login(userInfo)
+            .then(response => {
+                var user = response.data;
+                console.log("Returned User:"+user);
+ //               this.$store.commit('setLoginUser', user);
+                Utils.setStore("user",user);
+                this.$router.push({ name: 'home' });
+              })
+            .catch(error => {
+                    console.log(error);
+                    this.message = error.response.data.message;
+            });
         })
         .catch(error => {
           console.log('error login', error);

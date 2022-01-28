@@ -1,5 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
+import router from './router'
+import store from './store/store.js'
 
 import GoogleAuth from '@/config/google_oAuth.js'
 const gauthOption = {
@@ -13,5 +15,7 @@ const gauthOption = {
 Vue.use(GoogleAuth, gauthOption)
 
 new Vue({
+  router,
+  store,
   render: (h) => h(App),
 }).$mount("#app");
