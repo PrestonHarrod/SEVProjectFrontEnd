@@ -47,10 +47,10 @@ export default {
                 Utils.setStore("user",user);
                 this.$router.push({ name: 'home' });
               })
-            .catch(error => {
-                    console.log(error);
-                    this.message = error.response.data.message;
-            });
+            // .catch(error => {
+            //         console.log(error);
+            //         //this.message = error.response.data.message;
+            // });
         })
         .catch(error => {
           console.log('error login', error);
