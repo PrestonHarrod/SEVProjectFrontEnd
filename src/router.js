@@ -1,27 +1,24 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from "vue";
+import Router from "vue-router";
 
-import Home from "./views/Home.vue"
-import Login from "./views/Login.vue"
+import Home from "./views/Home.vue";
+import Login from "./views/Login.vue";
 
-Vue.use(Router)
+Vue.use(Router);
 export default new Router({
-  mode: 'history',
-  base:
-  process.env.NODE_ENV === "development" ? "/" : "/tutorapp/",
-  routes : [
-    
+  mode: "history",
+  base: process.env.NODE_ENV === "development" ? "/" : "/tutorapp/",
+  routes: [
     {
-      path: '/home',
-      name: 'home',
-      component: Home
+      path: "/home",
+      name: "home",
+      component: Home,
     },
-   
-   
+
     {
-      path: '/login',
-      name: 'login',
+      path: "/login",
+      name: "login",
       component: Login,
     },
-    ]
-})
+  ],
+});

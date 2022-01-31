@@ -1,20 +1,19 @@
 <template>
   <v-container>
-        <v-row>
-            <v-col>
-              <SocialLogin/>
-            </v-col>
-        </v-row>
-    </v-container>
+    <v-row>
+      <v-col>
+        <SocialLogin />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
-
 <script>
-import SocialLogin from '@/components/SocialLogin'
+import SocialLogin from "@/components/SocialLogin";
 export default {
-  name: 'login',
+  name: "login",
   components: {
-    SocialLogin
-  }
-}
+    SocialLogin,
+  },
+};
 </script>

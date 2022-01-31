@@ -1,16 +1,20 @@
 <template>
   <div id="app">
-    <SocialLogin/>
+    <router-view />
   </div>
 </template>
 
 <script>
-import SocialLogin from "./components/SocialLogin.vue";
 
 export default {
   name: "App",
   components: {
-    SocialLogin,
+    
+  },
+  methods : {
+    isLogin() {
+     return this.$route.name != 'login';
+    }
   },
 };
 </script>
