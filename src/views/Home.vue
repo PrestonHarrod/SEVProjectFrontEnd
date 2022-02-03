@@ -23,25 +23,20 @@ export default {
     };
   },
   async created() {
-    this.user = Utils.getStore('user');
-    console.log("userID="+this.user.userID)
+    this.user = Utils.getStore('user'); // get current logged in user
+
+   // get user who logged into system from backend to see if they exist 
+   // then route them to the home page
     if (this.user != null) {
         await UserServices.getUser(this.user.userID)
         .catch(() => {
-            Utils.setStore("user", null);
-            this.$router.push({ name: "home" });
+            Utils.setStore("user", this.user);
+            if (this.$route.path != '/home') {
+                 this.$router.push({ name: "home" });
+}
         })
       
     }
-    // else {
-    //     if (this.user != null && this.user.studentID != null){
-    //       await StudentServices.getStudent(this.user.studentID)
-    //         .catch(() => {
-    //           Utils.setStore("user",null);
-    //           this.$router.push({ name: 'home' });
-    //       });
-    //   }
-    // }
   },
 };
 </script>
