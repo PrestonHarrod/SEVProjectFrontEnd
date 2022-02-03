@@ -10,6 +10,7 @@
 
 <script>
 import Utils from "@/config/utils.js";
+import UserServices from "@/services/UserServices.js"
 // import StudentServices from '@/services/studentServices.js';
 // import AdvisorServices from '@/services/advisorServices.js';
 // import Nav from '@/components/Nav.vue'
@@ -22,11 +23,15 @@ export default {
     };
   },
   async created() {
-    this.user = Utils.getStore("user");
+    this.user = Utils.getStore('user');
     console.log("userID="+this.user.userID)
     if (this.user != null) {
-      Utils.setStore("user", null);
-      this.$router.push({ name: "home" });
+        await UserServices.getUser(this.user.userID)
+        .catch(() => {
+            Utils.setStore("user", null);
+            this.$router.push({ name: "home" });
+        })
+      
     }
     // else {
     //     if (this.user != null && this.user.studentID != null){

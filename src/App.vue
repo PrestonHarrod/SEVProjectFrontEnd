@@ -1,15 +1,26 @@
 <template>
-  <div id="app">
-    <router-view />
-  </div>
+<v-container fluid>
+  <v-layout>
+      <v-flex>
+        <div>
+          <div v-if= "isLogin()">
+          <Nav/>
+          </div>
+          <router-view />
+          
+        </div>
+      </v-flex>
+  </v-layout>
+</v-container>
 </template>
 
 <script>
+import Nav from "./components/Nav.vue"
 
 export default {
   name: "App",
   components: {
-    
+    Nav
   },
   methods : {
     isLogin() {
