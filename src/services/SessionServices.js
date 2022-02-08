@@ -8,6 +8,12 @@ export default {
   getSession(id) {
     return apiClient.get("sessions/" + id);
   },
+  getSessionsForStudent(id) {
+    return apiClient.get("sessions?studentID=" + id)
+  },
+  getSessionsForTutor(id) {
+    return apiClient.get("sessions?tutorID=" + id)
+  }
 //   addAdvisor(advisor) {
 //     return apiClient.post("users/", advisor);
 //   },

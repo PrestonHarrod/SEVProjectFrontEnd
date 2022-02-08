@@ -21,7 +21,7 @@
       <v-data-table
         v-model="selected"
         :headers="headers"
-        :items="sessions"
+        :items="allSessions"
         item-key="sessionID"
         :items-per-page="25"
       
@@ -75,21 +75,38 @@ export default {
             value: 'tutorID',
             },
           ],
+          allSessions: [{}],
             sessions: [
               {
                 
               }
             ],
+            i: 0
            
         };
   },
   async created() {
+    
    this.user = Utils.getStore('user')
        //UserServices.getUser(this.user.userID)
       SessionServices.getSessions()
       .then(response => {
-        this.sessions = response.data
-        console.log(this.sessions)
+        //this.allSessions = response.data
+        
+        for (this.i = 0; this.i < response.data.length; this.i++) {
+          //console.log(this.allSessions[this.i].studentID)
+          if (this.user.userID == response.data[this.i].studentID)
+          {
+            this.sessions[this.i] = response.data[this.i];
+          }
+          else if (this.user.userID == response.data[this.i].tutorID)
+          {
+            this.sessions[this.i] = response.data[this.i];
+          }
+        }
+        this.allSessions = this.sessions
+        console.log(this.allSessions)
+      
       })
       .catch(error => {
         console.log(error)
