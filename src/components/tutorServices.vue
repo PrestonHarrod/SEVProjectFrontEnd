@@ -27,12 +27,11 @@
 
 
 <script>
-import TutorScheduleServices from '../components/tutorScheduleServices'
 export default {
   name: 'services',
   props: ['title'],
   components: {
-      TutorScheduleServices
+    
   },
   data () {
     return {
