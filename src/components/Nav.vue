@@ -1,11 +1,19 @@
 <template>
     <v-app-bar >
     <button v-on:click.prevent="goToHome()">
-      <img alt="Vue logo" src="../assets/logo.png" contain height="50" width="80">
+      <img alt="Vue logo" src="../assets/logo.png" contain height="50" width="80"> 
     </button>
-    <v-btn text v-if='getAuth() > 0' v-on:click.prevent="goToStudents()">
+    <v-btn text  v-on:click.prevent="goToTutorPage()">
       Tutor
     </v-btn>
+    <v-btn text  v-on:click.prevent="goToStudentPage()">
+      Student
+    </v-btn>
+    <v-btn text  v-on:click.prevent="goToAdminPage()">
+      Admin
+    </v-btn>
+    <!-- removed for demo purposes v-if='getAuth() > 0' -->
+
     <v-btn v-if='getAuth() == 0' text v-on:click.prevent="goToLogin()">
       Login
     </v-btn>
@@ -41,40 +49,24 @@ export default ({
          console.log(error)
         })
       }, 
-      goToCourses() {
-          this.$router.push({ name: 'courses'})
-        .then(() => {
-        })
-        .catch(error => {
-         console.log(error)
-        })
-      },    
-      goToStudents() {
-          this.$router.push({ name: 'studentlist'})
+      goToStudentPage() {
+          this.$router.push({ name: 'studentHome'})
         .then(() => {
         })
         .catch(error => {
          console.log(error)
         })
       },
-      goToAdvisors() {
-          this.$router.push({ name: 'advisorlist'})
+      goToAdminPage() {
+          this.$router.push({ name: 'adminHome'})
         .then(() => {
         })
         .catch(error => {
          console.log(error)
         })
       },
-      goToDegrees() {
-          this.$router.push({ name: 'degreelist'})
-        .then(() => {
-        })
-        .catch(error => {
-         console.log(error)
-        })
-      },
-      goToSemesters() {
-          this.$router.push({ name: 'semesterlist'})
+       goToTutorPage() {
+          this.$router.push({ name: 'tutorHome'})
         .then(() => {
         })
         .catch(error => {
@@ -84,7 +76,7 @@ export default ({
       goToLogin() {
         if(this.user == null){
         console.log('testing');
-          this.$router.push({ name: 'login'})
+          this.$router.push({ name: 'Login'})
           .catch(error => {
             console.log(error)
           })
