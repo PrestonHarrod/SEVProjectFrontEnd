@@ -6,9 +6,6 @@
     <br>
      <h2><v-btn v-if='user.userID != null' :style="{left: '50%', transform:'translateX(-50%)'}" @click="goToAdd()" color="black" text rounded>Add Course</v-btn></h2>
   <br>
-  <h3><v-btn :style="{left: '50%', transform:'translateX(-50%)'}" @click="goToDegreePlan(user.userID)" color="black" text rounded>View Degree Plan</v-btn></h3>
-  <br>
-  <h4><v-btn :style="{left: '50%', transform:'translateX(-50%)'}" @click="addToStudentCourseList(selected, user.userID)" color="black" text rounded>Register Course</v-btn></h4>
   
     
     <v-card width="100vw">
@@ -16,7 +13,7 @@
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
-        label="Search by Course Name or Number"
+        label="Search by Session Date"
         single-line
         hide-details
       ></v-text-field>
@@ -24,8 +21,8 @@
       <v-data-table
         v-model="selected"
         :headers="headers"
-        :items="courses"
-        item-key="name"
+        :items="sessions"
+        item-key="sessionID"
         :items-per-page="25"
       
         :single-select="singleSelect"
@@ -45,15 +42,14 @@
 
 <script>
 import Utils from "@/config/utils.js";
-import UserServices from "@/services/UserServices.js"
-// import StudentServices from '@/services/studentServices.js';
-// import AdvisorServices from '@/services/advisorServices.js';
+//import UserServices from "@/services/UserServices.js"
+import SessionServices from "@/services/SessionServices.js"
 // import Nav from '@/components/Nav.vue'
 
 export default {
   data() {
     return {
-          //selected: [],
+          selected: [],
           //studentCourseList: {},
           user: {},
            singleSelect: true,
@@ -64,23 +60,22 @@ export default {
             align: 'start',
             filterable: true,
             //sortable: false,
-            value: 'datetime',
+            value: 'scheduledStart',
             },
             {
             text: 'Location',
             align: 'start',
             filterable: true,
-            value: 'location'
+            value: 'locationID'
             },
             {
             text: 'Tutor',
             align: 'start',
             filterable: false,
-            value: 'tutor',
+            value: 'tutorID',
             },
           ],
             sessions: [
-             
               {
                 
               }
@@ -90,16 +85,32 @@ export default {
   },
   async created() {
    this.user = Utils.getStore('user')
-       UserServices.getUser(this.user.userID)
+       //UserServices.getUser(this.user.userID)
       SessionServices.getSessions()
       .then(response => {
         this.sessions = response.data
-       
+        console.log(this.sessions)
       })
       .catch(error => {
         console.log(error)
       })
   
+  },
+  methods: { 
+  viewCourse() {
+    },
   }
 };
 </script>
+
+<style>
+H1 {
+  text-align: center;
+  font-size: 3.5rem !important;
+  
+}
+th {
+  text-align: left;
+  font-size: 1.5rem !important;
+}
+</style>
