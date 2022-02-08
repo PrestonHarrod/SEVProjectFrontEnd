@@ -1,4 +1,12 @@
 <template>
+<!-- 
+This class is now archived and unused in the current system.
+Use this template for the current nav bar and implement athorization 
+using this former component
+
+-Jared
+ -->
+
     <v-app-bar >
     <button v-on:click.prevent="goToHome()">
       <img alt="Vue logo" src="../assets/logo.png" contain height="50" width="80"> 
