@@ -1,13 +1,12 @@
 <template>
 <v-container fluid fill-height>
   <div>
-    <H1 style="background-color: #811429; color:#f2f2f2">Session List</H1>
+    <H1 style="background-color: #811429; color:#f2f2f2">Your Sessions</H1>
     <br>
     <br>
-     <h2><v-btn v-if='user.userID != null' :style="{left: '50%', transform:'translateX(-50%)'}" @click="goToAdd()" color="black" text rounded>Add Course</v-btn></h2>
   <br>
   
-    
+    <h2 style="background-color: #811429; color:#f2f2f2">Upcoming Sessions</h2>
     <v-card width="100vw">
        <v-card-title>
       <v-text-field
@@ -21,7 +20,37 @@
       <v-data-table
         v-model="selected"
         :headers="headers"
-        :items="allSessions"
+        :items="sessions2"
+        item-key="sessionID"
+        :items-per-page="25"
+      
+        :single-select="singleSelect"
+        show-select
+        :search="search"
+        @click:row="viewCourse"
+        class="elevation-1"
+        >
+         
+
+    
+      </v-data-table>
+    </v-card>
+    <br>
+    <h2 style="background-color: #811429; color:#f2f2f2">Completed Sessions</h2>
+    <v-card width="100vw">
+       <v-card-title>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search by Session Date"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
+      <v-data-table
+        v-model="selected"
+        :headers="headers"
+        :items="sessions"
         item-key="sessionID"
         :items-per-page="25"
       
@@ -76,7 +105,14 @@ export default {
             },
           ],
           allSessions: [{}],
+          upcomingSessions: [{}],
+          completedSessions: [{}],
             sessions: [
+              {
+                
+              }
+            ],
+            sessions2: [
               {
                 
               }
@@ -86,26 +122,34 @@ export default {
         };
   },
   async created() {
-    
+
+    // display completed and upcoming sessions depending on
+    // if a student or tutor is logged in
    this.user = Utils.getStore('user')
-       //UserServices.getUser(this.user.userID)
       SessionServices.getSessions()
       .then(response => {
-        //this.allSessions = response.data
+        this.i = 0
         
         for (this.i = 0; this.i < response.data.length; this.i++) {
-          //console.log(this.allSessions[this.i].studentID)
           if (this.user.userID == response.data[this.i].studentID)
           {
+            console.log(response.data[this.i].status)
+            if (response.data[this.i].status == "Complete") {
+              
+              this.completedSessions[this.i] = response.data[this.i];
+            }
             this.sessions[this.i] = response.data[this.i];
           }
           else if (this.user.userID == response.data[this.i].tutorID)
           {
-            this.sessions[this.i] = response.data[this.i];
+            if (response.data[this.i].status == "In Progress") {
+              this.upcomingSessions[this.i] = response.data[this.i];
+            }
           }
         }
-        this.allSessions = this.sessions
-        console.log(this.allSessions)
+        console.log(this.completedSessions)
+        this.sessions = this.completedSessions
+        this.sessions2 = this.upcomingSessions
       
       })
       .catch(error => {
