@@ -1,5 +1,5 @@
 <template>
-    <div class="menu-item" @click="isOpen = !isOpen" >
+    <div class="menu-item" @click="isOpen = !isOpen">
         <a href ='#'>
             {{ title }}
         </a>

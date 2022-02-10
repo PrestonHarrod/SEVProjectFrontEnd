@@ -1,20 +1,45 @@
 <template>
-  <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-    >
-      <!--  -->
-    </v-navigation-drawer>
+<v-app id="inspire">
+<v-main class="grey lighten-3">
+      <v-container>
+        <v-row>
+          <v-col
+            cols="12"
+            sm="2"
+          >
+            <v-sheet
+              rounded="lg"
+              min-height="268"
+            >
+              <!--  -->
+            </v-sheet>
+          </v-col>
 
-    <v-app-bar app>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+          <v-col
+            cols="12"
+            sm="8"
+          >
+            <v-sheet
+              min-height="70vh"
+              rounded="lg"
+            >
+              <!--  -->
+            </v-sheet>
+          </v-col>
 
-      <v-toolbar-title>Home</v-toolbar-title>
-    </v-app-bar>
-
-    <v-main>
-      <!--  -->
+          <v-col
+            cols="12"
+            sm="2"
+          >
+            <v-sheet
+              rounded="lg"
+              min-height="268"
+            >
+              <!--  -->
+            </v-sheet>
+          </v-col>
+        </v-row>
+      </v-container>
     </v-main>
   </v-app>
 </template>

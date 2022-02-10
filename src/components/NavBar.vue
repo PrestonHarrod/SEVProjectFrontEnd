@@ -44,7 +44,7 @@ nav .menu-item {
 nav .menu-item.active,
 nav .menu-item:hover {
   background-color: #0d0d0e;
-  border-bottom-color: #bb3030;
+  border-bottom-color: #0c76a0;
 }
 nav .menu-item a {
   color: inherit;
