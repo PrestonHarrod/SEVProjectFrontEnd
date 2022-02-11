@@ -1,17 +1,31 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
-  </div>
+<v-container fluid>
+  <v-layout>
+      <v-flex>
+        <div>
+          <div v-if= "isLogin()">
+          <Nav/>
+          </div>
+          <router-view />
+          
+        </div>
+      </v-flex>
+  </v-layout>
+</v-container>
 </template>
 
 <script>
-import HelloWorld from "./components/HelloWorld.vue";
+import Nav from "./components/Nav.vue"
 
 export default {
   name: "App",
   components: {
-    HelloWorld,
+    Nav
+  },
+  methods : {
+    isLogin() {
+     return this.$route.name != 'login';
+    }
   },
 };
 </script>
