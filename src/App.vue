@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <SocialLogin/>
+    <router-view/>
   </div>
 </template>
-
 <script>
 import SocialLogin from "./components/SocialLogin.vue";
 
@@ -12,6 +12,11 @@ export default {
   components: {
     SocialLogin,
   },
+  methods: {
+    showSomething() {
+      return this.$route.name;
+    }
+  }
 };
 </script>
 

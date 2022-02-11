@@ -1,8 +1,8 @@
 var googleAuth = (function () {
-  function installClient () {
-    var apiUrl = 'https://apis.google.com/js/api.js';
+  function installClient() {
+    var apiUrl = "https://apis.google.com/js/api.js";
     return new Promise((resolve) => {
-      var script = document.createElement('script');
+      var script = document.createElement("script");
       script.src = apiUrl;
       script.onreadystatechange = script.onload = function () {
         if (!script.readyState || /loaded|complete/.test(script.readyState)) {
@@ -10,25 +10,23 @@ var googleAuth = (function () {
             resolve();
           }, 500);
         }
-      }
-      document.getElementsByTagName('head')[0].appendChild(script);
-    })
+      };
+      document.getElementsByTagName("head")[0].appendChild(script);
+    });
   }
 
-  function initClient (config) {
+  function initClient(config) {
     return new Promise((resolve) => {
-      window.gapi.load('auth2', () => {
-        window.gapi.auth2.init(config)
-          .then(() => {
-            resolve(window.gapi);
-          });
+      window.gapi.load("auth2", () => {
+        window.gapi.auth2.init(config).then(() => {
+          resolve(window.gapi);
+        });
       });
     });
   }
 
-  function Auth () {
-    if (!(this instanceof Auth))
-      return new Auth();
+  function Auth() {
+    if (!(this instanceof Auth)) return new Auth();
     this.GoogleAuth = null; /* window.gapi.auth2.getAuthInstance() */
     this.isAuthorized = false;
     this.isInit = false;
