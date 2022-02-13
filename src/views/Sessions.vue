@@ -71,7 +71,7 @@
 
 <script>
 import Utils from "@/config/utils.js";
-//import UserServices from "@/services/UserServices.js"
+import UserServices from "@/services/UserServices.js"
 import SessionServices from "@/services/SessionServices.js"
 // import Nav from '@/components/Nav.vue'
 
@@ -117,7 +117,14 @@ export default {
                 
               }
             ],
-            i: 0
+            testArray: [
+              {
+                
+              }
+            ],
+            i: 0,
+            j:0,
+            tutor: "tutorName"
            
         };
   },
@@ -128,39 +135,55 @@ export default {
    this.user = Utils.getStore('user')
       SessionServices.getSessions()
       .then(response => {
-        this.i = 0
+        this.i = 0;
         
         for (this.i = 0; this.i < response.data.length; this.i++) {
           if (this.user.userID == response.data[this.i].studentID)
           {
-            console.log(response.data[this.i].status)
+            if (response.data[this.i].status == "Upcoming") {
+              this.upcomingSessions[this.i-1] = response.data[this.i];
+              this.upcomingSessions[this.i-1] = response.data[this.i];
+            }
+            this.sessions[this.i] = response.data[this.i];
+          }
+        }
+        for (this.i = 0; this.i < response.data.length; this.i++) {
+          if (this.user.userID == response.data[this.i].studentID)
+          {
             if (response.data[this.i].status == "Complete") {
-              
               this.completedSessions[this.i] = response.data[this.i];
             }
             this.sessions[this.i] = response.data[this.i];
           }
-          else if (this.user.userID == response.data[this.i].tutorID)
-          {
-            if (response.data[this.i].status == "In Progress") {
-              this.upcomingSessions[this.i] = response.data[this.i];
-            }
-          }
         }
-        console.log(this.completedSessions)
+        
         this.sessions = this.completedSessions
         this.sessions2 = this.upcomingSessions
+
+        for (this.j = 0; this.j < this.sessions.length; this.j++) {
+          getUser(this.sessions[this.j].tutorID)
+          //this.sessions[this.j].tutorID = tutor
+      }
       
       })
       .catch(error => {
         console.log(error)
       })
-  
   },
+  
   methods: { 
   viewCourse() {
+    
     },
-  }
+    async getUser(tutorID) {
+      await UserServices.getUser(tutorID)
+      .then(response => {
+        return response.data.fName
+      })
+
+    }
+      
+    },
 };
 </script>
 
