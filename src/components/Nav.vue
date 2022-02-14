@@ -18,6 +18,9 @@
     <v-btn text v-on:click.prevent="goToAddSubjects()">
       Manage Subjects
     </v-btn>
+    <v-btn text v-on:click.prevent="goToSchedule()">
+      View Schedule
+    </v-btn>
   </v-app-bar>
 </template>
 
@@ -103,6 +106,14 @@ export default ({
       },
       goToAddSubjects() {
         this.$router.push({ name: 'addSubjects'})
+        .then(() => {
+        })
+        .catch(error => {
+         console.log(error)
+        })
+      },
+      goToSchedule() {
+        this.$router.push({ name: 'viewSchedule'})
         .then(() => {
         })
         .catch(error => {

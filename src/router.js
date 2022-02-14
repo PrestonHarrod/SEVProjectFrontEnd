@@ -5,6 +5,7 @@ import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
 import SessionList from "./views/Sessions.vue"
 import TutorAddSubjects from "./views/TutorAddSubject.vue"
+import TutorViewSchedule from "./views/TutorViewSchedule.vue"
 
 Vue.use(Router);
 export default new Router({
@@ -32,6 +33,11 @@ export default new Router({
       path: "/addsubjects",
       name: "addSubjects",
       component: TutorAddSubjects,
+    },
+    {
+      path: "/viewschedule",
+      name: "viewSchedule",
+      component: TutorViewSchedule,
     },
   ],
 });
