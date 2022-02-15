@@ -75,7 +75,7 @@
 
 <script>
 import subjectServices from '@/services/subjectServices.js'
-import userServices from '@/services/userServices.js'
+import userServices from '@/services/UserServices.js'
 import tutorSubjectServices from '@/services/tutorSubjectServices.js'
 export default {
   data() {
@@ -130,7 +130,7 @@ export default {
       .catch(error => {
         console.log(error)
       })
-      userServices.getUsers("1")
+      userServices.getTutors("1")
       .then(response => {
         this.users = response.data;
         

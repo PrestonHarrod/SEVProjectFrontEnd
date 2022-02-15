@@ -1,20 +1,27 @@
-import {apiClient} from './apiClient.js'
-
+import {apiClient} from "./apiClient.js";
 
 export default {
   getSessions() {
-    return apiClient.get("sessions/");
+    return apiClient.get("sessions");
   },
+
   getSession(id) {
     return apiClient.get("sessions/" + id);
   },
-  addSession(session) {
-    return apiClient.post("sessions/", session);
+  getSessionsForStudent(id) {
+    return apiClient.get("sessions?studentID=" + id)
   },
-  updateSession(session) {
-    return apiClient.put("sessions/" + session.sessionID, session);
-  },
-  deleteSession(sessionID) {
-    return apiClient.delete("sessions/" + sessionID);
-  },
-}
+  getSessionsForTutor(id) {
+    return apiClient.get("sessions?tutorID=" + id)
+  }
+//   addAdvisor(advisor) {
+//     return apiClient.post("users/", advisor);
+//   },
+//   updateAdvisor(advisor) {
+//     return apiClient.put("advisors/" + advisor.advisorID, advisor);
+//   },
+//   deleteAdvisor(id) {
+//     return apiClient.delete("advisors/" + id);
+//   }
+
+};
