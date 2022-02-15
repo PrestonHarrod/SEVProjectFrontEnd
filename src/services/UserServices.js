@@ -4,7 +4,7 @@ export default {
   getUsers() {
     return apiClient.get("users/");
   },
-  getTutors() {
+  getTutors(roleID) {
     return apiClient.get("users/roleID/" + roleID);
   },
   getUser(id) {
