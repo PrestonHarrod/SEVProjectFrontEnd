@@ -1,4 +1,5 @@
 <template>
+
 <!-- 
 This class is now archived and unused in the current system.
 Use this template for the current nav bar and implement athorization 
@@ -20,6 +21,9 @@ using this former component
     <v-btn text  v-on:click.prevent="goToAdminPage()">
       Admin
     </v-btn>
+    <v-btn text v-if='getAuth() > 0' v-on:click.prevent="goToStudents()">
+      Tutor
+    </v-btn>
     <!-- removed for demo purposes v-if='getAuth() > 0' -->
 
     <v-btn v-if='getAuth() == 0' text v-on:click.prevent="goToLogin()">
@@ -27,6 +31,12 @@ using this former component
     </v-btn>
     <v-btn v-else text v-on:click.prevent="goToLogin()">
       Logout
+    </v-btn>
+    <v-btn text v-on:click.prevent="scheduleSession()">
+      Schedule Session
+      </v-btn>
+    <v-btn text v-on:click.prevent="goToSessions()">
+      View Sessions
     </v-btn>
   </v-app-bar>
 </template>
@@ -57,6 +67,15 @@ export default ({
          console.log(error)
         })
       }, 
+      scheduleSession() {
+          this.$router.push({ name: 'studentSubjectView'})
+          .then(() => {
+        })
+        .catch(error => {
+         console.log(error)
+        })
+      },
+
       goToStudentPage() {
           this.$router.push({ name: 'studentHome'})
         .then(() => {
@@ -73,6 +92,9 @@ export default ({
          console.log(error)
         })
       },
+      goToSessions() {
+          this.$router.push({ name: 'sessionlist'})
+       },
        goToTutorPage() {
           this.$router.push({ name: 'tutorHome'})
         .then(() => {
@@ -84,7 +106,7 @@ export default ({
       goToLogin() {
         if(this.user == null){
         console.log('testing');
-          this.$router.push({ name: 'Login'})
+          this.$router.push({ name: 'login'})
           .catch(error => {
             console.log(error)
           })

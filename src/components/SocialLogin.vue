@@ -59,18 +59,18 @@ export default {
             email: GoogleUser.getBasicProfile().Wt,
             accessToken: GoogleUser.getAuthResponse().id_token,
           };
-          AuthServices.login(userInfo).then((response) => {
-            var user = response.data;
-            console.log("Returned User:" + user);
-            this.$store.commit('setLoginUser', user);
-            Utils.setStore("user", user);
-            console.log(Utils.getStore('user'))
-            this.$router.push({ name: "home" });
-          });
-          // .catch(error => {
-          //         console.log(error);
-          //         //this.message = error.response.data.message;
-          // });
+          AuthServices.login(userInfo)
+            .then((response) => {
+              var user = response.data;
+              console.log("Returned User:" + user);
+              //               this.$store.commit('setLoginUser', user);
+              Utils.setStore("user", user);
+              this.$router.push({ name: "home" });
+            })
+            .catch((error) => {
+              console.log(error);
+              this.message = error.response.data.message;
+            });
         })
         .catch((error) => {
           console.log("error login", error);

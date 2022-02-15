@@ -2,20 +2,21 @@ import {apiClient} from "./apiClient.js";
 
 export default {
   getUsers() {
-    return apiClient.get("users");
+    return apiClient.get("users/");
   },
-
+  getTutors() {
+    return apiClient.get("users/roleID/" + roleID);
+  },
   getUser(id) {
     return apiClient.get("users/" + id);
   },
-//   addAdvisor(advisor) {
-//     return apiClient.post("users/", advisor);
-//   },
-//   updateAdvisor(advisor) {
-//     return apiClient.put("advisors/" + advisor.advisorID, advisor);
-//   },
-//   deleteAdvisor(id) {
-//     return apiClient.delete("advisors/" + id);
-//   }
-
+  addUser(user) {
+    return apiClient.post("users/", user);
+  },
+  updateUser(user) {
+    return apiClient.put("users/" + user.userID, user);
+  },
+  deleteUser(userID) {
+    return apiClient.delete("users/" + userID);
+  },
 };
