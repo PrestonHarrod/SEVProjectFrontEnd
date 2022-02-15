@@ -17,6 +17,9 @@
         <div class="menu-item">
           <router-link to="/student/sessions">Sessions</router-link>
         </div>
+        <div class="menu-item">
+          <router-link to="/student/ScheduleSession">Schedule Session</router-link>
+        </div>
       </div>
     </transition>
   </div>

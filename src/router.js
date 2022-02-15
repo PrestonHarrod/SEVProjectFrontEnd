@@ -39,7 +39,7 @@ export default new Router({
     },
 
     {
-      path: "/student/subjects",
+      path: "/student/ScheduleSession",
       name: "studentSubjectView",
       component: StudentSubjectView,
     },
