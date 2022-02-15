@@ -1,5 +1,4 @@
-import {apiClient} from './apiClient.js'
-
+import { apiClient } from "./apiClient.js";
 
 export default {
   getStudents() {
@@ -17,4 +16,4 @@ export default {
   deleteStudent(studentID) {
     return apiClient.delete("courses/" + studentID);
   },
-}
+};

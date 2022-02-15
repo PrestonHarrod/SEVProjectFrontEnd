@@ -1,9 +1,6 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-    >
+    <v-navigation-drawer v-model="drawer" app>
       <!--  -->
     </v-navigation-drawer>
 
@@ -20,7 +17,7 @@
 </template>
 
 <script>
-  export default {
-    data: () => ({ drawer: null }),
-  }
+export default {
+  data: () => ({ drawer: null }),
+};
 </script>

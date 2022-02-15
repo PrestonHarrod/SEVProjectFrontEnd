@@ -1,5 +1,4 @@
-import {apiClient} from './apiClient.js'
-
+import { apiClient } from "./apiClient.js";
 
 export default {
   getTutorSlots() {
@@ -17,4 +16,4 @@ export default {
   deleteTutorSlot(tutorSlotID) {
     return apiClient.delete("tutorSlots/" + tutorSlotID);
   },
-}
+};

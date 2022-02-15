@@ -8,7 +8,7 @@ export default {
     if (typeof content !== "string") {
       content = JSON.stringify(content);
     }
-    console.log(content)
+    console.log(content);
     return window.localStorage.setItem(name, content);
   },
   /**

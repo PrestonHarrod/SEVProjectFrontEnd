@@ -1,5 +1,4 @@
-import {apiClient} from './apiClient.js'
-
+import { apiClient } from "./apiClient.js";
 
 export default {
   getAdmins() {
@@ -17,4 +16,4 @@ export default {
   deleteAdmin(adminID) {
     return apiClient.delete("admins/" + adminID);
   },
-}
+};

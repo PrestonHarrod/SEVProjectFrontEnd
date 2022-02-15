@@ -1,4 +1,4 @@
-import {apiClient} from "./apiClient.js";
+import { apiClient } from "./apiClient.js";
 
 export default {
   getTutorSubjects() {
@@ -20,11 +20,12 @@ export default {
     return apiClient.put("tutorSubjects/" + tutorSubject.id, tutorSubject);
   },
   deleteSpecificTutorSubject(tID, sID) {
-    return apiClient.delete("tutorSubjects?tutorID=" + tID + "&subjectID=" + sID);
+    return apiClient.delete(
+      "tutorSubjects?tutorID=" + tID + "&subjectID=" + sID
+    );
   },
   deleteTutorSubject(id) {
-    console.log(id)
+    console.log(id);
     return apiClient.delete("tutorSubjects/" + id);
-  }
-
+  },
 };

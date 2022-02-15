@@ -1,4 +1,4 @@
-import {apiClient} from "./apiClient.js";
+import { apiClient } from "./apiClient.js";
 
 export default {
   getUsers() {

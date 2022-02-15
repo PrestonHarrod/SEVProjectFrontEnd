@@ -1,33 +1,32 @@
 <template>
-<v-container fluid>
-  <v-layout>
+  <v-container fluid>
+    <v-layout>
       <v-flex>
         <div>
-          <div v-if= "isLogin()">
-          <Nav/>
-          <NavBar/>
+          <div v-if="isLogin()">
+            <Nav />
+            <NavBar />
           </div>
           <router-view />
-          
         </div>
       </v-flex>
-  </v-layout>
-</v-container>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
-import Nav from "./components/Nav.vue"
-import NavBar from "./components/NavBar.vue"
+import Nav from "./components/Nav.vue";
+import NavBar from "./components/NavBar.vue";
 export default {
   name: "App",
   components: {
     Nav,
     NavBar,
   },
-  methods : {
+  methods: {
     isLogin() {
-     return this.$route.name != 'login';
-    }
+      return this.$route.name != "login";
+    },
   },
 };
 </script>

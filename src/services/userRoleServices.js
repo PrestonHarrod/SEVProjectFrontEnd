@@ -1,5 +1,4 @@
-import {apiClient} from './apiClient.js'
-
+import { apiClient } from "./apiClient.js";
 
 export default {
   getUserRoles() {
@@ -17,4 +16,4 @@ export default {
   deleteUserRole(userRoleID) {
     return apiClient.delete("userroles/" + userRoleID);
   },
-}
+};
