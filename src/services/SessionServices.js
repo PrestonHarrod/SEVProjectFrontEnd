@@ -1,14 +1,19 @@
 import {apiClient} from "./apiClient.js";
 
 export default {
-  getUsers() {
-    return apiClient.get("users");
+  getSessions() {
+    return apiClient.get("sessions");
   },
 
-  getUser(id) {
-    console.log(id)
-    return apiClient.get("users/" + id);
+  getSession(id) {
+    return apiClient.get("sessions/" + id);
   },
+  getSessionsForStudent(id) {
+    return apiClient.get("sessions?studentID=" + id)
+  },
+  getSessionsForTutor(id) {
+    return apiClient.get("sessions?tutorID=" + id)
+  }
 //   addAdvisor(advisor) {
 //     return apiClient.post("users/", advisor);
 //   },

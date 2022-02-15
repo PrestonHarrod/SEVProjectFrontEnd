@@ -28,6 +28,9 @@ using this former component
     <v-btn v-else text v-on:click.prevent="goToLogin()">
       Logout
     </v-btn>
+    <v-btn text v-on:click.prevent="goToSessions()">
+      View Sessions
+    </v-btn>
   </v-app-bar>
 </template>
 
@@ -73,6 +76,9 @@ export default ({
          console.log(error)
         })
       },
+      goToSessions() {
+          this.$router.push({ name: 'sessionlist'})
+       },
        goToTutorPage() {
           this.$router.push({ name: 'tutorHome'})
         .then(() => {
