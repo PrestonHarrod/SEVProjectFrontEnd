@@ -142,7 +142,7 @@ export default {
           {
             if (response.data[this.i].status == "Upcoming") {
               this.upcomingSessions[this.i-1] = response.data[this.i];
-              this.upcomingSessions[this.i-1] = response.data[this.i];
+              
             }
             this.sessions[this.i] = response.data[this.i];
           }
@@ -160,8 +160,28 @@ export default {
         this.sessions = this.completedSessions
         this.sessions2 = this.upcomingSessions
 
-        for (this.j = 0; this.j < this.sessions.length; this.j++) {
-          getUser(this.sessions[this.j].tutorID)
+        console.log(this.sessions)
+        console.log(this.sessions2)
+
+        for (this.j = 0; this.j < this.sessions2.length; this.j++) {
+          UserServices.getUser(this.sessions2[this.j].tutorID)
+          .then(response => {
+            
+            this.tutor = response.data.fName
+            console.log(this.sessions2[this.j-1])
+            this.sessions2[this.j-1].tutorID = this.tutor
+          })
+          //this.sessions[this.j].tutorID = tutor
+      }
+      for (this.j = 0; this.j < this.sessions.length; this.j++) {
+        this.j=0;
+          UserServices.getUser(this.sessions[this.j].tutorID)
+          .then(response => {
+            
+            this.tutor = response.data.fName
+            console.log(this.sessions[this.j-1])
+            this.sessions[this.j-1].tutorID = this.tutor
+          })
           //this.sessions[this.j].tutorID = tutor
       }
       
@@ -175,13 +195,6 @@ export default {
   viewCourse() {
     
     },
-    async getUser(tutorID) {
-      await UserServices.getUser(tutorID)
-      .then(response => {
-        return response.data.fName
-      })
-
-    }
       
     },
 };
