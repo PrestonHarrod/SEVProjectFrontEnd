@@ -115,7 +115,7 @@ export default {
         console.log(error);
       });
     userServices
-      .getTutors("1")
+      .getTutors("3")
       .then((response) => {
         this.users = response.data;
       })

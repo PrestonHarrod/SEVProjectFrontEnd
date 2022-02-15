@@ -15,11 +15,9 @@ import SubjectList from "./views/subjectList.vue";
 import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
 import SessionList from "./views/Sessions.vue";
-//apply for tutor?
 import StudentList from "./views/studentList.vue";
 import TutorList from "./views/tutorList.vue";
 import Mentees from "./views/mentees.vue";
-import TutorAddSubjects from "./views/TutorAddSubject.vue";
 
 Vue.use(Router);
 export default new Router({
@@ -127,11 +125,6 @@ export default new Router({
       path: "/tutor/sessions",
       name: "sessions",
       component: SessionList,
-    },
-    {
-      path: "/addsubjects",
-      name: "addSubjects",
-      component: TutorAddSubjects,
     },
   ],
 });
