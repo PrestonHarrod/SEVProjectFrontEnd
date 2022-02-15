@@ -14,8 +14,9 @@ import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
 import SessionList from "./views/sessionList.vue"
 //apply for tutor?
-import StudentList from "./views/studentList.vue";
-import TutorList from "./views/tutorList.vue";
+import StudentList from "./views/Students/studentList.vue";
+import UserList from "./views/Users/userList.vue";
+import TutorList from "./views/Tutors/tutorList.vue";
 import Mentees from "./views/mentees.vue";
 
 
@@ -64,6 +65,12 @@ export default new Router({
       path: "/admin/students",
       name: "students",
       component: StudentList,
+    },
+
+    {
+      path: "/admin/users",
+      name: "users",
+      component: UserList,
     },
     {
       path: "/admin/tutors",

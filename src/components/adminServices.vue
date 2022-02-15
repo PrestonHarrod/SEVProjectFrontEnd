@@ -8,6 +8,9 @@
         </svg>
         <transition name="fade" apear>
          <div class="sub-menu" v-if="isOpen">
+           <div class="menu-item">
+              <router-link to="/admin/users">Users</router-link>
+            </div>
             <div class="menu-item">
               <router-link to="/admin/students">Students</router-link>
             </div>
