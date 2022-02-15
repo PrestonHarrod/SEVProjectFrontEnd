@@ -1,8 +1,10 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import Home from "./views/Home.vue";
-import Login from "./views/Login.vue";
+import Home from './views/Home.vue'
+import Login from './views/Login.vue'
+import StudentSubjectView from './views/Students/ViewSubjects.vue'
+
 
 
 import StudentHome from "./views/studentHome.vue";
@@ -36,6 +38,12 @@ export default new Router({
       path: "/login",
       name: "login",
       component: Login,
+    },
+
+    {
+      path: '/student/subjects',
+      name: 'studentSubjectView',
+      component: StudentSubjectView,
     },
     //Student Routes
     {
