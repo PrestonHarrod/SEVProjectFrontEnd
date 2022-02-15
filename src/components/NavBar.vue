@@ -4,7 +4,7 @@
     <AdminServices title="Admin" />
     <TutorServices title="Tutor" />
     <StudentServices title="Student" />
-    <div class="menu-item"><router-link to="/">Logout</router-link></div>
+    <div class="menu-item"><router-link to="/login">Logout</router-link></div>
   </nav>
 </template>
 
