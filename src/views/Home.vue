@@ -1,16 +1,28 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col>
-        <p>Welcome, {{ user.user }}</p>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-app id="inspire">
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+    >
+      <!--  -->
+    </v-navigation-drawer>
+
+    <v-app-bar app>
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Home</v-toolbar-title>
+    </v-app-bar>
+
+    <v-main>
+      <!--  -->
+    </v-main>
+  </v-app>
 </template>
+
 
 <script>
 import Utils from "@/config/utils.js";
-import UserServices from "@/services/userServices.js"
+import UserServices from "@/services/UserServices.js"
 
 // import StudentServices from '@/services/studentServices.js';
 // import AdvisorServices from '@/services/advisorServices.js';
