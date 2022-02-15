@@ -1,10 +1,10 @@
 <template>
 <v-container fluid fill-height>
   <div>
-    <H1 style="background-color: #0c76a0; color:#f2f2f2">Users</H1>
+    <H1 style="background-color: #0c76a0; color:#f2f2f2">Tutors</H1>
     <br>
     <br>
-     <h2><v-btn  :style="{left: '50%', transform:'translateX(-50%)'}" @click="goToAdd()" color="black" text rounded>Add User</v-btn></h2>
+     <h2><v-btn  :style="{left: '50%', transform:'translateX(-50%)'}" @click="goToAdd()" color="black" text rounded>Add Tutor</v-btn></h2>
   <br>
      <v-card width="100vw">
        <v-card-title>  

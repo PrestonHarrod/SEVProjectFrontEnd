@@ -3,9 +3,9 @@ import Router from "vue-router";
 
 import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
-import StudentHome from "./views/studentHome.vue";
-import AdminHome from "./views/adminHome.vue";
-import TutorHome from "./views/tutorHome.vue";
+import StudentHome from "./views/Students/studentHome.vue";
+import AdminHome from "./views/Admins/adminHome.vue";
+import TutorHome from "./views/Tutors/tutorHome.vue";
 import Schedule from "./views/schedule.vue";
 import Availability from "./views/availability.vue";
 import Attendance from "./views/attendance.vue";
@@ -17,7 +17,7 @@ import SessionList from "./views/sessionList.vue"
 import StudentList from "./views/Students/studentList.vue";
 import UserList from "./views/Users/userList.vue";
 import TutorList from "./views/Tutors/tutorList.vue";
-import Mentees from "./views/mentees.vue";
+import Mentees from "./views/Students/mentees.vue";
 
 
 
