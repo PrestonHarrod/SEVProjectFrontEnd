@@ -12,7 +12,13 @@
 
       <v-toolbar-title>Home</v-toolbar-title>
     </v-app-bar>
-
+    <v-container>
+    <v-row>
+      <v-col>
+        <p>Welcome, {{ user.user }}</p>
+      </v-col>
+    </v-row>
+  </v-container>
     <v-main>
       <!--  -->
     </v-main>
@@ -27,6 +33,9 @@ import UserServices from "@/services/UserServices.js"
 // import StudentServices from '@/services/studentServices.js';
 // import AdvisorServices from '@/services/advisorServices.js';
 import Nav from '@/components/Nav.vue'
+// import StudentServices from '@/services/studentServices.js';
+// import AdvisorServices from '@/services/advisorServices.js';
+// import Nav from '@/components/Nav.vue'
 
 export default {
   data() {

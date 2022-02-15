@@ -5,7 +5,7 @@
         <div>
           <div v-if= "isLogin()">
           <Nav/>
-            <NavBar/>
+          <NavBar/>
           </div>
           <router-view />
           
@@ -16,7 +16,6 @@
 </template>
 
 <script>
-
 import Nav from "./components/Nav.vue"
 import NavBar from "./components/NavBar.vue"
 export default {

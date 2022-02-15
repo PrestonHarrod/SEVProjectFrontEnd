@@ -38,6 +38,9 @@ using this former component
     <v-btn text v-on:click.prevent="goToSessions()">
       View Sessions
     </v-btn>
+    <v-btn text v-on:click.prevent="goToAddSubjects()">
+      Manage Subjects
+    </v-btn>
   </v-app-bar>
 </template>
 
@@ -70,6 +73,19 @@ export default ({
       scheduleSession() {
           this.$router.push({ name: 'studentSubjectView'})
           .then(() => {
+          })
+      },
+      goToCourses() {
+          this.$router.push({ name: 'courses'})
+        .then(() => {
+        })
+        .catch(error => {
+         console.log(error)
+        })
+      },    
+      goToStudents() {
+          this.$router.push({ name: 'studentlist'})
+        .then(() => {
         })
         .catch(error => {
          console.log(error)
@@ -78,6 +94,9 @@ export default ({
 
       goToStudentPage() {
           this.$router.push({ name: 'studentHome'})
+      },
+      goToAdvisors() {
+          this.$router.push({ name: 'advisorlist'})
         .then(() => {
         })
         .catch(error => {
@@ -116,6 +135,14 @@ export default ({
           this.$router.push({ name: 'home'})
           location.reload();
         }
+      },
+      goToAddSubjects() {
+        this.$router.push({ name: 'addSubjects'})
+        .then(() => {
+        })
+        .catch(error => {
+         console.log(error)
+        })
       },
     }
 });
