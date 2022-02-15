@@ -1,22 +1,31 @@
 <template>
-  <div id="app">
-    <SocialLogin/>
-    <router-view/>
-  </div>
+<v-container fluid>
+  <v-layout>
+      <v-flex>
+        <div>
+          <div v-if= "isLogin()">
+          <Nav/>
+          </div>
+          <router-view />
+          
+        </div>
+      </v-flex>
+  </v-layout>
+</v-container>
 </template>
-<script>
-import SocialLogin from "./components/SocialLogin.vue";
 
+<script>
+import Nav from "./components/Nav.vue"
 export default {
   name: "App",
   components: {
-    SocialLogin,
+    Nav
   },
-  methods: {
-    showSomething() {
-      return this.$route.name;
+  methods : {
+    isLogin() {
+     return this.$route.name != 'login';
     }
-  }
+  },
 };
 </script>
 

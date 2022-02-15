@@ -10,14 +10,16 @@
 
 <script>
 import Utils from "@/config/utils.js";
+import UserServices from "@/services/userServices.js"
+
 // import StudentServices from '@/services/studentServices.js';
 // import AdvisorServices from '@/services/advisorServices.js';
-// import Nav from '@/components/Nav.vue'
+import Nav from '@/components/Nav.vue'
 
 export default {
   data() {
     return {
-      //components: {Nav},
+      components: {Nav},
       user: {},
     };
   },
@@ -25,18 +27,15 @@ export default {
     this.user = Utils.getStore("user");
     //console.log("advisorId="+this.user.advisorID+" studentId="+this.user.studentID)
     if (this.user != null) {
-      Utils.setStore("user", null);
-      this.$router.push({ name: "home" });
+        await UserServices.getUser(this.user.userID)
+        .catch(() => {
+            Utils.setStore("user", this.user);
+            if (this.$route.path != '/home') {
+                 this.$router.push({ name: "home" });
+}
+        })
+      
     }
-    // else {
-    //     if (this.user != null && this.user.studentID != null){
-    //       await StudentServices.getStudent(this.user.studentID)
-    //         .catch(() => {
-    //           Utils.setStore("user",null);
-    //           this.$router.push({ name: 'home' });
-    //       });
-    //   }
-    // }
   },
 };
 </script>

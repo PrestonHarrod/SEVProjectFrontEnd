@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div>
-      <H1 style="background-color: #811429; color: #f2f2f2">Subject List</H1>
+      <H1 style="background-color: #811429; color: #f2f2f2">Schedule Session</H1>
       <br>
       <v-app>
  <v-form>
@@ -28,7 +28,7 @@
         cols="12"
         sm="6"
       >
-        <v-select 
+        <!-- <v-select 
           :items="users"
           label="Course Level"
           item-text="fName"
@@ -36,12 +36,12 @@
           dense
           outlined
           v-model="subject"
-        ></v-select>
+        ></v-select> -->
         </v-col>
     </v-row>
     <v-row>
       <v-col>
-     <h2><v-btn color="#66BB6A" @click="findTutor(subjects.subjectID, level)">Submit</v-btn></h2>
+     <!-- <h2><v-btn color="#66BB6A" @click="findTutor(subjects.subjectID, level)">Submit</v-btn></h2> -->
       </v-col>
     </v-row>
     <v-row>
