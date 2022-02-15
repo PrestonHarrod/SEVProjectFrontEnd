@@ -4,7 +4,6 @@ import Router from "vue-router";
 import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
 
-import SessionList from "./views/Sessions.vue"
 
 import StudentHome from "./views/studentHome.vue";
 import AdminHome from "./views/adminHome.vue";
@@ -15,7 +14,7 @@ import Attendance from "./views/attendance.vue";
 import SubjectList from "./views/subjectList.vue";
 import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
-import SessionList from "./views/sessionList.vue"
+import SessionList from "./views/Sessions.vue"
 //apply for tutor?
 import StudentList from "./views/studentList.vue";
 import TutorList from "./views/tutorList.vue";
