@@ -28,7 +28,7 @@ export const apiClient = axios.create({
     return JSON.stringify(data);
   },
   transformResponse: function (data) {
-    //console.log(data);
+    console.log(data);
     data = JSON.parse(data);
     if (!data.success && data.code == "expired-session") {
       localStorage.deleteItem("user");

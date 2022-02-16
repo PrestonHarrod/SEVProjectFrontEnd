@@ -1,28 +1,26 @@
-
 <template>
-    <nav id="vue">
-        <div class="menu-item"><router-link to="/">Home</router-link></div>
-        <AdminServices title="Admin" /> 
-        <TutorServices title="Tutor" /> 
-        <StudentServices title="Student" /> 
-        <div class="menu-item"><router-link to="/">Logout</router-link></div>
-    </nav>
+  <nav id="vue">
+    <div class="menu-item"><router-link to="/">Home</router-link></div>
+    <AdminServices title="Admin" />
+    <TutorServices title="Tutor" />
+    <StudentServices title="Student" />
+    <div class="menu-item"><router-link to="/login">Logout</router-link></div>
+  </nav>
 </template>
 
 <script>
-import AdminServices from '../components/adminServices'
-import StudentServices from '../components/studentServices'
-import TutorServices from '../components/tutorServices'
+import AdminServices from "../components/adminServices";
+import StudentServices from "../components/studentServices";
+import TutorServices from "../components/tutorServices";
 export default {
-  name: 'navbar',
+  name: "navbar",
   components: {
     AdminServices,
     TutorServices,
-    StudentServices
+    StudentServices,
   },
-}
+};
 </script>
-
 
 <style>
 nav {
@@ -33,7 +31,7 @@ nav {
   justify-content: center;
 }
 nav .menu-item {
-  color: #FFF;
+  color: #fff;
   padding: 25px 40px;
   position: relative;
   text-align: center;

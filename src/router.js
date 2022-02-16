@@ -6,18 +6,20 @@ import Login from "./views/Login.vue";
 import StudentHome from "./views/Students/studentHome.vue";
 import AdminHome from "./views/Admins/adminHome.vue";
 import TutorHome from "./views/Tutors/tutorHome.vue";
+import StudentSubjectView from "./views/Students/ViewSubjects.vue";
+
 import Schedule from "./views/schedule.vue";
 import Availability from "./views/availability.vue";
 import Attendance from "./views/attendance.vue";
 import SubjectList from "./views/subjectList.vue";
 import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
-import SessionList from "./views/sessionList.vue"
 //apply for tutor?
 import StudentList from "./views/Students/studentList.vue";
 import UserList from "./views/Users/userList.vue";
 import TutorList from "./views/Tutors/tutorList.vue";
 import Mentees from "./views/Students/mentees.vue";
+import SessionList from "./views/Sessions.vue";
 
 
 
@@ -36,6 +38,12 @@ export default new Router({
       path: "/login",
       name: "login",
       component: Login,
+    },
+
+    {
+      path: "/student/ScheduleSession",
+      name: "studentSubjectView",
+      component: StudentSubjectView,
     },
     //Student Routes
     {

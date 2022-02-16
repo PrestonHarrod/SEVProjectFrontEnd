@@ -1,42 +1,25 @@
-import {apiClient} from "./apiClient.js";
+import { apiClient } from "./apiClient.js";
 
 export default {
 
   //Basic CRUD for users
   getUsers() {
-    return apiClient.get("users");
+    return apiClient.get("users/");
   },
-
+  getTutors(roleID) {
+    return apiClient.get("users/roleID/" + roleID);
+  },
   getUser(id) {
     return apiClient.get("users/" + id);
   },
   addUser(user) {
-
     return apiClient.post("users/", user);
   },
   updateUser(user) {
-    return apiClient.put("users/" + user.id, user);
+    return apiClient.put("users/" + user.userID, user);
   },
-  deleteUser(id) {
-    return apiClient.delete("users/" + id);
+  deleteUser(userID) {
+    return apiClient.delete("users/" + userID);
   },
-
-
-//student only methods
-  getStudents(id) {
-    return apiClient.delete("users/" + id);
-  },
-//admin only methods
-  getAdmins(id) {
-    return apiClient.delete("users/" + id);
-  },
-//tutor only methods
-  getTutors(id) {
-    return apiClient.delete("users/" + id);
-  },
-
-
-
-  
-
 };
+

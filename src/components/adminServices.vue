@@ -17,36 +17,39 @@
             <div class="menu-item">
               <router-link to="/admin/tutors">Tutors</router-link>
             </div>
-            <div class="menu-item">
-              <router-link to="/admin/mentees">Mentees</router-link>
-            </div>
-            <div class="menu-item">
-              <router-link to="/admin/sessions">Sessions</router-link>
-            </div>
-            <div class="menu-item">
-              <router-link to="/admin/requests">Requests</router-link>
-            </div>
+        <div class="menu-item">
+          <router-link to="/admin/tutors">Tutors</router-link>
         </div>
-        </transition>
-    </div>
+        <div class="menu-item">
+          <router-link to="/admin/mentees">Mentees</router-link>
+        </div>
+        <div class="menu-item">
+          <router-link to="/admin/sessions">Sessions</router-link>
+        </div>
+        <div class="menu-item">
+          <router-link to="/admin/requests">Requests</router-link>
+        </div>
+      </div>
+    </transition>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'services',
-  props: ['title'],
-  data () {
+  name: "services",
+  props: ["title"],
+  data() {
     return {
       isOpen: false,
-      }
-    }
-}
+    };
+  },
+};
 </script>
 
 <style>
 nav .menu-item svg {
-    width: 10px;
-    margin-left: 10px;
+  width: 10px;
+  margin-left: 10px;
 }
 nav .menu-item .sub-menu {
   position: absolute;
@@ -59,7 +62,7 @@ nav .menu-item .sub-menu {
 }
 .fade-enter-active,
 .fade-leave-active {
-  transition: all .5s ease-out;
+  transition: all 0.5s ease-out;
 }
 .fade-enter,
 .fade-leave-to {
