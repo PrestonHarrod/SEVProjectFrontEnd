@@ -74,9 +74,11 @@ export default new Router({
     },
     {
       path: "/student/sessions",
-      name: "sessions",
+      name: "studentSessions",
       component: SessionList,
     },
+
+    //Needs schedule sessions
 
     //Admin Routes
     {
@@ -142,7 +144,7 @@ export default new Router({
     },
     {
       path: "/admin/sessions",
-      name: "sessions",
+      name: "adminSessions",
       component: SessionList,
     },
     {
@@ -183,7 +185,7 @@ export default new Router({
     },
     {
       path: "/tutor/sessions",
-      name: "sessions",
+      name: "tutorSessions",
       component: SessionList,
     },
   ],
