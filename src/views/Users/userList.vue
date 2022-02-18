@@ -84,7 +84,7 @@ export default {
   },
   methods: {
   goToAdd() {
-    // this.$router.push({ name: 'addStudent'})
+    // this.$router.push({ name: 'addUser'})
     // .then(() => {
     //     })
     //     .catch(error => {

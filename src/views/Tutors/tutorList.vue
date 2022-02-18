@@ -21,7 +21,7 @@
         show-select
         single-select
         :headers="headers"
-        :items="users"
+        :items="tutors"
         item-key="email"
         :items-per-page="25"
         :search="search"
@@ -36,15 +36,15 @@
 
 <script>
 
-// import Utils from '@/config/utils.js';
-// import UserServices from '@/services/UserServices.js'; 
+import Utils from '@/config/utils.js';
+import UserServices from '@/services/UserServices.js'; 
 
 export default {
     components: {},
     data() {
         return {
           selected: [],
-          user: {},
+          tutor: {},
            search: '',
           headers: [
             {
@@ -66,30 +66,32 @@ export default {
             value: 'email',
             },
           ],
-            users: [
+            tutors: [
               {
               },
             ],
         };
     },
   created() {
-      // this.user = Utils.getStore('user');
-      // UserServices.getUsers() 
-      // .then(response => {
-      //   this.users = response.data
-      // })
-      // .catch(error => {
-      //   console.log(error)
-      // })
+      this.user = Utils.getStore('user');
+      UserServices
+      .getUsersByRole("3")
+      .then((response) => {
+        this.tutors = response.data;
+      })
+
+      .catch((error) => {
+        console.log(error);
+      });
   },
   methods: {
   goToAdd() {
-    // this.$router.push({ name: 'addStudent'})
-    // .then(() => {
-    //     })
-    //     .catch(error => {
-    //      console.log(error)
-    //     })
+    this.$router.push({ name: 'addTutor'})
+    .then(() => {
+        })
+        .catch(error => {
+         console.log(error)
+        })
   },
    viewUser(/*some var*/ ) {
     //  let id = student.studentID

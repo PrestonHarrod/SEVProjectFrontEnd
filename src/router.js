@@ -16,10 +16,25 @@ import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
 //apply for tutor?
 import StudentList from "./views/Students/studentList.vue";
-import UserList from "./views/Users/userList.vue";
-import TutorList from "./views/Tutors/tutorList.vue";
+
 import Mentees from "./views/Students/mentees.vue";
 import SessionList from "./views/Sessions.vue";
+
+//User Crud
+import UserAdd from "./views/Users/addUser.vue";
+import UserEdit from "./views/Users/userEdit.vue";
+import UserView from "./views/Users/userView.vue";
+import UserList from "./views/Users/userList.vue";
+
+//Tutor Crud
+import TutorAdd from "./views/Tutors/addTutor.vue";
+import TutorEdit from "./views/Tutors/tutorEdit.vue";
+import TutorView from "./views/Tutors/tutorView.vue";
+import TutorList from "./views/Tutors/tutorList.vue";
+
+//Student crud
+
+
 
 
 
@@ -75,16 +90,51 @@ export default new Router({
       component: StudentList,
     },
 
+    //users
     {
       path: "/admin/users",
       name: "users",
       component: UserList,
     },
     {
+      path: "/admin/users-edit/:id",
+      name: "editUser",
+      component: UserEdit,
+    },
+    {
+      path: "/admin/users/:id",
+      name: "viewUser",
+      component: UserView,
+    },
+    {
+      path: "/admin/addUser/",
+      name: "addUser",
+      component: UserAdd,
+    },
+
+    //Tutor
+    {
       path: "/admin/tutors",
       name: "tutors",
       component: TutorList,
     },
+    {
+      path: "/admin/tutors-edit/:id",
+      name: "editTutor",
+      component: TutorEdit,
+    },
+    {
+      path: "/admin/tutors/:id",
+      name: "viewTutor",
+      component: TutorView,
+    },
+    {
+      path: "/admin/addTutor/",
+      name: "addTutor",
+      component: TutorAdd,
+    },
+
+
     {
       path: "/admin/mentees",
       name: "mentees",

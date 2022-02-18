@@ -14,9 +14,6 @@
             <div class="menu-item">
               <router-link to="/admin/students">Students</router-link>
             </div>
-            <div class="menu-item">
-              <router-link to="/admin/tutors">Tutors</router-link>
-            </div>
         <div class="menu-item">
           <router-link to="/admin/tutors">Tutors</router-link>
         </div>
@@ -59,6 +56,7 @@ nav .menu-item .sub-menu {
   transform: translateX(-50%);
   width: max-content;
   border-radius: 0px 0px 16px 16px;
+  z-index: 1;
 }
 .fade-enter-active,
 .fade-leave-active {
