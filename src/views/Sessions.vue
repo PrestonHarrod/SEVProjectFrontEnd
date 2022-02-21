@@ -120,7 +120,6 @@ export default {
     SessionServices.getSessions()
       .then((response) => {
         this.i = 0;
-
         for (this.i = 0; this.i < response.data.length; this.i++) {
           if (this.user.userID == response.data[this.i].studentID) {
             if (response.data[this.i].status == "Upcoming") {
@@ -141,9 +140,8 @@ export default {
         this.sessions = this.completedSessions;
         this.sessions2 = this.upcomingSessions;
 
-        console.log(this.sessions);
-        console.log(this.sessions2);
-
+        // Change location and user ID's to their corresponding 
+        // actual names
         for (this.j = 0; this.j < this.sessions2.length; this.j++) {
           UserServices.getUser(this.sessions2[this.j].tutorID).then(
             (response) => {
