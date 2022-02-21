@@ -2,42 +2,42 @@
   <v-layout>
     <v-flex>
       <v-sheet height="400">
+          <v-btn
+            fab
+            text
+            small
+            color="grey darken-2"
+            @click="prev"
+          >
+            <v-icon small>
+              mdi-chevron-left
+            </v-icon>
+          </v-btn>
+          <v-btn
+            fab
+            text
+            small
+            color="grey darken-2"
+            @click="next"
+          >
+            <v-icon small>
+              mdi-chevron-right
+            </v-icon>
+          </v-btn>
         <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
         <br />
         <v-calendar
           ref="calendar"
-          :now="today"
-          :value="today"
+          v-model="value"
+          :first-interval= 6
+          :interval-count= 19
+          :events="events"
+          @click:event="viewSession"
           color="#811429"
+          event-text-color="#811429"
           type="week"
         >
-          <!-- the events at the top (all-day) -->
-          <template v-slot:dayHeader="{ date }">
-            <template v-for="event in eventsMap[date]">
-              <!-- all day events don't have time -->
-              <div
-                v-if="!event.time"
-                :key="event.title"
-                class="my-event"
-                @click="open(event)"
-                v-html="event.title"
-              ></div>
-            </template>
-          </template>
-          <!-- the events at the bottom (timed) -->
-          <template v-slot:dayBody="{ date, timeToY, minutesToPixels }">
-            <template v-for="event in eventsMap[date]">
-              <!-- timed events -->
-              <div
-                v-if="event.time"
-                :key="event.title"
-                :style="{ top: timeToY(event.time) + 'px', height: minutesToPixels(event.duration) + 'px' }"
-                class="my-event with-time"
-                @click="open(event)"
-                v-html="event.title"
-              ></div>
-            </template>
-          </template>
+         
         </v-calendar>
       </v-sheet>
     </v-flex>
@@ -45,67 +45,71 @@
 </template>
 
 <script>
+import Utils from "@/config/utils.js";
+import UserServices from "@/services/UserServices.js";
+import SessionServices from "@/services/sessionServices.js";
+
   export default {
     data: () => ({
-      today: '2019-01-08',
-      events: [
-        {
-          title: 'Weekly Meeting',
-          date: '2022-02-07',
-          time: '09:00',
-          duration: 45
-        },
-        {
-          title: 'Thomas\' Birthday',
-          date: '2019-01-10'
-        },
-        {
-          title: 'Mash Potatoes',
-          date: '2019-01-09',
-          time: '12:30',
-          duration: 180
-        }
-      ]
+    user: {},
+    sessions: {},
+    events: [],
+    value: ''
     }),
-    computed: {
-      // convert the list of events into a map of lists keyed by date
-      eventsMap () {
-        const map = {}
-        this.events.forEach(e => (map[e.date] = map[e.date] || []).push(e))
-        return map
-      }
-    },
-    mounted () {
-      this.$refs.calendar.scrollToTime('08:00')
-    },
-    methods: {
-      open (event) {
-        alert(event.title)
-      }
-    }
+  async created() {
+    // display completed and upcoming sessions depending on
+    // if a student or tutor is logged in
+    this.user = Utils.getStore("user");
+    SessionServices.getSessions()
+      .then((response) => {
+          response.data.forEach(session => 
+          {
+            UserServices.getUser(session.studentID) 
+            .then((student) => {
+                let s = session.scheduledStart;
+                let i = s.indexOf("T");
+                let st = s.substr(0, i) + " " + s.substr(i+1, 8);
+                let e = session.scheduledEnd;
+                i = e.indexOf("T");
+                let end = e.substr(0, i) + " " + e.substr(i+1, 8);
+                if(session.tutorID == this.user.userID)
+                    this.events.push({id: session.sessionID, name: "Session: " + student.data.fName + " " + student.data.lName.substr(0,1), start: st, end: end})
+            })
+            
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+  methods: {
+      viewSession(event) {
+        let start = event.eventParsed.start.date + " " + event.eventParsed.start.time + ":00";
+        let end = event.eventParsed.end.date + " " + event.eventParsed.end.time + ":00";
+        this.events.forEach(e => {
+            if(e.start == start && e.end == end)
+            {
+                console.log(e.id);
+                 this.$router.push({ name: 'sessionView', params: {id: e.id}})
+                .then(() => {
+                })
+                .catch(error => {
+                 console.log(error)
+                })
+            }
+        })
+       
+      },
+      prev () {
+        this.$refs.calendar.prev()
+      },
+      next () {
+        this.$refs.calendar.next()
+      },
+  }
   }
 </script>
 
 <style  scoped>
-  .my-event {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    border-radius: 2px;
-    background-color: #1867c0;
-    color: #ffffff;
-    border: 1px solid #1867c0;
-    font-size: 12px;
-    padding: 3px;
-    cursor: pointer;
-    margin-bottom: 1px;
-    left: 4px;
-    margin-right: 8px;
-    position: relative;
-  }
-    .with-time {
-      position: absolute;
-      right: 4px;
-      margin-right: 0px;
-    }
+
 </style>

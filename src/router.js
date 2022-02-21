@@ -18,6 +18,7 @@ import SessionList from "./views/Sessions.vue";
 import StudentList from "./views/studentList.vue";
 import TutorList from "./views/tutorList.vue";
 import Mentees from "./views/mentees.vue";
+import SessionView from "./views/sessionView.vue"
 
 Vue.use(Router);
 export default new Router({
@@ -37,7 +38,7 @@ export default new Router({
     },
 
     {
-      path: "/student/ScheduleSession",
+      path: "/student/subjects",
       name: "studentSubjectView",
       component: StudentSubjectView,
     },
@@ -125,6 +126,12 @@ export default new Router({
       path: "/tutor/sessions",
       name: "sessions",
       component: SessionList,
+    },
+    {
+      path: "/tutor/session/:id",
+      name: "sessionView",
+      component: SessionView,
+      props: true,
     },
   ],
 });

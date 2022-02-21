@@ -1,5 +1,6 @@
 <template>
   <v-container fluid fill-height>
+       <v-app>
     <v-row>
       <v-col>
         <H1 style="background-color: #811429; color: #f2f2f2"
@@ -9,13 +10,31 @@
       </v-col>
     </v-row>
     <v-row>
+       
+        <v-col>
+            <v-select v-model="selectedSubject"
+            :items= "subjectItems" 
+            label="Subjects"
+          ></v-select>
+        </v-col>
+        <v-col>
+            <v-select v-model="selectedLevel"
+            :items= "levelItems" 
+            item-value="levelID"
+            label="Level"
+          ></v-select>
+        </v-col>
+       
+    </v-row>
+    <v-row>
       <v-col>
         <H2 style="background-color: #811429; color: #f2f2f2"> My Subjects </H2>
       </v-col>
     </v-row>
     <br />
     <div v-for="subject in mySubjects" v-bind:key="subject.id">
-      <v-btn
+    
+      <v-btn 
         v-on:click.prevent="moveToSubjects(subjects, mySubjects, subject)"
         rounded
         color="#811429"
@@ -27,6 +46,7 @@
     <br />
     <br />
     <br />
+    
     <v-row>
       <v-col>
         <H2 style="background-color: #811429; color: #f2f2f2"> Subjects </H2>
@@ -35,7 +55,8 @@
     <br />
     <br />
     <div v-for="subject in subjects" v-bind:key="subject.subjectID">
-      <v-btn
+      <v-btn v-if="(selectedLevel == '' || selectedLevel == 'Any Level' || subject.level == selectedLevel) &&
+                   (selectedSubject == '' || selectedSubject == 'Any Subject' || subject.subjectGenre == selectedSubject)"
         v-on:click.prevent="moveToMySubjects(mySubjects, subjects, subject)"
         rounded
         color="#811429"
@@ -44,6 +65,7 @@
         {{ subject.name }}
       </v-btn>
     </div>
+     </v-app>
   </v-container>
 </template>
 
@@ -82,6 +104,10 @@ export default {
       tutorSubjects: [],
       mySubjects: [],
       selected: [],
+      levelItems: ["Any Level", 1000,2000,3000,4000,5000],
+      selectedLevel: [],
+      subjectItems: ["Any Subject", "Math", "English", "Computer Science", "Engineering", "Bible", "Biology", "Nursing"],
+      selectedSubject: [],
     };
   },
   created() {
