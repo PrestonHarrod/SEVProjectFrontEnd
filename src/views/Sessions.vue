@@ -68,7 +68,8 @@
 <script>
 import Utils from "@/config/utils.js";
 import UserServices from "@/services/UserServices.js";
-import SessionServices from "@/services/sessionServices.js";
+import SessionServices from "@/services/SessionServices.js";
+import LocationServices from "@/services/locationServices.js"
 // import Nav from '@/components/Nav.vue'
 
 export default {
@@ -109,6 +110,7 @@ export default {
       i: 0,
       j: 0,
       tutor: "tutorName",
+      location: "locationName",
     };
   },
   async created() {
@@ -146,11 +148,15 @@ export default {
           UserServices.getUser(this.sessions2[this.j].tutorID).then(
             (response) => {
               this.tutor = response.data.fName;
-              console.log(this.sessions2[this.j - 1]);
               this.sessions2[this.j - 1].tutorID = this.tutor;
-            }
+            },
           );
-          //this.sessions[this.j].tutorID = tutor
+          LocationServices.getLocation(this.sessions2[this.j].locationID).then(
+              (response) => {
+                this.location = response.data.building
+                this.sessions2[this.j - 1].locationID = this.location;
+              }
+            )
         }
         for (this.j = 0; this.j < this.sessions.length; this.j++) {
           this.j = 0;
@@ -161,7 +167,12 @@ export default {
               this.sessions[this.j - 1].tutorID = this.tutor;
             }
           );
-          //this.sessions[this.j].tutorID = tutor
+          LocationServices.getLocation(this.sessions[this.j].locationID).then(
+              (response) => {
+                this.location = response.data.building
+                this.sessions[this.j - 1].locationID = this.location;
+              }
+            )
         }
       })
       .catch((error) => {
