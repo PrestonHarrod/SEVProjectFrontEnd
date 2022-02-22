@@ -82,7 +82,7 @@ export default new Router({
     },
     {
       path: "/admin/sessions",
-      name: "sessions",
+      name: "adminsessions",
       component: SessionList,
     },
     {
@@ -123,7 +123,7 @@ export default new Router({
     },
     {
       path: "/tutor/sessions",
-      name: "sessions",
+      name: "tutorsessions",
       component: SessionList,
     },
   ],
