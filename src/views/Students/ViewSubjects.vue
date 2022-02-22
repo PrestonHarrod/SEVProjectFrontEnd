@@ -73,7 +73,7 @@
           </v-btn>
         <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
         <br />
-        <v-calendar
+        <v-calendar v-if="selected[0] != null"
           ref="calendar"
           v-model="value"
           :first-interval= 6
@@ -97,7 +97,7 @@ import subjectServices from "@/services/subjectServices.js";
 import UserServices from "@/services/UserServices.js";
 import tutorSubjectServices from "@/services/tutorSubjectServices.js";
 import SessionServices from "@/services/SessionServices.js";
-//import Utils from "@/config/utils.js";
+import Utils from "@/config/utils.js";
 export default {
   data() {
     return {
@@ -157,22 +157,27 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+      this.user = Utils.getStore("user");
       SessionServices.getSessions()
       .then((response) => {
           response.data.forEach(session => 
           {
-           console.log(session.studentID)
             UserServices.getUser(session.studentID) 
             .then((student) => {
                 let s = session.scheduledStart;
-                console.log(session)
+                
                 let i = s.indexOf("T");
                 let st = s.substr(0, i) + " " + s.substr(i+1, 8);
                 let e = session.scheduledEnd;
                 i = e.indexOf("T");
                 let end = e.substr(0, i) + " " + e.substr(i+1, 8);
+                console.log(session.tutorID)
+                console.log(this.user.userID)
                 if(session.tutorID == this.user.userID)
-                    this.events.push({id: session.sessionID, name: "Session: " + student.data.fName + " " + student.data.lName.substr(0,1), start: st, end: end})
+                {
+                  this.events.push({id: session.sessionID, name: "Session: " + student.data.fName + " " + student.data.lName.substr(0,1), start: st, end: end})
+                }
+                    
             })
             
           });
