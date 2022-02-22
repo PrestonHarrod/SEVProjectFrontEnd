@@ -22,15 +22,6 @@
           </v-row>
           <v-row>
             <v-col class="d-flex" cols="12" sm="6">
-              <!-- <v-select 
-          :items="users"
-          label="Course Level"
-          item-text="fName"
-          item-value="fName"
-          dense
-          outlined
-          v-model="subject"
-        ></v-select> -->
             </v-col>
           </v-row>
           <v-row>
@@ -195,20 +186,10 @@ export default {
     findTutor(subjectID, level) {
       console.log(subjectID);
       console.log(level);
-    },
-  },
 
-  getTutorSubjectsForTutor(id) {
-    tutorSubjectServices
-      .getTutorSubjects(id)
-      .then((response) => {
-        this.tutorSubjects = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-        viewSession(event) {
+      
+    },
+     viewSession(event) {
         let start = event.eventParsed.start.date + " " + event.eventParsed.start.time + ":00";
         let end = event.eventParsed.end.date + " " + event.eventParsed.end.time + ":00";
         this.events.forEach(e => {
@@ -231,6 +212,18 @@ export default {
       next () {
         this.$refs.calendar.next()
       },
+    
+    getTutorSubjectsForTutor(id) {
+    tutorSubjectServices
+      .getTutorSubjects(id)
+      .then((response) => {
+        this.tutorSubjects = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  },
+  },
 };
 </script>
 
