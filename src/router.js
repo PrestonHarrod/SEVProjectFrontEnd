@@ -3,21 +3,52 @@ import Router from "vue-router";
 
 import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
+import StudentHome from "./views/Students/studentHome.vue";
+import AdminHome from "./views/Admins/adminHome.vue";
+import TutorHome from "./views/Tutors/tutorHome.vue";
 import StudentSubjectView from "./views/Students/ViewSubjects.vue";
 
-import StudentHome from "./views/studentHome.vue";
-import AdminHome from "./views/adminHome.vue";
-import TutorHome from "./views/tutorHome.vue";
 import Schedule from "./views/schedule.vue";
 import Availability from "./views/availability.vue";
 import Attendance from "./views/attendance.vue";
 import SubjectList from "./views/subjectList.vue";
 import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
+//apply for tutor?
+
+
+
 import SessionList from "./views/Sessions.vue";
-import StudentList from "./views/studentList.vue";
-import TutorList from "./views/tutorList.vue";
-import Mentees from "./views/mentees.vue";
+
+//User Crud
+import UserAdd from "./views/Users/addUser.vue";
+import UserEdit from "./views/Users/userEdit.vue";
+import UserView from "./views/Users/userView.vue";
+import UserList from "./views/Users/userList.vue";
+
+//Tutor Crud
+import TutorAdd from "./views/Tutors/addTutor.vue";
+import TutorEdit from "./views/Tutors/tutorEdit.vue";
+import TutorView from "./views/Tutors/tutorView.vue";
+import TutorList from "./views/Tutors/tutorList.vue";
+
+//Student crud
+import StudentAdd from "./views/Students/addStudent.vue";
+//import StudentEdit from "./views/Students/studentEdit.vue";
+//import StudentView from "./views/Students/studentView.vue";
+import StudentList from "./views/Students/studentList.vue";
+
+//Mentee Crud
+import MenteeAdd from "./views/Mentees/addMentee.vue";
+//import StudentEdit from "./views/Students/studentEdit.vue";
+//import StudentView from "./views/Students/studentView.vue";
+import Mentees from "./views/Mentees/mentees.vue";
+
+
+
+
+
+
 
 Vue.use(Router);
 export default new Router({
@@ -55,9 +86,11 @@ export default new Router({
     },
     {
       path: "/student/sessions",
-      name: "sessions",
+      name: "studentSessions",
       component: SessionList,
     },
+
+    //Needs schedule sessions
 
     //Admin Routes
     {
@@ -70,19 +103,83 @@ export default new Router({
       name: "students",
       component: StudentList,
     },
+
+    //users
+    {
+      path: "/admin/users",
+      name: "users",
+      component: UserList,
+    },
+    {
+      path: "/admin/users-edit/:id",
+      name: "editUser",
+      component: UserEdit,
+    },
+    {
+      path: "/admin/users/:id",
+      name: "viewUser",
+      component: UserView,
+    },
+    {
+      path: "/admin/addUser/",
+      name: "addUser",
+      component: UserAdd,
+    },
+
+    //Tutor
     {
       path: "/admin/tutors",
       name: "tutors",
       component: TutorList,
     },
     {
+      path: "/admin/tutors-edit/:id",
+      name: "editTutor",
+      component: TutorEdit,
+    },
+    {
+      path: "/admin/tutors/:id",
+      name: "viewTutor",
+      component: TutorView,
+    },
+    {
+      path: "/admin/addTutor/",
+      name: "addTutor",
+      component: TutorAdd,
+    },
+    //Student
+    // {
+    //   path: "/admin/students-edit/:id",
+    //   name: "editTutor",
+    //   component: TutorEdit,
+    // },
+    // {
+    //   path: "/admin/students/:id",
+    //   name: "viewTutor",
+    //   component: TutorView,
+    // },
+    {
+      path: "/admin/addStudent/",
+      name: "addStudent",
+      component: StudentAdd,
+    },
+
+    //Mentees
+    {
       path: "/admin/mentees",
       name: "mentees",
       component: Mentees,
     },
     {
+      path: "/admin/addMentee",
+      name: "addMentee",
+      component: MenteeAdd,
+    },
+
+
+    {
       path: "/admin/sessions",
-      name: "sessions",
+      name: "adminSessions",
       component: SessionList,
     },
     {
@@ -123,7 +220,7 @@ export default new Router({
     },
     {
       path: "/tutor/sessions",
-      name: "sessions",
+      name: "tutorSessions",
       component: SessionList,
     },
   ],

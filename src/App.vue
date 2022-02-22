@@ -1,6 +1,7 @@
 <template>
-  <v-container fluid>
-    <v-layout>
+<v-container fluid>
+  <v-layout>
+
       <v-flex>
         <div>
           <div v-if="isLogin()">

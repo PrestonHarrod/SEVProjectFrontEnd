@@ -1,6 +1,5 @@
 <template>
 <v-app id="inspire">
-    <!--  
 <v-main class="grey lighten-3">
       <v-container>
         <v-row>
@@ -12,7 +11,7 @@
               rounded="lg"
               min-height="268"
             >
-              
+              <!--  -->
             </v-sheet>
           </v-col>
 
@@ -24,7 +23,7 @@
               min-height="70vh"
               rounded="lg"
             >
-              
+              <!--  -->
             </v-sheet>
           </v-col>
 
@@ -36,12 +35,12 @@
               rounded="lg"
               min-height="268"
             >
-              
+              <!--  -->
             </v-sheet>
           </v-col>
         </v-row>
       </v-container>
-    </v-main> -->
+    </v-main>
   </v-app>
 </template>
 
