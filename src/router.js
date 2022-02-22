@@ -15,9 +15,9 @@ import SubjectList from "./views/subjectList.vue";
 import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
 //apply for tutor?
-import StudentList from "./views/Students/studentList.vue";
 
-import Mentees from "./views/Students/mentees.vue";
+
+
 import SessionList from "./views/Sessions.vue";
 
 //User Crud
@@ -33,6 +33,18 @@ import TutorView from "./views/Tutors/tutorView.vue";
 import TutorList from "./views/Tutors/tutorList.vue";
 
 //Student crud
+import StudentAdd from "./views/Students/addStudent.vue";
+//import StudentEdit from "./views/Students/studentEdit.vue";
+//import StudentView from "./views/Students/studentView.vue";
+import StudentList from "./views/Students/studentList.vue";
+
+//Mentee Crud
+import MenteeAdd from "./views/Mentees/addMentee.vue";
+//import StudentEdit from "./views/Students/studentEdit.vue";
+//import StudentView from "./views/Students/studentView.vue";
+import Mentees from "./views/Mentees/mentees.vue";
+
+
 
 
 
@@ -135,13 +147,36 @@ export default new Router({
       name: "addTutor",
       component: TutorAdd,
     },
+    //Student
+    // {
+    //   path: "/admin/students-edit/:id",
+    //   name: "editTutor",
+    //   component: TutorEdit,
+    // },
+    // {
+    //   path: "/admin/students/:id",
+    //   name: "viewTutor",
+    //   component: TutorView,
+    // },
+    {
+      path: "/admin/addStudent/",
+      name: "addStudent",
+      component: StudentAdd,
+    },
 
-
+    //Mentees
     {
       path: "/admin/mentees",
       name: "mentees",
       component: Mentees,
     },
+    {
+      path: "/admin/addMentee",
+      name: "addMentee",
+      component: MenteeAdd,
+    },
+
+
     {
       path: "/admin/sessions",
       name: "adminSessions",

@@ -1,10 +1,10 @@
 <template>
 <v-container fluid fill-height>
   <div>
-    <H1 style="background-color: #0c76a0; color:#f2f2f2">Tutors</H1>
+    <H1 style="background-color: #0c76a0; color:#f2f2f2">Mentees</H1>
     <br>
     <br>
-     <h2><v-btn  :style="{left: '50%', transform:'translateX(-50%)'}" @click="goToAdd()" color="black" text rounded>Add Tutor</v-btn></h2>
+     <h2><v-btn  :style="{left: '50%', transform:'translateX(-50%)'}" @click="goToAdd()" color="black" text rounded>Add Mentee</v-btn></h2>
   <br>
      <v-card width="100vw">
        <v-card-title>  
@@ -21,11 +21,11 @@
         show-select
         single-select
         :headers="headers"
-        :items="tutors"
+        :items="students"
         item-key="email"
         :items-per-page="25"
         :search="search"
-        @click:row="viewTutor">
+        @click:row="nothing">
       </v-data-table>
 
     </v-card>
@@ -44,7 +44,7 @@ export default {
     data() {
         return {
           selected: [],
-          tutor: {},
+          student: {},
            search: '',
           headers: [
             {
@@ -66,7 +66,7 @@ export default {
             value: 'email',
             },
           ],
-            tutors: [
+            students: [
               {
               },
             ],
@@ -75,9 +75,9 @@ export default {
   created() {
       this.user = Utils.getStore('user');
       UserServices
-      .getUsersByRole("3")
+      .getUsersByRole("5")
       .then((response) => {
-        this.tutors = response.data;
+        this.students = response.data;
       })
 
       .catch((error) => {
@@ -86,24 +86,24 @@ export default {
   },
   methods: {
   goToAdd() {
-    this.$router.push({ name: 'addTutor'})
+    this.$router.push({ name: 'addMentee'})
     .then(() => {
         })
         .catch(error => {
          console.log(error)
         })
   },
-   viewTutor(tutor) {
-     let id = tutor.userID;
-      console.log("TutorList id before passing: " + id);
-          this.$router.push({ name: 'viewTutor', params: {id: id}})
-        .then(() => {
-        })
-        .catch(error => {
-         console.log(error)
-        })
-    },
-      
+   viewUser(/*some var*/ ) {
+    //  let id = student.studentID
+    //  if(this.user.advisorID != null || this.user.adminID)
+    //       this.$router.push({ name: 'viewStudent', params: {id: id}})
+    //     .then(() => {
+    //     })
+    //     .catch(error => {
+    //      console.log(error)
+    //     })
+    // },
+      },
   }
 }
 </script>

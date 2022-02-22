@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H1 style="background-color: #811429; color: #f2f2f2">Add New Student</H1>
+    <H1 style="background-color: #811429; color: #f2f2f2">Add New Mentee</H1>
     <v-form>
       <v-col>
         <!-- <v-text-field label="UserID" v-model="tutor.userID" type="text" id="userID"/> -->
@@ -70,7 +70,7 @@ export default {
           console.log("userID: " + id)
           let userRole = {
             userID: id,
-            roleID: 4, //4 for student
+            roleID: 5, //5 for mentees
           };
           UserRoleServices.addUserRole(userRole)
             .then(() => {
@@ -78,7 +78,7 @@ export default {
             .catch((error) => {
               console.log(error);
             }); //post the user
-          this.$router.push({ name: "students" });
+          this.$router.push({ name: "mentees" });
         })
         .catch((error) => {
           console.log(error);
@@ -88,7 +88,7 @@ export default {
         });
     },
     cancel() {
-      this.$router.push({ name: "students" });
+      this.$router.push({ name: "mentees" });
     },
   },
 };
