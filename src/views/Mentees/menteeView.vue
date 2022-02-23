@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H1 style="background-color: #811429; color: #f2f2f2">Student View</H1>
+    <H1 style="background-color: #811429; color: #f2f2f2">Mentee View</H1>
     <br />
     <h2>
       <v-btn
@@ -98,12 +98,13 @@ export default {
     },
 
     updateStudent(student) {
-        this.$router.push({ name: 'editstudent', params: {id: student.studentID}})
-      .then(() => {
-      })
-      .catch(error => {
-       console.log(error)
-      })
+      console.log(student);
+      //   this.$router.push({ name: 'editstudent', params: {id: student.studentID}})
+      // .then(() => {
+      // })
+      // .catch(error => {
+      //  console.log(error)
+      // })
     },
     cancel() {
       this.$router.push({ name: "students" });
