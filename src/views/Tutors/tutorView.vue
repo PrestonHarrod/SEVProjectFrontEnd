@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H1 style="background-color: #811429; color: #f2f2f2">Student View</H1>
+    <H1 style="background-color: #811429; color: #f2f2f2">Tutor View</H1>
     <br />
     <h2>
       <v-btn
@@ -14,15 +14,6 @@
     </h2>
     <h3>
       <v-btn
-        v-if="user.adminID != null"
-        :style="{ left: '50%', transform: 'translateX(-50%)' }"
-        v-on:click.prevent="updateTutor(tutor)"
-        text
-        rounded
-        >Edit</v-btn
-      >
-      <v-btn
-        v-else-if="user.advisorID != null"
         :style="{ left: '50%', transform: 'translateX(-50%)' }"
         v-on:click.prevent="updateTutor(tutor)"
         text
@@ -42,54 +33,37 @@
     </h3>
     <v-form>
       <v-col>
-        <v-text-field
-          readonly
-          label="advisorID"
-          v-model="student.advisorID"
-          type="text"
-          id="advisorID"
-        />
-        <v-text-field
-          readonly
-          label="Degree"
-          v-model="student.degreeID"
-          type="text"
-          id="degreeID"
-        />
-        <v-text-field
-          readonly
+     <v-text-field
           label="First Name"
-          v-model="student.fName"
+          placeholder="John"
+          v-model="tutor.fName"
+          readonly
           type="text"
           id="fName"
         />
         <v-text-field
-          readonly
           label="Last Name"
-          v-model="student.lName"
+          placeholder="Smith"
+          v-model="tutor.lName"
+          readonly
           type="text"
           id="lName"
         />
         <v-text-field
-          readonly
-          label="Major"
-          v-model="student.major"
-          type="text"
-          id="major"
-        />
-        <v-text-field
-          readonly
-          label="Graduation Date"
-          v-model="student.grad_date"
-          type="text"
-          id="grad_date"
-        />
-        <v-text-field
-          readonly
           label="Email"
-          v-model="student.email"
+          placeholder="john.smith@eagles.oc.edu"
+          readonly
+          v-model="tutor.email"
           type="text"
           id="email"
+        />
+        <v-text-field
+          label="Level"
+          placeholder="1000"
+          v-model="tutor.level"
+          readonly
+          type="text"
+          id="level"
         />
       </v-col>
     </v-form>
@@ -129,17 +103,17 @@ export default {
 
     updateTutor(tutor) {
       console.log(tutor);
-      //   this.$router.push({ name: 'editstudent', params: {id: student.studentID}})
-      // .then(() => {
-      // })
-      // .catch(error => {
-      //  console.log(error)
-      // })
+        this.$router.push({ name: 'editTutor', params: {id: tutor.userID}})
+      .then(() => {
+      })
+      .catch(error => {
+       console.log(error)
+      })
     },
     cancel() {
       this.$router.push({ name: "tutors" });
     },
-    async deleteStudent(tutor) {
+    async deleteTutor(tutor) {
       let id = tutor.userID;
       if (confirm("Do you really want to delete this tutor?")) {
         UserServices.deleteUser(id)

@@ -25,7 +25,7 @@
         item-key="email"
         :items-per-page="25"
         :search="search"
-        @click:row="nothing">
+        @click:row="viewMentee">
       </v-data-table>
 
     </v-card>
@@ -93,17 +93,15 @@ export default {
          console.log(error)
         })
   },
-   viewUser(/*some var*/ ) {
-    //  let id = student.studentID
-    //  if(this.user.advisorID != null || this.user.adminID)
-    //       this.$router.push({ name: 'viewStudent', params: {id: id}})
-    //     .then(() => {
-    //     })
-    //     .catch(error => {
-    //      console.log(error)
-    //     })
-    // },
-      },
+   viewMentee(student) {
+     let id = student.userID;
+          this.$router.push({ name: 'viewMentee', params: {id: id}})
+        .then(() => {
+        })
+        .catch(error => {
+         console.log(error)
+        })
+    },
   }
 }
 </script>

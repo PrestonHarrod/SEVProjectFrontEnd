@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H1 style="background-color: #811429; color: #f2f2f2">Student View</H1>
+    <H1 style="background-color: #811429; color: #f2f2f2">Mentee View</H1>
     <br />
     <h2>
       <v-btn
@@ -36,24 +36,24 @@
      <v-text-field
           label="First Name"
           placeholder="John"
-          readonly
           v-model="student.fName"
+          readonly
           type="text"
           id="fName"
         />
         <v-text-field
           label="Last Name"
           placeholder="Smith"
-          readonly
           v-model="student.lName"
+          readonly
           type="text"
           id="lName"
         />
         <v-text-field
           label="Email"
           placeholder="john.smith@eagles.oc.edu"
-          readonly
           v-model="student.email"
+          readonly
           type="text"
           id="email"
         />
@@ -102,7 +102,8 @@ export default {
     },
 
     updateStudent(student) {
-        this.$router.push({ name: 'editStudent', params: {id: student.userID}})
+      console.log(student);
+        this.$router.push({ name: 'editMentee', params: {id: student.userID}})
       .then(() => {
       })
       .catch(error => {
@@ -110,7 +111,7 @@ export default {
       })
     },
     cancel() {
-      this.$router.push({ name: "students" });
+      this.$router.push({ name: "mentees" });
     },
     async deleteStudent(student) {
       let id = student.userID;

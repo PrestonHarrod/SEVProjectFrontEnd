@@ -1,41 +1,41 @@
 <template>
   <div>
-    <H1 style="background-color: #811429; color: #f2f2f2">Tutor Edit</H1>
+    <H1 style="background-color: #811429; color: #f2f2f2">Mentee Edit</H1>
     <v-app>
       <v-form>
         <v-col>
           <v-text-field
             label="First Name"
             placeholder="John"
-            v-model="tutor.fName"
+            v-model="mentee.fName"
             type="text"
             id="fName"
           />
           <v-text-field
             label="Last Name"
             placeholder="Smith"
-            v-model="tutor.lName"
+            v-model="mentee.lName"
             type="text"
             id="lName"
           />
           <v-text-field
             label="Email"
             placeholder="john.smith@eagles.oc.edu"
-            v-model="tutor.email"
+            v-model="mentee.email"
             type="text"
             id="email"
           />
           <v-text-field
             label="Level"
             placeholder="1000"
-            v-model="tutor.level"
+            v-model="mentee.level"
             type="text"
             id="level"
           />
         </v-col>
         <v-btn
           :style="{ transform: 'translateX(-50%)' }"
-          v-on:click.prevent="updateTutor()"
+          v-on:click.prevent="updateMentee()"
           text
           rounded
           >Submit</v-btn
@@ -61,7 +61,7 @@ export default {
   data() {
     return {
       user: {},
-      tutor: {},
+      mentee: {},
       menu: false,
     };
   },
@@ -69,7 +69,7 @@ export default {
     this.user = Utils.getStore("user");
     UserServices.getUser(this.id)
       .then((response) => {
-        this.tutor = response.data;
+        this.mentee = response.data;
       })
       .catch((error) => {
         console.log("There was an error:", error.response);
@@ -77,19 +77,19 @@ export default {
   },
   methods: {
     cancel() {
-      this.$router.push({ name: "viewTutor" });
+      this.$router.push({ name: "viewMentee" });
     },
-    updateTutor() {
-      this.tutor.userID = this.id;
+    updateMentee() {
+      this.mentee.userID = this.id;
 
-      UserServices.updateUser(this.tutor)
+      UserServices.updateUser(this.mentee)
         .then(() => {
-          this.$router.push({ name: "viewTutor" });
+          this.$router.push({ name: "viewMentee" });
         })
         .catch((error) => {
           console.log("There was an error:", error.response);
           alert(
-            "ERROR:Edit Tutor unsuccessful."
+            "ERROR:Edit Mentee unsuccessful."
           );
         });
     },

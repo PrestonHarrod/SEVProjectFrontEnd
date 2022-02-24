@@ -21,9 +21,6 @@ import Booking from "./views/booking.vue";
 import SessionList from "./views/Sessions.vue";
 
 //User Crud
-import UserAdd from "./views/Users/addUser.vue";
-import UserEdit from "./views/Users/userEdit.vue";
-import UserView from "./views/Users/userView.vue";
 import UserList from "./views/Users/userList.vue";
 
 //Tutor Crud
@@ -34,14 +31,14 @@ import TutorList from "./views/Tutors/tutorList.vue";
 
 //Student crud
 import StudentAdd from "./views/Students/addStudent.vue";
-//import StudentEdit from "./views/Students/studentEdit.vue";
-//import StudentView from "./views/Students/studentView.vue";
+import StudentEdit from "./views/Students/studentEdit.vue";
+import StudentView from "./views/Students/studentView.vue";
 import StudentList from "./views/Students/studentList.vue";
 
 //Mentee Crud
 import MenteeAdd from "./views/Mentees/addMentee.vue";
-//import StudentEdit from "./views/Students/studentEdit.vue";
-//import StudentView from "./views/Students/studentView.vue";
+import MenteeEdit from "./views/Mentees/menteeEdit.vue";
+import MenteeView from "./views/Mentees/menteeView.vue";
 import Mentees from "./views/Mentees/mentees.vue";
 
 
@@ -110,21 +107,23 @@ export default new Router({
       name: "users",
       component: UserList,
     },
-    {
-      path: "/admin/users-edit/:id",
-      name: "editUser",
-      component: UserEdit,
-    },
-    {
-      path: "/admin/users/:id",
-      name: "viewUser",
-      component: UserView,
-    },
-    {
-      path: "/admin/addUser/",
-      name: "addUser",
-      component: UserAdd,
-    },
+    // {
+    //   path: "/admin/users-edit/:id",
+    //   name: "editUser",
+    //   component: UserEdit,
+    //   props: true
+    // },
+    // {
+    //   path: "/admin/users/:id",
+    //   name: "viewUser",
+    //   component: UserView,
+    //   props: true
+    // },
+    // {
+    //   path: "/admin/addUser/",
+    //   name: "addUser",
+    //   component: UserAdd,
+    // },
 
     //Tutor
     {
@@ -136,11 +135,13 @@ export default new Router({
       path: "/admin/tutors-edit/:id",
       name: "editTutor",
       component: TutorEdit,
+      props: true,
     },
     {
       path: "/admin/tutors/:id",
       name: "viewTutor",
       component: TutorView,
+      props: true,
     },
     {
       path: "/admin/addTutor/",
@@ -148,21 +149,30 @@ export default new Router({
       component: TutorAdd,
     },
     //Student
-    // {
-    //   path: "/admin/students-edit/:id",
-    //   name: "editTutor",
-    //   component: TutorEdit,
-    // },
-    // {
-    //   path: "/admin/students/:id",
-    //   name: "viewTutor",
-    //   component: TutorView,
-    // },
+    {
+      path: "/admin/students-edit/:id",
+      name: "editStudent",
+      component: StudentEdit,
+      props: true
+    },
+    {
+      path: "/admin/tutors/:id",
+      name: "viewTutor",
+      component: TutorView,
+      props: true
+    },
     {
       path: "/admin/addStudent/",
       name: "addStudent",
       component: StudentAdd,
     },
+    {
+      path: "/admin/students/:id",
+      name: "viewStudent",
+      component: StudentView,
+      props: true
+    },
+
 
     //Mentees
     {
@@ -174,6 +184,18 @@ export default new Router({
       path: "/admin/addMentee",
       name: "addMentee",
       component: MenteeAdd,
+    },
+    {
+      path: "/admin/Mentees/:id",
+      name: "viewMentee",
+      component: MenteeView,
+      props: true
+    },
+    {
+      path: "/admin/Mentee-Edit/:id",
+      name: "editMentee",
+      component: MenteeEdit,
+      props: true
     },
 
 
