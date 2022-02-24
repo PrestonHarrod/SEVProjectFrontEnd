@@ -7,6 +7,9 @@ export default {
   getTutorSlot(id) {
     return apiClient.get("tutorSlots/" + id);
   },
+  getTutorSlotForTutor(id) {
+    return apiClient.get("tutorSlots/tutorSlotForTutor/" + id)
+  },
   addTutorSlot(tutorSlot) {
     return apiClient.post("tutorSlots/", tutorSlot);
   },

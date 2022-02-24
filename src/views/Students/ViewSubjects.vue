@@ -40,9 +40,11 @@
                     item-key="userID"
                     :items-per-page="25"
                     single-select
-                    show-select
+                    show-select 
                     :search="subject"
+                    @input='getTutorSlots(selected)'
                     class="elevation-1"
+                    
                   >
                   </v-data-table>
                 </v-card>
@@ -95,8 +97,7 @@
 <script>
 import subjectServices from "@/services/subjectServices.js";
 import UserServices from "@/services/UserServices.js";
-import tutorSubjectServices from "@/services/tutorSubjectServices.js";
-import SessionServices from "@/services/SessionServices.js";
+import TutorSlotServices from "@/services/tutorSlotServices.js"
 import Utils from "@/config/utils.js";
 export default {
   data() {
@@ -158,33 +159,7 @@ export default {
         console.log(error);
       });
       this.user = Utils.getStore("user");
-      SessionServices.getSessions()
-      .then((response) => {
-          response.data.forEach(session => 
-          {
-            UserServices.getUser(session.studentID) 
-            .then((student) => {
-                let s = session.scheduledStart;
-                
-                let i = s.indexOf("T");
-                let st = s.substr(0, i) + " " + s.substr(i+1, 8);
-                let e = session.scheduledEnd;
-                i = e.indexOf("T");
-                let end = e.substr(0, i) + " " + e.substr(i+1, 8);
-                console.log(session.tutorID)
-                console.log(this.user.userID)
-                if(session.tutorID == this.user.userID)
-                {
-                  this.events.push({id: session.sessionID, name: "Session: " + student.data.fName + " " + student.data.lName.substr(0,1), start: st, end: end})
-                }
-                    
-            })
-            
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
   },
 
   methods: {
@@ -194,40 +169,57 @@ export default {
 
       
     },
-     viewSession(event) {
-        let start = event.eventParsed.start.date + " " + event.eventParsed.start.time + ":00";
-        let end = event.eventParsed.end.date + " " + event.eventParsed.end.time + ":00";
-        this.events.forEach(e => {
-            if(e.start == start && e.end == end)
-            {
-                console.log(e.id);
-                 this.$router.push({ name: 'sessionView', params: {id: e.id}})
-                .then(() => {
-                })
-                .catch(error => {
-                 console.log(error)
-                })
-            }
-        })
-       
-      },
+    getTutorSlots(selected) {
+      console.log(selected[0].userID)
+      TutorSlotServices.getTutorSlotForTutor(selected[0].userID)
+      .then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+          var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+          var d = new Date();
+          var dayName = days[d.getDay()];
+          
+            if (response.data[i].day == dayName) {
+              var date = new Date();
+              var month = date.getUTCMonth() + 1; //months from 1-12
+              if (month < 10) {
+                month = "0" + month;
+              }
+              var day = date.getUTCDate();
+              var year = date.getUTCFullYear();
+
+              let newdate = year + "-" + month + "-" + day;
+              //let tutorSlotDay = response.data[i].day
+              //let tutorSlotdayIndex = days.indexOf(tutorSlotDay)
+              //let d = response.data[i].day
+              // let st = response.data[i].startTime
+              // let et = response.data[i].endTime
+              let starttime = newdate + " " +response.data[i].startTime
+              let endtime = newdate + " " +response.data[i].endTime
+              console.log(starttime)
+              
+              this.events.push({id: response.data[i].tuturSlotID, name: "Open Slot ", start: starttime, end: endtime})
+          }
+          //let d = response.data[i].day
+          // let st = response.data[i].startTime
+          // let et = response.data[i].endTime
+          // this.events.push({id: response.data[i].tuturSlotID, name: "Session: " + response.data[i].studentID, start: st, end: et})
+        }
+        // let s = response.scheduledStart;
+        //         let i = s.indexOf("T");
+        //         let st = s.substr(0, i) + " " + s.substr(i+1, 8);
+        //         let e = session.scheduledEnd;
+        //         i = e.indexOf("T");
+        //         let end = e.substr(0, i) + " " + e.substr(i+1, 8);
+        //         if(session.tutorID == this.user.userID)
+        //             this.events.push({id: session.sessionID, name: "Session: " + student.data.fName + " " + student.data.lName.substr(0,1), start: st, end: end})
+      })
+    },
       prev () {
         this.$refs.calendar.prev()
       },
       next () {
         this.$refs.calendar.next()
       },
-    
-    getTutorSubjectsForTutor(id) {
-    tutorSubjectServices
-      .getTutorSubjects(id)
-      .then((response) => {
-        this.tutorSubjects = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
   },
 };
 </script>
