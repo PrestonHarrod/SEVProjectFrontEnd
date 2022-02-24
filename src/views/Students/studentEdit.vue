@@ -69,7 +69,9 @@ export default {
       this.$router.push({ name: 'viewStudent' })
     },
     updateStudent(){
-      UserServices.updateStudent(this.student)
+      this.student.userID = this.id;
+      console.log("this is the line of code's student: " + this.student);
+      UserServices.updateUser(this.student)
       .then(() => {
         this.$router.push({name: 'viewStudent'});
         })
@@ -78,20 +80,6 @@ export default {
         alert("ERROR:Edit student unsuccessful. Make sure that fields are entered correctly and that the Advisor ID and Degree ID exists in the system.");
         })
         
-    },
-    deleteStudent(id){
-    UserServices.deleteStudent(this.id)
-      .then(() => {
-        this.students.forEach((student,i) => {
-          if (student.id == id) {
-            this.students.splice(i, 1);
-          }
-        })
-          
-        })
-        .catch(error => {
-         this.message = error.response.data.message
-        })
     },
     
 }

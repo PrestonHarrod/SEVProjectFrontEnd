@@ -36,6 +36,7 @@
      <v-text-field
           label="First Name"
           placeholder="John"
+          readonly
           v-model="student.fName"
           type="text"
           id="fName"
@@ -43,6 +44,7 @@
         <v-text-field
           label="Last Name"
           placeholder="Smith"
+          readonly
           v-model="student.lName"
           type="text"
           id="lName"
@@ -50,6 +52,7 @@
         <v-text-field
           label="Email"
           placeholder="john.smith@eagles.oc.edu"
+          readonly
           v-model="student.email"
           type="text"
           id="email"
@@ -57,6 +60,7 @@
         <v-text-field
           label="Level"
           placeholder="1000"
+          readonly
           v-model="student.level"
           type="text"
           id="level"
@@ -98,7 +102,7 @@ export default {
     },
 
     updateStudent(student) {
-        this.$router.push({ name: 'editstudent', params: {id: student.studentID}})
+        this.$router.push({ name: 'editStudent', params: {id: student.userID}})
       .then(() => {
       })
       .catch(error => {

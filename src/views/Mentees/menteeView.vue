@@ -37,6 +37,7 @@
           label="First Name"
           placeholder="John"
           v-model="student.fName"
+          readonly
           type="text"
           id="fName"
         />
@@ -44,6 +45,7 @@
           label="Last Name"
           placeholder="Smith"
           v-model="student.lName"
+          readonly
           type="text"
           id="lName"
         />
@@ -51,12 +53,14 @@
           label="Email"
           placeholder="john.smith@eagles.oc.edu"
           v-model="student.email"
+          readonly
           type="text"
           id="email"
         />
         <v-text-field
           label="Level"
           placeholder="1000"
+          readonly
           v-model="student.level"
           type="text"
           id="level"
@@ -99,15 +103,15 @@ export default {
 
     updateStudent(student) {
       console.log(student);
-      //   this.$router.push({ name: 'editstudent', params: {id: student.studentID}})
-      // .then(() => {
-      // })
-      // .catch(error => {
-      //  console.log(error)
-      // })
+        this.$router.push({ name: 'editMentee', params: {id: student.userID}})
+      .then(() => {
+      })
+      .catch(error => {
+       console.log(error)
+      })
     },
     cancel() {
-      this.$router.push({ name: "students" });
+      this.$router.push({ name: "mentees" });
     },
     async deleteStudent(student) {
       let id = student.userID;
