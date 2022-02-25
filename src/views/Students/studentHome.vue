@@ -1,40 +1,22 @@
 <template>
-<v-app id="inspire">
-<v-main class="grey lighten-3">
+  <v-app id="inspire">
+    <v-main class="grey lighten-3">
       <v-container>
         <v-row>
-          <v-col
-            cols="12"
-            sm="2"
-          >
-            <v-sheet
-              rounded="lg"
-              min-height="268"
-            >
+          <v-col cols="12" sm="2">
+            <v-sheet rounded="lg" min-height="268">
               <!--  -->
             </v-sheet>
           </v-col>
 
-          <v-col
-            cols="12"
-            sm="8"
-          >
-            <v-sheet
-              min-height="70vh"
-              rounded="lg"
-            >
+          <v-col cols="12" sm="8">
+            <v-sheet min-height="70vh" rounded="lg">
               <!--  -->
             </v-sheet>
           </v-col>
 
-          <v-col
-            cols="12"
-            sm="2"
-          >
-            <v-sheet
-              rounded="lg"
-              min-height="268"
-            >
+          <v-col cols="12" sm="2">
+            <v-sheet rounded="lg" min-height="268">
               <!--  -->
             </v-sheet>
           </v-col>
@@ -44,10 +26,6 @@
   </v-app>
 </template>
 <script>
-export default {
-    
-}
+export default {};
 </script>
-<style lang="">
-    
-</style>
+<style lang=""></style>

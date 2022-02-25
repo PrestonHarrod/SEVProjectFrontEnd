@@ -33,7 +33,7 @@
     </h3>
     <v-form>
       <v-col>
-     <v-text-field
+        <v-text-field
           label="First Name"
           placeholder="John"
           v-model="student.fName"
@@ -103,12 +103,12 @@ export default {
 
     updateStudent(student) {
       console.log(student);
-        this.$router.push({ name: 'editMentee', params: {id: student.userID}})
-      .then(() => {
-      })
-      .catch(error => {
-       console.log(error)
-      })
+      this.$router
+        .push({ name: "editMentee", params: { id: student.userID } })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
     },
     cancel() {
       this.$router.push({ name: "mentees" });
@@ -135,4 +135,4 @@ th {
   text-align: left;
   font-size: 1.5rem !important;
 }
-</style> 
+</style>

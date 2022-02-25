@@ -52,7 +52,6 @@
   </div>
 </template>
 
-
 <script>
 import UserServices from "@/services/UserServices.js";
 import UserRoleServices from "@/services/userRoleServices.js";
@@ -67,14 +66,13 @@ export default {
       UserServices.addUser(this.student)
         .then((response) => {
           var id = response.data.userID;
-          console.log("userID: " + id)
+          console.log("userID: " + id);
           let userRole = {
             userID: id,
             roleID: 4, //4 for student
           };
           UserRoleServices.addUserRole(userRole)
-            .then(() => {
-            })
+            .then(() => {})
             .catch((error) => {
               console.log(error);
             }); //post the user
@@ -93,5 +91,4 @@ export default {
   },
 };
 </script>
-<style>
-</style>
+<style></style>

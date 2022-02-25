@@ -1,7 +1,7 @@
 <template>
   <v-container fluid fill-height>
     <div>
-      <H1 style="background-color: #0c76a0; color: #f2f2f2">Tutors</H1>
+      <H1 style="background-color: #0c76a0; color: #f2f2f2">Supervisors</H1>
       <br />
       <br />
       <h2>
@@ -11,7 +11,7 @@
           color="black"
           text
           rounded
-          >Add Tutor</v-btn
+          >Add Supervisor</v-btn
         >
       </h2>
       <br />
@@ -30,11 +30,11 @@
           show-select
           single-select
           :headers="headers"
-          :items="tutors"
+          :items="supervisors"
           item-key="email"
           :items-per-page="25"
           :search="search"
-          @click:row="viewTutor"
+          @click:row="viewSupervisor"
         >
         </v-data-table>
       </v-card>
@@ -51,7 +51,7 @@ export default {
   data() {
     return {
       selected: [],
-      tutor: {},
+      supervisor: {},
       search: "",
       headers: [
         {
@@ -73,14 +73,14 @@ export default {
           value: "email",
         },
       ],
-      tutors: [{}],
+      supervisors: [{}],
     };
   },
   created() {
     this.user = Utils.getStore("user");
-    UserServices.getUsersByRole("3")
+    UserServices.getUsersByRole("2")
       .then((response) => {
-        this.tutors = response.data;
+        this.supervisors = response.data;
       })
 
       .catch((error) => {
@@ -90,17 +90,16 @@ export default {
   methods: {
     goToAdd() {
       this.$router
-        .push({ name: "addTutor" })
+        .push({ name: "addSupervisor" })
         .then(() => {})
         .catch((error) => {
           console.log(error);
         });
     },
-    viewTutor(tutor) {
-      let id = tutor.userID;
-      console.log("TutorList id before passing: " + id);
+    viewSupervisor(supervisor) {
+      let id = supervisor.userID;
       this.$router
-        .push({ name: "viewTutor", params: { id: id } })
+        .push({ name: "viewSupervisor", params: { id: id } })
         .then(() => {})
         .catch((error) => {
           console.log(error);

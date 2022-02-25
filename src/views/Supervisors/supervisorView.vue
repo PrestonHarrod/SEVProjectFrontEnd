@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H1 style="background-color: #811429; color: #f2f2f2">Student View</H1>
+    <H1 style="background-color: #811429; color: #f2f2f2">Supervisor View</H1>
     <br />
     <h2>
       <v-btn
@@ -15,7 +15,7 @@
     <h3>
       <v-btn
         :style="{ left: '50%', transform: 'translateX(-50%)' }"
-        v-on:click.prevent="updateStudent(student)"
+        v-on:click.prevent="updateSupervisor(supervisor)"
         text
         rounded
         >Edit</v-btn
@@ -25,7 +25,7 @@
       <v-btn
         color="#E53935"
         :style="{ left: '50%', transform: 'translateX(-50%)' }"
-        v-on:click.prevent="deleteStudent(student)"
+        v-on:click.prevent="deleteSupervisor(supervisor)"
         text
         rounded
         >Delete</v-btn
@@ -37,7 +37,7 @@
           label="First Name"
           placeholder="John"
           readonly
-          v-model="student.fName"
+          v-model="supervisor.fName"
           type="text"
           id="fName"
         />
@@ -45,7 +45,7 @@
           label="Last Name"
           placeholder="Smith"
           readonly
-          v-model="student.lName"
+          v-model="supervisor.lName"
           type="text"
           id="lName"
         />
@@ -53,17 +53,9 @@
           label="Email"
           placeholder="john.smith@eagles.oc.edu"
           readonly
-          v-model="student.email"
+          v-model="supervisor.email"
           type="text"
           id="email"
-        />
-        <v-text-field
-          label="Level"
-          placeholder="1000"
-          readonly
-          v-model="student.level"
-          type="text"
-          id="level"
         />
       </v-col>
     </v-form>
@@ -81,19 +73,18 @@ export default {
   data() {
     return {
       user: {},
-      student: {},
+      supervisor: {},
     };
   },
   created() {
     this.user = Utils.getStore("user");
-    console.log(this.id + ": The student's id");
     UserServices.getUser(this.id)
       .then((response) => {
-        this.student = response.data;
+        this.supervisor = response.data;
       })
 
       .catch((error) => {
-        console.log("Error Retrieving the student:", error.response);
+        console.log("Error Retrieving the supervisor:", error.response);
       });
   },
   methods: {
@@ -101,23 +92,23 @@ export default {
       this.addStudentDisplay = true;
     },
 
-    updateStudent(student) {
+    updateSupervisor(supervisor) {
       this.$router
-        .push({ name: "editStudent", params: { id: student.userID } })
+        .push({ name: "editSupervisor", params: { id: supervisor.userID } })
         .then(() => {})
         .catch((error) => {
           console.log(error);
         });
     },
     cancel() {
-      this.$router.push({ name: "students" });
+      this.$router.push({ name: "supervisors" });
     },
-    async deleteStudent(student) {
-      let id = student.userID;
-      if (confirm("Do you really want to delete this student?")) {
+    async deleteSupervisor(supervisor) {
+      let id = supervisor.userID;
+      if (confirm("Do you really want to delete this supervisor?")) {
         UserServices.deleteUser(id)
           .then(() => {
-            this.$router.push({ name: "students" });
+            this.$router.push({ name: "supervisors" });
           })
 
           .catch((error) => {

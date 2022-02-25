@@ -11,9 +11,7 @@
     </svg>
     <transition name="fade" apear>
       <div class="sub-menu" v-if="isOpen">
-        <div class="menu-item" v-on:click.prevent="goToBooking()">
-          Booking
-        </div>
+        <div class="menu-item" v-on:click.prevent="goToBooking()">Booking</div>
         <div class="menu-item" v-on:click.prevent="goToStudentSessions()">
           Sessions
         </div>
@@ -34,8 +32,8 @@ export default {
       isOpen: false,
     };
   },
-  methods:{
-  goToBooking() {
+  methods: {
+    goToBooking() {
       this.$router
         .push({ name: "booking" })
         .then(() => {})
@@ -59,7 +57,7 @@ export default {
           console.log(error);
         });
     },
-  }
+  },
 };
 </script>
 
