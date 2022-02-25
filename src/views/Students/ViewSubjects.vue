@@ -21,8 +21,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col class="d-flex" cols="12" sm="6">
-            </v-col>
+            <v-col class="d-flex" cols="12" sm="6"> </v-col>
           </v-row>
           <v-row>
             <v-col>
@@ -40,54 +39,37 @@
                     item-key="userID"
                     :items-per-page="25"
                     single-select
-                    show-select 
+                    show-select
                     :search="subject"
-                    @input='getTutorSlots(selected)'
+                    @input="getTutorSlots(selected)"
                     class="elevation-1"
-                    
                   >
                   </v-data-table>
                 </v-card>
               </div>
             </v-col>
           </v-row>
-          <v-btn
-            fab
-            text
-            small
-            color="grey darken-2"
-            @click="prev"
-          >
-            <v-icon small>
-              mdi-chevron-left
-            </v-icon>
+          <v-btn fab text small color="grey darken-2" @click="prev">
+            <v-icon small> mdi-chevron-left </v-icon>
           </v-btn>
-          <v-btn
-            fab
-            text
-            small
-            color="grey darken-2"
-            @click="next"
-          >
-            <v-icon small>
-              mdi-chevron-right
-            </v-icon>
+          <v-btn fab text small color="grey darken-2" @click="next">
+            <v-icon small> mdi-chevron-right </v-icon>
           </v-btn>
-        <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
-        <br />
-        <v-calendar v-if="selected[0] != null"
-          ref="calendar"
-          v-model="value"
-          :first-interval= 6
-          :interval-count= 19
-          :events="events"
-          @click:event="viewSession"
-          color="#811429"
-          event-text-color="#811429"
-          type="week"
-        >
-         
-        </v-calendar>
+          <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
+          <br />
+          <v-calendar
+            v-if="selected[0] != null"
+            ref="calendar"
+            v-model="value"
+            :first-interval="6"
+            :interval-count="19"
+            :events="events"
+            @click:event="viewSession"
+            color="#811429"
+            event-text-color="#811429"
+            type="week"
+          >
+          </v-calendar>
         </v-form>
       </v-app>
     </div>
@@ -97,7 +79,7 @@
 <script>
 import subjectServices from "@/services/subjectServices.js";
 import UserServices from "@/services/UserServices.js";
-import TutorSlotServices from "@/services/tutorSlotServices.js"
+import TutorSlotServices from "@/services/tutorSlotServices.js";
 import Utils from "@/config/utils.js";
 export default {
   data() {
@@ -134,9 +116,9 @@ export default {
       ],
       users: [{}],
       user: {},
-    sessions: {},
-    events: [],
-    value: '',
+      sessions: {},
+      events: [],
+      value: "",
     };
   },
 
@@ -149,8 +131,7 @@ export default {
       .catch((error) => {
         console.log(error);
       });
-    UserServices
-      .getTutors("3")
+    UserServices.getTutors("3")
       .then((response) => {
         this.users = response.data;
       })
@@ -158,32 +139,36 @@ export default {
       .catch((error) => {
         console.log(error);
       });
-      this.user = Utils.getStore("user");
-
+    this.user = Utils.getStore("user");
   },
 
   methods: {
     findTutor(subjectID, level) {
       console.log(subjectID);
       console.log(level);
-
-      
     },
     // Get and display tutor slots for selected tutor
     getTutorSlots(selected) {
-      this.events = []
-      console.log(selected[0].userID)
-      TutorSlotServices.getTutorSlotForTutor(selected[0].userID)
-      .then((response) => {
-        for (let i = 0; i < response.data.length; i++) {
-          var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-          var d = new Date();
-          var dayName = days[d.getDay()];
+      this.events = [];
+      TutorSlotServices.getTutorSlotForTutor(selected[0].userID).then(
+        (response) => {
+          for (let i = 0; i < response.data.length; i++) {
+            var days = [
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ];
+            var d = new Date();
+            var dayName = days[d.getDay()];
 
             // display tutor slots for current day
             if (response.data[i].day == dayName) {
               var date = new Date();
-              console.log(date)
+              console.log(date);
               var month = date.getUTCMonth() + 1; //months from 1-12
               if (month < 10) {
                 month = "0" + month;
@@ -192,56 +177,53 @@ export default {
               var year = date.getUTCFullYear();
 
               let newdate = year + "-" + month + "-" + day;
-              let starttime = newdate + " " +response.data[i].startTime
-              let endtime = newdate + " " +response.data[i].endTime
-              
-              this.events.push({id: response.data[i].tuturSlotID, name: "Open Slot ", start: starttime, end: endtime})
-          }
-          // display tutor slots for each day after current day
-          for (let j = 0; j < 6; j++) {
-            if (response.data[i].day == days[j])
-            {
-              console.log(response.data[i].day)
-              console.log(days[j])
-              var tomorrow = new Date();
-              tomorrow.setDate(tomorrow.getDate()+j);
-              var month2 = tomorrow.getUTCMonth() + 1; //months from 1-12
-              if (month2 < 10) {
-                month2 = "0" + month2;
+              let starttime = newdate + " " + response.data[i].startTime;
+              let endtime = newdate + " " + response.data[i].endTime;
+
+              // add event to calender
+              this.events.push({
+                id: response.data[i].tuturSlotID,
+                name: "Open Slot ",
+                start: starttime,
+                end: endtime,
+              });
+            }
+
+            // display tutor slots for each day after current day
+            for (let j = 0; j < 6; j++) {
+              if (response.data[i].day == days[j]) {
+                // create date for next day in the week
+                var tomorrow = new Date();
+                tomorrow.setDate(tomorrow.getDate() + j);
+
+                var month2 = tomorrow.getUTCMonth() + 1; //months from 1-12
+                if (month2 < 10) {
+                  month2 = "0" + month2;
+                }
+                var day2 = tomorrow.getUTCDate();
+                var year2 = tomorrow.getUTCFullYear();
+                let newdate2 = year2 + "-" + month2 + "-" + day2;
+                let starttime2 = newdate2 + " " + response.data[i].startTime;
+                let endtime2 = newdate2 + " " + response.data[i].endTime;
+
+                this.events.push({
+                  id: response.data[i].tuturSlotID,
+                  name: "Open Slot ",
+                  start: starttime2,
+                  end: endtime2,
+                });
               }
-              var day2 = tomorrow.getUTCDate();
-              var year2 = tomorrow.getUTCFullYear();
-
-              let newdate2 = year2 + "-" + month2 + "-" + day2;
-              let starttime2 = newdate2 + " " +response.data[i].startTime
-              let endtime2 = newdate2 + " " +response.data[i].endTime
-              
-              this.events.push({id: response.data[i].tuturSlotID, name: "Open Slot ", start: starttime2, end: endtime2})
-              
-
             }
           }
-          //let d = response.data[i].day
-          // let st = response.data[i].startTime
-          // let et = response.data[i].endTime
-          // this.events.push({id: response.data[i].tuturSlotID, name: "Session: " + response.data[i].studentID, start: st, end: et})
         }
-        // let s = response.scheduledStart;
-        //         let i = s.indexOf("T");
-        //         let st = s.substr(0, i) + " " + s.substr(i+1, 8);
-        //         let e = session.scheduledEnd;
-        //         i = e.indexOf("T");
-        //         let end = e.substr(0, i) + " " + e.substr(i+1, 8);
-        //         if(session.tutorID == this.user.userID)
-        //             this.events.push({id: session.sessionID, name: "Session: " + student.data.fName + " " + student.data.lName.substr(0,1), start: st, end: end})
-      })
+      );
     },
-      prev () {
-        this.$refs.calendar.prev()
-      },
-      next () {
-        this.$refs.calendar.next()
-      },
+    prev() {
+      this.$refs.calendar.prev();
+    },
+    next() {
+      this.$refs.calendar.next();
+    },
   },
 };
 </script>
