@@ -11,20 +11,20 @@
     </svg>
     <transition name="fade" apear>
       <div class="sub-menu" v-if="isOpen">
-        <div class="menu-item">
-          <router-link to="/admin/students">Students</router-link>
+        <div class="menu-item" v-on:click.prevent="goToUsers()">Users</div>
+        <div class="menu-item" v-on:click.prevent="goToSupervisors()">
+          Supervisors
         </div>
-        <div class="menu-item">
-          <router-link to="/admin/tutors">Tutors</router-link>
+        <div class="menu-item" v-on:click.prevent="goToStudents()">
+          Students
         </div>
-        <div class="menu-item">
-          <router-link to="/admin/mentees">Mentees</router-link>
+        <div class="menu-item" v-on:click.prevent="goToTutors()">Tutors</div>
+        <div class="menu-item" v-on:click.prevent="goToMentees()">Mentees</div>
+        <div class="menu-item" v-on:click.prevent="goToSessions()">
+          Sessions
         </div>
-        <div class="menu-item">
-          <router-link to="/admin/sessions">Sessions</router-link>
-        </div>
-        <div class="menu-item">
-          <router-link to="/admin/requests">Requests</router-link>
+        <div class="menu-item" v-on:click.prevent="goToRequests()">
+          Requests
         </div>
       </div>
     </transition>
@@ -39,6 +39,64 @@ export default {
     return {
       isOpen: false,
     };
+  },
+  methods: {
+    goToUsers() {
+      this.$router
+        .push({ name: "users" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToSupervisors() {
+      this.$router
+        .push({ name: "supervisors" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToStudents() {
+      this.$router
+        .push({ name: "students" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToTutors() {
+      this.$router
+        .push({ name: "tutors" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToMentees() {
+      this.$router
+        .push({ name: "mentees" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToSessions() {
+      this.$router
+        .push({ name: "adminSessions" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToRequests() {
+      this.$router
+        .push({ name: "requests" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
@@ -56,6 +114,7 @@ nav .menu-item .sub-menu {
   transform: translateX(-50%);
   width: max-content;
   border-radius: 0px 0px 16px 16px;
+  z-index: 1;
 }
 .fade-enter-active,
 .fade-leave-active {

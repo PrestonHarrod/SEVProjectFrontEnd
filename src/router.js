@@ -3,22 +3,47 @@ import Router from "vue-router";
 
 import Home from "./views/Home.vue";
 import Login from "./views/Login.vue";
+import StudentHome from "./views/Students/studentHome.vue";
+import AdminHome from "./views/Admins/adminHome.vue";
+import TutorHome from "./views/Tutors/tutorHome.vue";
 import StudentSubjectView from "./views/Students/ViewSubjects.vue";
 
-import StudentHome from "./views/studentHome.vue";
-import AdminHome from "./views/adminHome.vue";
-import TutorHome from "./views/tutorHome.vue";
 import Schedule from "./views/schedule.vue";
 import Availability from "./views/availability.vue";
 import Attendance from "./views/attendance.vue";
 import SubjectList from "./views/subjectList.vue";
 import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
+//apply for tutor?
+
 import SessionList from "./views/Sessions.vue";
-import StudentList from "./views/studentList.vue";
-import TutorList from "./views/tutorList.vue";
-import Mentees from "./views/mentees.vue";
-import SessionView from "./views/sessionView.vue"
+
+//User Crud
+import UserList from "./views/Users/userList.vue";
+
+//Tutor Crud
+import TutorAdd from "./views/Tutors/addTutor.vue";
+import TutorEdit from "./views/Tutors/tutorEdit.vue";
+import TutorView from "./views/Tutors/tutorView.vue";
+import TutorList from "./views/Tutors/tutorList.vue";
+
+//Student crud
+import StudentAdd from "./views/Students/addStudent.vue";
+import StudentEdit from "./views/Students/studentEdit.vue";
+import StudentView from "./views/Students/studentView.vue";
+import StudentList from "./views/Students/studentList.vue";
+
+//Mentee Crud
+import MenteeAdd from "./views/Mentees/addMentee.vue";
+import MenteeEdit from "./views/Mentees/menteeEdit.vue";
+import MenteeView from "./views/Mentees/menteeView.vue";
+import Mentees from "./views/Mentees/mentees.vue";
+
+//Supervisor Crud
+import SupervisorAdd from "./views/Supervisors/addSupervisor.vue";
+import SupervisorEdit from "./views/Supervisors/supervisorEdit.vue";
+import SupervisorView from "./views/Supervisors/supervisorView.vue";
+import Supervisors from "./views/Supervisors/supervisors.vue";
 
 Vue.use(Router);
 export default new Router({
@@ -56,9 +81,11 @@ export default new Router({
     },
     {
       path: "/student/sessions",
-      name: "sessions",
+      name: "studentSessions",
       component: SessionList,
     },
+
+    //Needs schedule sessions
 
     //Admin Routes
     {
@@ -71,19 +98,131 @@ export default new Router({
       name: "students",
       component: StudentList,
     },
+
+    //users
+    {
+      path: "/admin/users",
+      name: "users",
+      component: UserList,
+    },
+    // {
+    //   path: "/admin/users-edit/:id",
+    //   name: "editUser",
+    //   component: UserEdit,
+    //   props: true
+    // },
+    // {
+    //   path: "/admin/users/:id",
+    //   name: "viewUser",
+    //   component: UserView,
+    //   props: true
+    // },
+    // {
+    //   path: "/admin/addUser/",
+    //   name: "addUser",
+    //   component: UserAdd,
+    // },
+
+    //Supervisors
+    //Tutor
+    {
+      path: "/admin/supervisors",
+      name: "supervisors",
+      component: Supervisors,
+    },
+    {
+      path: "/admin/supervisors-edit/:id",
+      name: "editSupervisor",
+      component: SupervisorEdit,
+      props: true,
+    },
+    {
+      path: "/admin/supervisors/:id",
+      name: "viewSupervisor",
+      component: SupervisorView,
+      props: true,
+    },
+    {
+      path: "/admin/addSupervisor/",
+      name: "addSupervisor",
+      component: SupervisorAdd,
+    },
+
+    //Tutor
     {
       path: "/admin/tutors",
       name: "tutors",
       component: TutorList,
     },
     {
+      path: "/admin/tutors-edit/:id",
+      name: "editTutor",
+      component: TutorEdit,
+      props: true,
+    },
+    {
+      path: "/admin/tutors/:id",
+      name: "viewTutor",
+      component: TutorView,
+      props: true,
+    },
+    {
+      path: "/admin/addTutor/",
+      name: "addTutor",
+      component: TutorAdd,
+    },
+    //Student
+    {
+      path: "/admin/students-edit/:id",
+      name: "editStudent",
+      component: StudentEdit,
+      props: true,
+    },
+    {
+      path: "/admin/tutors/:id",
+      name: "viewTutor",
+      component: TutorView,
+      props: true,
+    },
+    {
+      path: "/admin/addStudent/",
+      name: "addStudent",
+      component: StudentAdd,
+    },
+    {
+      path: "/admin/students/:id",
+      name: "viewStudent",
+      component: StudentView,
+      props: true,
+    },
+
+    //Mentees
+    {
       path: "/admin/mentees",
       name: "mentees",
       component: Mentees,
     },
     {
+      path: "/admin/addMentee",
+      name: "addMentee",
+      component: MenteeAdd,
+    },
+    {
+      path: "/admin/Mentees/:id",
+      name: "viewMentee",
+      component: MenteeView,
+      props: true,
+    },
+    {
+      path: "/admin/Mentee-Edit/:id",
+      name: "editMentee",
+      component: MenteeEdit,
+      props: true,
+    },
+
+    {
       path: "/admin/sessions",
-      name: "sessions",
+      name: "adminSessions",
       component: SessionList,
     },
     {
@@ -124,7 +263,7 @@ export default new Router({
     },
     {
       path: "/tutor/sessions",
-      name: "sessions",
+      name: "tutorSessions",
       component: SessionList,
     },
     {

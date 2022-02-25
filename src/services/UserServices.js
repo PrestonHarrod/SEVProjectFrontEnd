@@ -1,11 +1,18 @@
 import { apiClient } from "./apiClient.js";
 
 export default {
+  //Basic CRUD for users
   getUsers() {
     return apiClient.get("users/");
   },
-  getTutors(roleID) {
-    return apiClient.get("users/roleID/" + roleID);
+  getTutorSubjects(roleID) {
+    return apiClient.get("users/tutorSubject/" + roleID);
+  },
+  getUsersByRole(roleID) {
+    return apiClient.get("users/tutorRole/" + roleID);
+  },
+  getStudents(roleID) {
+    return apiClient.get("users/studentRole/" + roleID);
   },
   getUser(id) {
     return apiClient.get("users/" + id);
