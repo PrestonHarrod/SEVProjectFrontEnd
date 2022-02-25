@@ -169,7 +169,9 @@ export default {
 
       
     },
+    // Get and display tutor slots for selected tutor
     getTutorSlots(selected) {
+      this.events = []
       console.log(selected[0].userID)
       TutorSlotServices.getTutorSlotForTutor(selected[0].userID)
       .then((response) => {
@@ -177,9 +179,11 @@ export default {
           var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
           var d = new Date();
           var dayName = days[d.getDay()];
-          
+
+            // display tutor slots for current day
             if (response.data[i].day == dayName) {
               var date = new Date();
+              console.log(date)
               var month = date.getUTCMonth() + 1; //months from 1-12
               if (month < 10) {
                 month = "0" + month;
@@ -188,16 +192,34 @@ export default {
               var year = date.getUTCFullYear();
 
               let newdate = year + "-" + month + "-" + day;
-              //let tutorSlotDay = response.data[i].day
-              //let tutorSlotdayIndex = days.indexOf(tutorSlotDay)
-              //let d = response.data[i].day
-              // let st = response.data[i].startTime
-              // let et = response.data[i].endTime
               let starttime = newdate + " " +response.data[i].startTime
               let endtime = newdate + " " +response.data[i].endTime
-              console.log(starttime)
               
               this.events.push({id: response.data[i].tuturSlotID, name: "Open Slot ", start: starttime, end: endtime})
+          }
+          // display tutor slots for each day after current day
+          for (let j = 0; j < 6; j++) {
+            if (response.data[i].day == days[j])
+            {
+              console.log(response.data[i].day)
+              console.log(days[j])
+              var tomorrow = new Date();
+              tomorrow.setDate(tomorrow.getDate()+j);
+              var month2 = tomorrow.getUTCMonth() + 1; //months from 1-12
+              if (month2 < 10) {
+                month2 = "0" + month2;
+              }
+              var day2 = tomorrow.getUTCDate();
+              var year2 = tomorrow.getUTCFullYear();
+
+              let newdate2 = year2 + "-" + month2 + "-" + day2;
+              let starttime2 = newdate2 + " " +response.data[i].startTime
+              let endtime2 = newdate2 + " " +response.data[i].endTime
+              
+              this.events.push({id: response.data[i].tuturSlotID, name: "Open Slot ", start: starttime2, end: endtime2})
+              
+
+            }
           }
           //let d = response.data[i].day
           // let st = response.data[i].startTime
