@@ -17,6 +17,7 @@ import Booking from "./views/booking.vue";
 //apply for tutor?
 
 import SessionList from "./views/Sessions.vue";
+import SessionView from "./views/sessionView.vue";
 
 //User Crud
 import UserList from "./views/Users/userList.vue";
