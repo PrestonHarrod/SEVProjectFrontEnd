@@ -63,7 +63,7 @@ export default new Router({
     },
 
     {
-      path: "/student/ScheduleSession",
+      path: "/student/subjects",
       name: "studentSubjectView",
       component: StudentSubjectView,
     },
@@ -265,6 +265,12 @@ export default new Router({
       path: "/tutor/sessions",
       name: "tutorSessions",
       component: SessionList,
+    },
+    {
+      path: "/tutor/session/:id",
+      name: "sessionView",
+      component: SessionView,
+      props: true,
     },
   ],
 });
