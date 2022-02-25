@@ -16,8 +16,6 @@ import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
 //apply for tutor?
 
-
-
 import SessionList from "./views/Sessions.vue";
 
 //User Crud
@@ -41,11 +39,11 @@ import MenteeEdit from "./views/Mentees/menteeEdit.vue";
 import MenteeView from "./views/Mentees/menteeView.vue";
 import Mentees from "./views/Mentees/mentees.vue";
 
-
-
-
-
-
+//Supervisor Crud
+import SupervisorAdd from "./views/Supervisors/addSupervisor.vue";
+import SupervisorEdit from "./views/Supervisors/supervisorEdit.vue";
+import SupervisorView from "./views/Supervisors/supervisorView.vue";
+import Supervisors from "./views/Supervisors/supervisors.vue";
 
 Vue.use(Router);
 export default new Router({
@@ -125,6 +123,31 @@ export default new Router({
     //   component: UserAdd,
     // },
 
+    //Supervisors
+    //Tutor
+    {
+      path: "/admin/supervisors",
+      name: "supervisors",
+      component: Supervisors,
+    },
+    {
+      path: "/admin/supervisors-edit/:id",
+      name: "editSupervisor",
+      component: SupervisorEdit,
+      props: true,
+    },
+    {
+      path: "/admin/supervisors/:id",
+      name: "viewSupervisor",
+      component: SupervisorView,
+      props: true,
+    },
+    {
+      path: "/admin/addSupervisor/",
+      name: "addSupervisor",
+      component: SupervisorAdd,
+    },
+
     //Tutor
     {
       path: "/admin/tutors",
@@ -153,13 +176,13 @@ export default new Router({
       path: "/admin/students-edit/:id",
       name: "editStudent",
       component: StudentEdit,
-      props: true
+      props: true,
     },
     {
       path: "/admin/tutors/:id",
       name: "viewTutor",
       component: TutorView,
-      props: true
+      props: true,
     },
     {
       path: "/admin/addStudent/",
@@ -170,9 +193,8 @@ export default new Router({
       path: "/admin/students/:id",
       name: "viewStudent",
       component: StudentView,
-      props: true
+      props: true,
     },
-
 
     //Mentees
     {
@@ -189,15 +211,14 @@ export default new Router({
       path: "/admin/Mentees/:id",
       name: "viewMentee",
       component: MenteeView,
-      props: true
+      props: true,
     },
     {
       path: "/admin/Mentee-Edit/:id",
       name: "editMentee",
       component: MenteeEdit,
-      props: true
+      props: true,
     },
-
 
     {
       path: "/admin/sessions",

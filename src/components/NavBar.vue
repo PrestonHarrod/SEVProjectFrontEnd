@@ -35,17 +35,15 @@ export default {
           console.log(error);
         });
       } else {
-        // Utils.setStore("user", null); //needs utils 
+        // Utils.setStore("user", null); //needs utils
         this.$router.push({ name: "home" });
         location.reload();
       }
     },
-  }
+  },
 };
 
-
 //functions for site traversal
- 
 </script>
 
 <style>

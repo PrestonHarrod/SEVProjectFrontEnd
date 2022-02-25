@@ -1,5 +1,5 @@
 <template>
-<v-app id="inspire">
+  <v-app id="inspire">
     <!--  
 <v-main class="grey lighten-3">
       <v-container>
@@ -46,10 +46,6 @@
 </template>
 
 <script>
-export default {
-    
-}
+export default {};
 </script>
-<style lang="">
-    
-</style>
+<style lang=""></style>

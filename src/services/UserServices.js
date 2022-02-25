@@ -1,7 +1,6 @@
 import { apiClient } from "./apiClient.js";
 
 export default {
-
   //Basic CRUD for users
   getUsers() {
     return apiClient.get("users/");
@@ -28,4 +27,3 @@ export default {
     return apiClient.delete("users/" + userID);
   },
 };
-

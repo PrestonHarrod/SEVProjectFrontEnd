@@ -1,25 +1,25 @@
 <template>
-    <div class="menu-item" @click="isOpen = !isOpen" >
-        <a href ='#'>
-            {{ title }}
-        </a>
-        <svg viewBox="0 0 1030 638" width="10">
-            <path d="M1017 68L541 626q-11 12-26 12t-26-12L13 68Q-3 49 6 24.5T39 0h952q24 0 33 24.5t-7 43.5z" fill="#FFF"></path>
-        </svg>
-        <transition name="fade" apear>
-         <div class="sub-menu" v-if="isOpen">
-           <div class="menu-item" v-on:click.prevent="goToUsers()">
-              Users
-            </div>
-            <div class="menu-item" v-on:click.prevent="goToStudents()">
-              Students
-            </div>
-        <div class="menu-item" v-on:click.prevent="goToTutors()">
-          Tutors
+  <div class="menu-item" @click="isOpen = !isOpen">
+    <a href="#">
+      {{ title }}
+    </a>
+    <svg viewBox="0 0 1030 638" width="10">
+      <path
+        d="M1017 68L541 626q-11 12-26 12t-26-12L13 68Q-3 49 6 24.5T39 0h952q24 0 33 24.5t-7 43.5z"
+        fill="#FFF"
+      ></path>
+    </svg>
+    <transition name="fade" apear>
+      <div class="sub-menu" v-if="isOpen">
+        <div class="menu-item" v-on:click.prevent="goToUsers()">Users</div>
+        <div class="menu-item" v-on:click.prevent="goToSupervisors()">
+          Supervisors
         </div>
-        <div class="menu-item" v-on:click.prevent="goToMentees()">
-          Mentees
+        <div class="menu-item" v-on:click.prevent="goToStudents()">
+          Students
         </div>
+        <div class="menu-item" v-on:click.prevent="goToTutors()">Tutors</div>
+        <div class="menu-item" v-on:click.prevent="goToMentees()">Mentees</div>
         <div class="menu-item" v-on:click.prevent="goToSessions()">
           Sessions
         </div>
@@ -40,10 +40,18 @@ export default {
       isOpen: false,
     };
   },
-  methods:{
-  goToUsers() {
+  methods: {
+    goToUsers() {
       this.$router
         .push({ name: "users" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToSupervisors() {
+      this.$router
+        .push({ name: "supervisors" })
         .then(() => {})
         .catch((error) => {
           console.log(error);
@@ -89,7 +97,7 @@ export default {
           console.log(error);
         });
     },
-  }
+  },
 };
 </script>
 

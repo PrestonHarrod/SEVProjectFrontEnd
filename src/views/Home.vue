@@ -1,21 +1,14 @@
 <template>
-
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app>
       <!--  -->
     </v-navigation-drawer>
-          <v-col
-            cols="12"
-            sm="8"
-          >
-            <v-sheet
-              min-height="70vh"
-              rounded="lg"
-            >
-              <!--  -->
-            </v-sheet>
-          </v-col>
-      <v-toolbar-title>Home</v-toolbar-title>
+    <v-col cols="12" sm="8">
+      <v-sheet min-height="70vh" rounded="lg">
+        <!--  -->
+      </v-sheet>
+    </v-col>
+    <v-toolbar-title>Home</v-toolbar-title>
     <v-container>
       <v-row>
         <v-col>
