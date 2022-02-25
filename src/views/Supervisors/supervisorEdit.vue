@@ -96,9 +96,9 @@ export default {
             orgID: this.supervisor.orgID,
           }; //add  for a userOrg
 
-          UserOrgServices.addUserOrg(userOrg)
+          UserOrgServices.updateUserOrg(userOrg)
             .then(() => {
-              console.log("user org called...");
+              console.log("user org update called...");
             })
             .catch((error) => {
               console.log(error);
