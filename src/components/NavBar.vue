@@ -2,6 +2,7 @@
   <nav id="vue">
     <div class="menu-item" v-on:click.prevent="goToHome()">Home</div>
     <AdminServices title="Admin" />
+    <SupervisorServices title="Supervisor"/>
     <TutorServices title="Tutor" />
     <StudentServices title="Student" />
     <div class="menu-item" v-on:click.prevent="goToLogin()">Logout</div>
@@ -12,6 +13,7 @@
 import AdminServices from "../components/adminServices";
 import StudentServices from "../components/studentServices";
 import TutorServices from "../components/tutorServices";
+import SupervisorServices from "../components/supervisorServices";
 // Import Utils from ""
 export default {
   name: "navbar",
@@ -19,6 +21,7 @@ export default {
     AdminServices,
     TutorServices,
     StudentServices,
+    SupervisorServices
   },
   methods: {
     goToHome() {
@@ -65,8 +68,8 @@ nav .menu-item {
 }
 nav .menu-item.active,
 nav .menu-item:hover {
-  background-color: #0d0d0e;
-  border-bottom-color: #bb3030;
+  background-color: #232325;
+  border-bottom-color: #1976d2;
 }
 nav .menu-item a {
   color: inherit;

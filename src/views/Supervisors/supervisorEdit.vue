@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H1 style="background-color: #811429; color: #f2f2f2">Supervisor Edit</H1>
+    <H1 style="background-color: #1976d2; color: #f2f2f2">Supervisor Edit</H1>
     <v-app>
       <v-form>
         <v-col>

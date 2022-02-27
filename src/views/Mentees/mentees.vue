@@ -1,7 +1,7 @@
 <template>
   <v-container fluid fill-height>
     <div>
-      <H1 style="background-color: #0c76a0; color: #f2f2f2">Mentees</H1>
+      <H1 style="background-color: #1976d2; color: #f2f2f2">Mentees</H1>
       <br />
       <br />
       <h2>

@@ -8,7 +8,7 @@
           ref="calendar"
           :now="today"
           :value="today"
-          color="#811429"
+          color="#1976d2"
           type="week"
         >
           <!-- the events at the top (all-day) -->
