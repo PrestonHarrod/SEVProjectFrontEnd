@@ -17,6 +17,7 @@ import Booking from "./views/booking.vue";
 //apply for tutor?
 
 import SessionList from "./views/Sessions.vue";
+import SessionView from "./views/sessionView.vue";
 
 //User Crud
 import UserList from "./views/Users/userList.vue";
@@ -63,7 +64,7 @@ export default new Router({
     },
 
     {
-      path: "/student/ScheduleSession",
+      path: "/student/subjects",
       name: "studentSubjectView",
       component: StudentSubjectView,
     },
@@ -265,6 +266,12 @@ export default new Router({
       path: "/tutor/sessions",
       name: "tutorSessions",
       component: SessionList,
+    },
+    {
+      path: "/tutor/session/:id",
+      name: "sessionView",
+      component: SessionView,
+      props: true,
     },
   ],
 });
