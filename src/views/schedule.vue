@@ -33,8 +33,9 @@
           :interval-count= 19
           :events="events"
           @click:event="viewSession"
-          color="#811429"
-          event-text-color="#811429"
+          color="#1976d2"
+          event-text-color="#1976d2"
+
           type="week"
         >
           <!-- the events at the top (all-day) -->

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H1 style="background-color: #811429; color: #f2f2f2">Supervisor Edit</H1>
+    <H1 style="background-color: #1976d2; color: #f2f2f2">Supervisor Edit</H1>
     <v-app>
       <v-form>
         <v-col>
@@ -96,9 +96,9 @@ export default {
             orgID: this.supervisor.orgID,
           }; //add  for a userOrg
 
-          UserOrgServices.addUserOrg(userOrg)
+          UserOrgServices.updateUserOrg(userOrg)
             .then(() => {
-              console.log("user org called...");
+              console.log("user org update called...");
             })
             .catch((error) => {
               console.log(error);

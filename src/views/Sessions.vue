@@ -1,12 +1,12 @@
 <template>
   <v-container fluid fill-height>
     <div>
-      <H1 style="background-color: #811429; color: #f2f2f2">Your Sessions</H1>
+      <H1 style="background-color: #1976d2; color: #f2f2f2">Your Sessions</H1>
       <br />
       <br />
       <br />
 
-      <h2 style="background-color: #811429; color: #f2f2f2">
+      <h2 style="background-color: #1976d2; color: #f2f2f2">
         Upcoming Sessions
       </h2>
       <v-card width="100vw">
@@ -34,7 +34,7 @@
         </v-data-table>
       </v-card>
       <br />
-      <h2 style="background-color: #811429; color: #f2f2f2">
+      <h2 style="background-color: #1976d2; color: #f2f2f2">
         Completed Sessions
       </h2>
       <v-card width="100vw">

@@ -19,7 +19,7 @@
         <v-btn
           v-on:click.prevent="moveToSubjects(subjects, mySubjects, subject)"
           rounded
-          color="#811429"
+          color="#1976d2"
           dark
         >
           {{ subject.name }} <v-icon>mdi-close-circle-outline</v-icon>
@@ -61,7 +61,7 @@
           "
           v-on:click.prevent="moveToMySubjects(mySubjects, subjects, subject)"
           rounded
-          color="#811429"
+          color="#1976d2"
           dark
         >
           {{ subject.name }}

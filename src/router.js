@@ -95,14 +95,14 @@ export default new Router({
       component: AdminHome,
     },
     {
-      path: "/admin/students",
+      path: "/students",
       name: "students",
       component: StudentList,
     },
 
     //users
     {
-      path: "/admin/users",
+      path: "/users",
       name: "users",
       component: UserList,
     },
@@ -151,47 +151,47 @@ export default new Router({
 
     //Tutor
     {
-      path: "/admin/tutors",
+      path: "/tutors",
       name: "tutors",
       component: TutorList,
     },
     {
-      path: "/admin/tutors-edit/:id",
+      path: "/tutors-edit/:id",
       name: "editTutor",
       component: TutorEdit,
       props: true,
     },
     {
-      path: "/admin/tutors/:id",
+      path: "/tutors/:id",
       name: "viewTutor",
       component: TutorView,
       props: true,
     },
     {
-      path: "/admin/addTutor/",
+      path: "/addTutor/",
       name: "addTutor",
       component: TutorAdd,
     },
     //Student
     {
-      path: "/admin/students-edit/:id",
+      path: "/students-edit/:id",
       name: "editStudent",
       component: StudentEdit,
       props: true,
     },
     {
-      path: "/admin/tutors/:id",
+      path: "/tutors/:id",
       name: "viewTutor",
       component: TutorView,
       props: true,
     },
     {
-      path: "/admin/addStudent/",
+      path: "/addStudent/",
       name: "addStudent",
       component: StudentAdd,
     },
     {
-      path: "/admin/students/:id",
+      path: "/students/:id",
       name: "viewStudent",
       component: StudentView,
       props: true,
@@ -199,35 +199,35 @@ export default new Router({
 
     //Mentees
     {
-      path: "/admin/mentees",
+      path: "/mentees",
       name: "mentees",
       component: Mentees,
     },
     {
-      path: "/admin/addMentee",
+      path: "/addMentee",
       name: "addMentee",
       component: MenteeAdd,
     },
     {
-      path: "/admin/Mentees/:id",
+      path: "/Mentees/:id",
       name: "viewMentee",
       component: MenteeView,
       props: true,
     },
     {
-      path: "/admin/Mentee-Edit/:id",
+      path: "/Mentee-Edit/:id",
       name: "editMentee",
       component: MenteeEdit,
       props: true,
     },
 
     {
-      path: "/admin/sessions",
+      path: "/sessions", //what is this? is there a difference for the sessions?
       name: "adminSessions",
       component: SessionList,
     },
     {
-      path: "/admin/requests",
+      path: "/requests",
       name: "requests",
       component: Requests,
     },
