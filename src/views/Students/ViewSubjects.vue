@@ -117,7 +117,7 @@ export default {
         this.usersOrg = response.data;
         for( let i = 0; i < response.data.length; i++) {
         this.usersOrgID = this.usersOrg[i].orgID;
-         userServices.getTutors("1", this.usersOrgID)
+         userServices.getTutors("3", this.usersOrgID)
           .then((response) => {
             this.users = response.data;
          })
