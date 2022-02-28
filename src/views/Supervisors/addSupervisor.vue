@@ -75,6 +75,7 @@ export default {
     addSupervisor() {
       UserServices.addUser(this.supervisor)
         .then((response) => {
+          
           var id = response.data.userID;
           console.log("userID: " + id);
           let userRole = {
@@ -99,8 +100,8 @@ export default {
             .catch((error) => {
               console.log(error);
             }); //post the userOrg
-
-          // this.$router.push({ name: "supervisors" });
+            this.$router.push({ name: "supervisors" });
+           
         })
         .catch((error) => {
           console.log(error);
