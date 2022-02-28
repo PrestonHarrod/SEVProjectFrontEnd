@@ -65,6 +65,14 @@
           type="text"
           id="level"
         />
+        <v-text-field
+          label="Phone Number"
+          placeholder="405-555-4954"
+          readonly
+          v-model="student.phoneNumber"
+          type="text"
+          id="phoneNumber"
+        />
       </v-col>
     </v-form>
     <confirm-dialog ref="confirmDialog"></confirm-dialog>

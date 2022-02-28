@@ -72,6 +72,12 @@ export default {
           filterable: false,
           value: "email",
         },
+        {
+          text: "Phone Number",
+          align: "start",
+          filterable: false,
+          value: "phoneNumber",
+        },
       ],
       users: [{}],
     };

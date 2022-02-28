@@ -27,6 +27,13 @@
           type="text"
           id="email"
         />
+        <v-text-field
+          label="Phone Number"
+          placeholder="405-555-5940"
+          v-model="supervisor.phoneNumber"
+          type="text"
+          id="phoneNumber"
+        />
 
         <v-radio-group v-model="supervisor.orgID" column>
           <v-radio label="Student Success" color="red" value="1"></v-radio>

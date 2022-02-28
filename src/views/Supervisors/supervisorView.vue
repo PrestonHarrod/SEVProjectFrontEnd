@@ -57,6 +57,14 @@
           type="text"
           id="email"
         />
+        <v-text-field
+          label="Phone Number"
+          placeholder="405-555-5943"
+          readonly
+          v-model="supervisor.phoneNumber"
+          type="text"
+          id="phoneNumber"
+        />
       </v-col>
     </v-form>
     <confirm-dialog ref="confirmDialog"></confirm-dialog>
