@@ -64,8 +64,9 @@
             :interval-count="19"
             :events="events"
             @click:event="viewSession"
-            color="#811429"
-            event-text-color="#811429"
+            color="blue"
+            event-color="green"
+            event-text-color="white"
             type="week"
           >
           </v-calendar>
