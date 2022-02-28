@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div>
-      <H1 style="background-color: #811429; color: #f2f2f2"
+      <H1 style="background-color: #1976d2; color: #f2f2f2"
         >Schedule Session</H1
       >
       <br />
@@ -35,7 +35,6 @@
           </v-row>
           <v-row>
             <v-col>
-              <!-- <h2><v-btn color="#66BB6A" @click="findTutor(subjects.subjectID, level)">Submit</v-btn></h2> -->
             </v-col>
           </v-row>
           <v-row>
@@ -108,32 +107,7 @@ export default {
       usersOrgID: 0,
     };
   },
-  
-    // userServices
-    //   .getTutors("1", "1")
-    //   .then((response) => {
-    //     this.users = response.data;
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-  
-  methods: {
-    findTutor(subjectID, level) {
-      console.log(subjectID);
-      console.log(level);
-    },
-  },
-  getTutorSubjectsForTutor(id) {
-    tutorSubjectServices
-      .getTutorSubjects(id)
-      .then((response) => {
-        this.tutorSubjects = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
+
 
  async created() {
     this.user = Utils.getStore('user');
@@ -156,17 +130,7 @@ export default {
       .catch((error) => {
         console.log(error);
       });
-     
-      // this.usersOrgID = this.usersOrg[0].orgID;
-      
-      // console.log(this.usersOrg[0].orgID + "!!!!!!!!!!!!!!!!!!!!!!!!!");
-    // await userServices.getTutors("1", this.usersOrgID)
-    //   .then((response) => {
-    //     this.users = response.data;
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+
 
       await subjectServices
       .getSubjects()

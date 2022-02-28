@@ -11,16 +11,17 @@
     </svg>
     <transition name="fade" apear>
       <div class="sub-menu" v-if="isOpen">
-        <div class="menu-item" v-on:click.prevent="goToBooking()">Booking</div>
-        <div class="menu-item" v-on:click.prevent="goToStudentSessions()">
+        <div class="menu-item" v-on:click.prevent="goToUsers()">Users</div>
+        <div class="menu-item" v-on:click.prevent="goToStudents()">
+          Students
+        </div>
+        <div class="menu-item" v-on:click.prevent="goToTutors()">Tutors</div>
+        <div class="menu-item" v-on:click.prevent="goToMentees()">Mentees</div>
+        <div class="menu-item" v-on:click.prevent="goToSessions()">
           Sessions
         </div>
-        <div class="menu-item">
-          <router-link to="/student/sessions">Sessions</router-link>
-        </div>
-        <div class="menu-item">
-          <router-link :to="{name: 'studentSubjectView'}">Schedule Session</router-link>
-
+        <div class="menu-item" v-on:click.prevent="goToRequests()">
+          Requests
         </div>
       </div>
     </transition>
@@ -37,25 +38,49 @@ export default {
     };
   },
   methods: {
-    goToBooking() {
+    goToUsers() {
       this.$router
-        .push({ name: "booking" })
+        .push({ name: "users" })
         .then(() => {})
         .catch((error) => {
           console.log(error);
         });
     },
-    goToStudentSessions() {
+    goToStudents() {
       this.$router
-        .push({ name: "studentSessions" })
+        .push({ name: "students" })
         .then(() => {})
         .catch((error) => {
           console.log(error);
         });
     },
-    goToScheduleSession() {
+    goToTutors() {
       this.$router
-        .push({ name: "" })
+        .push({ name: "tutors" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToMentees() {
+      this.$router
+        .push({ name: "mentees" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToSessions() {
+      this.$router
+        .push({ name: "adminSessions" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToRequests() {
+      this.$router
+        .push({ name: "requests" })
         .then(() => {})
         .catch((error) => {
           console.log(error);
