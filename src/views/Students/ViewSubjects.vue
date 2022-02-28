@@ -35,7 +35,6 @@
           </v-row>
           <v-row>
             <v-col>
-              <!-- <h2><v-btn color="#66BB6A" @click="findTutor(subjects.subjectID, level)">Submit</v-btn></h2> -->
             </v-col>
           </v-row>
           <v-row>
@@ -68,13 +67,15 @@
 import subjectServices from "@/services/subjectServices.js";
 import userServices from "@/services/UserServices.js";
 import tutorSubjectServices from "@/services/tutorSubjectServices.js";
+import userOrgServices from "@/services/userOrgServices.js";
+import Utils from '@/config/utils.js';
 export default {
   data() {
     return {
       search: "",
       selected: [],
       subjects: [],
-      subject: [],
+      subject: "",
       tutorSubjects: [{}],
       levels: ["Math", 2, 3, 4],
       level: "",
@@ -102,11 +103,36 @@ export default {
         },
       ],
       users: [{}],
+      usersOrg: [{}],
+      usersOrgID: 0,
     };
   },
 
-  created() {
-    subjectServices
+
+ async created() {
+    this.user = Utils.getStore('user');
+    let id = this.user.userID;
+      // function to get users org
+    userOrgServices.getUsersOrgID(id)
+    .then((response) => {
+        this.usersOrg = response.data;
+        for( let i = 0; i < response.data.length; i++) {
+        this.usersOrgID = this.usersOrg[i].orgID;
+         userServices.getTutors("1", this.usersOrgID)
+          .then((response) => {
+            this.users = response.data;
+         })
+          .catch((error) => {
+          console.log(error);
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+
+      await subjectServices
       .getSubjects()
       .then((response) => {
         this.subjects = response.data;
@@ -114,33 +140,5 @@ export default {
       .catch((error) => {
         console.log(error);
       });
-    userServices
-      .getTutorSubjects("3")
-      .then((response) => {
-        this.users = response.data;
-      })
-
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-
-  methods: {
-    findTutor(subjectID, level) {
-      console.log(subjectID);
-      console.log(level);
-    },
-  },
-
-  getTutorSubjectsForTutor(id) {
-    tutorSubjectServices
-      .getTutorSubjects(id)
-      .then((response) => {
-        this.tutorSubjects = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  },
-};
+ }};
 </script>

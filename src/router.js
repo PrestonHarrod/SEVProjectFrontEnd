@@ -204,6 +204,7 @@ export default new Router({
       component: Mentees,
     },
     {
+
       path: "/addMentee",
       name: "addMentee",
       component: MenteeAdd,
@@ -264,6 +265,7 @@ export default new Router({
     },
     {
       path: "/tutor/sessions",
+
       name: "tutorSessions",
       component: SessionList,
     },

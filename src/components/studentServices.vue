@@ -15,8 +15,12 @@
         <div class="menu-item" v-on:click.prevent="goToStudentSessions()">
           Sessions
         </div>
-        <div class="menu-item" v-on:click.prevent="goToScheduleSession()">
-          Schedule a Session
+        <div class="menu-item">
+          <router-link to="/student/sessions">Sessions</router-link>
+        </div>
+        <div class="menu-item">
+          <router-link :to="{name: 'studentSubjectView'}">Schedule Session</router-link>
+
         </div>
       </div>
     </transition>

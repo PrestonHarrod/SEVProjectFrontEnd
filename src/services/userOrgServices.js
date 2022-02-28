@@ -19,4 +19,5 @@ export default {
   getUsersOrgID(id) {
     return apiClient.get("userOrgs/student/" + id);
   },
+
 };
