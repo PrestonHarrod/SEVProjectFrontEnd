@@ -1,10 +1,11 @@
 <template>
   <nav id="vue">
-    <div class="menu-item"><router-link to="/">Home</router-link></div>
+    <div class="menu-item" v-on:click.prevent="goToHome()">Home</div>
     <AdminServices title="Admin" />
+    <SupervisorServices title="Supervisor"/>
     <TutorServices title="Tutor" />
     <StudentServices title="Student" />
-    <div class="menu-item"><router-link to="/login">Logout</router-link></div>
+    <div class="menu-item" v-on:click.prevent="goToLogin()">Logout</div>
   </nav>
 </template>
 
@@ -12,14 +13,40 @@
 import AdminServices from "../components/adminServices";
 import StudentServices from "../components/studentServices";
 import TutorServices from "../components/tutorServices";
+import SupervisorServices from "../components/supervisorServices";
+// Import Utils from ""
 export default {
   name: "navbar",
   components: {
     AdminServices,
     TutorServices,
     StudentServices,
+    SupervisorServices
+  },
+  methods: {
+    goToHome() {
+      this.$router
+        .push({ name: "home" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToLogin() {
+      if (this.user == null) {
+        this.$router.push({ name: "login" }).catch((error) => {
+          console.log(error);
+        });
+      } else {
+        // Utils.setStore("user", null); //needs utils
+        this.$router.push({ name: "home" });
+        location.reload();
+      }
+    },
   },
 };
+
+//functions for site traversal
 </script>
 
 <style>
@@ -41,8 +68,8 @@ nav .menu-item {
 }
 nav .menu-item.active,
 nav .menu-item:hover {
-  background-color: #0d0d0e;
-  border-bottom-color: #bb3030;
+  background-color: #232325;
+  border-bottom-color: #1976d2;
 }
 nav .menu-item a {
   color: inherit;

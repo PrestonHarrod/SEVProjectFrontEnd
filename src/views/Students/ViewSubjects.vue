@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div>
-      <H1 style="background-color: #811429; color: #f2f2f2"
+      <H1 style="background-color: #1976d2; color: #f2f2f2"
         >Schedule Session</H1
       >
       <br />
@@ -25,7 +25,6 @@
           </v-row>
           <v-row>
             <v-col>
-              <!-- <h2><v-btn color="#66BB6A" @click="findTutor(subjects.subjectID, level)">Submit</v-btn></h2> -->
             </v-col>
           </v-row>
           <v-row>
@@ -78,16 +77,18 @@
 
 <script>
 import subjectServices from "@/services/subjectServices.js";
+
 import UserServices from "@/services/UserServices.js";
-import TutorSlotServices from "@/services/tutorSlotServices.js";
-import Utils from "@/config/utils.js";
+import userOrgServices from "@/services/userOrgServices.js";
+import Utils from '@/config/utils.js';
+
 export default {
   data() {
     return {
       search: "",
       selected: [],
       subjects: [],
-      subject: [],
+      subject: "",
       tutorSubjects: [{}],
       levels: ["Math", 2, 3, 4],
       level: "",
@@ -115,27 +116,30 @@ export default {
         },
       ],
       users: [{}],
-      user: {},
-      sessions: {},
-      events: [],
-      value: "",
+      usersOrg: [{}],
+      usersOrgID: 0,
     };
   },
 
-  created() {
-    subjectServices
-      .getSubjects()
-      .then((response) => {
-        this.subjects = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    UserServices.getTutors("3")
-      .then((response) => {
-        this.users = response.data;
-      })
 
+ async created() {
+    this.user = Utils.getStore('user');
+    let id = this.user.userID;
+      // function to get users org
+    userOrgServices.getUsersOrgID(id)
+    .then((response) => {
+        this.usersOrg = response.data;
+        for( let i = 0; i < response.data.length; i++) {
+        this.usersOrgID = this.usersOrg[i].orgID;
+         UserServices.getTutors("3", this.usersOrgID)
+          .then((response) => {
+            this.users = response.data;
+         })
+          .catch((error) => {
+          console.log(error);
+          });
+        }
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -226,6 +230,18 @@ export default {
     },
   },
 };
+
+
+      await subjectServices
+      .getSubjects()
+      .then((response) => {
+        this.subjects = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+ }};
+
 </script>
 
 <style  scoped>

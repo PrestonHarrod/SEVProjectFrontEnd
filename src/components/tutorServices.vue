@@ -11,17 +11,17 @@
     </svg>
     <transition name="fade" apear>
       <div class="sub-menu" v-if="isOpen">
-        <div class="menu-item">
-          <router-link to="/tutor/schedule">Schedule</router-link>
+        <div class="menu-item" v-on:click.prevent="goToSchedule()">
+          Schedule
         </div>
-        <div class="menu-item">
-          <router-link to="/tutor/subjects">Subjects</router-link>
+        <div class="menu-item" v-on:click.prevent="goToSubjects()">
+          Subjects
         </div>
-        <div class="menu-item">
-          <router-link to="/tutor/requests">Requests</router-link>
+        <div class="menu-item" v-on:click.prevent="goToRequests()">
+          Requests
         </div>
-        <div class="menu-item">
-          <router-link to="/tutor/sessions">Sessions</router-link>
+        <div class="menu-item" v-on:click.prevent="goToTutorSessions()">
+          Sessions
         </div>
       </div>
     </transition>
@@ -37,6 +37,40 @@ export default {
     return {
       isOpen: false,
     };
+  },
+  methods: {
+    goToSchedule() {
+      this.$router
+        .push({ name: "schedule" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToSubjects() {
+      this.$router
+        .push({ name: "subject" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToRequests() {
+      this.$router
+        .push({ name: "request" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToTutorSessions() {
+      this.$router
+        .push({ name: "tutorSessions" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
@@ -54,6 +88,7 @@ nav .menu-item .sub-menu {
   transform: translateX(-50%);
   width: max-content;
   border-radius: 0px 0px 16px 16px;
+  z-index: 1;
 }
 .fade-enter-active,
 .fade-leave-active {
