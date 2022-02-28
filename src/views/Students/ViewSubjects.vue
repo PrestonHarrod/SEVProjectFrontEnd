@@ -77,7 +77,7 @@
 
 <script>
 import subjectServices from "@/services/subjectServices.js";
-
+import TutorSlotServices from "@/services/tutorSlotServices.js"
 import UserServices from "@/services/UserServices.js";
 import userOrgServices from "@/services/userOrgServices.js";
 import Utils from '@/config/utils.js';
@@ -143,6 +143,15 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+      await subjectServices
+      .getSubjects()
+      .then((response) => {
+        this.subjects = response.data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      
     this.user = Utils.getStore("user");
   },
 
@@ -231,14 +240,6 @@ export default {
   },
 };
 
-      await subjectServices
-      .getSubjects()
-      .then((response) => {
-        this.subjects = response.data;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
 
 </script>
 
