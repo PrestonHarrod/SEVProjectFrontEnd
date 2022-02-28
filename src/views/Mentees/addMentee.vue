@@ -32,6 +32,13 @@
           type="text"
           id="level"
         />
+        <v-text-field
+          label="Phone Number"
+          placeholder="405-555-5055"
+          v-model="student.phoneNumber"
+          type="text"
+          id="phoneNumber"
+        />
       </v-col>
       <v-btn
         :style="{ left: '50%', transform: 'translateX(-50%)' }"
