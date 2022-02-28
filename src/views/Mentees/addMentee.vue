@@ -62,6 +62,7 @@
 <script>
 import UserServices from "@/services/UserServices.js";
 import UserRoleServices from "@/services/userRoleServices.js";
+import UserOrgServices from "@/services/userOrgServices.js";
 export default {
   data() {
     return {
@@ -83,6 +84,18 @@ export default {
             .catch((error) => {
               console.log(error);
             }); //post the user
+           
+           let userOrg = {
+            userID: id,
+            orgID: 1, //since only mentees are from student success
+          }; //add the ibject for a userOrg
+          UserOrgServices.addUserOrg(userOrg)
+            .then(() => {
+              console.log("user org called...");
+            })
+            .catch((error) => {
+              console.log(error);
+            }); //post the userOrg
           this.$router.push({ name: "mentees" });
         })
         .catch((error) => {

@@ -37,11 +37,7 @@
 
         <v-radio-group v-model="supervisor.orgID" column>
           <v-radio label="Student Success" color="red" value="1"></v-radio>
-          <v-radio
-            label="Writing Center"
-            color="red darken-3"
-            value="2"
-          ></v-radio>
+          <v-radio label="Writing Center" color="red darken-3" value="2"></v-radio>
           <v-radio label="New College" color="indigo" value="3"></v-radio>
         </v-radio-group>
       </v-col>

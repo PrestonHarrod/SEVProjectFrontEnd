@@ -35,10 +35,15 @@
         <v-text-field
           label="Phone Numbers"
           placeholder="405-555-5940"
-          v-model="student.level"
+          v-model="student.phoneNumber"
           type="text"
-          id="level"
+          id="phoneNumber"
         />
+        <v-radio-group v-model="student.orgID" column>
+          <v-radio label="Student Success" color="red" value="1"></v-radio>
+          <v-radio label="Writing Center" color="red darken-3" value="2"></v-radio>
+          <v-radio label="New College" color="indigo" value="3"></v-radio>
+        </v-radio-group>
       </v-col>
       <v-btn
         :style="{ left: '50%', transform: 'translateX(-50%)' }"
@@ -62,6 +67,7 @@
 <script>
 import UserServices from "@/services/UserServices.js";
 import UserRoleServices from "@/services/userRoleServices.js";
+import UserOrgServices from "@/services/userOrgServices.js";
 export default {
   data() {
     return {
@@ -78,11 +84,25 @@ export default {
             userID: id,
             roleID: 4, //4 for student
           };
+          let userOrg = {
+            userID: id,
+            orgID: this.student.orgID,
+          }; //add the ibject for a userOrg
+
           UserRoleServices.addUserRole(userRole)
             .then(() => {})
             .catch((error) => {
               console.log(error);
             }); //post the user
+            
+            UserOrgServices.addUserOrg(userOrg)
+            .then(() => {
+              console.log("user org called...");
+            })
+            .catch((error) => {
+              console.log(error);
+            }); //post the userOrg
+
           this.$router.push({ name: "students" });
         })
         .catch((error) => {
@@ -91,6 +111,7 @@ export default {
             "ERROR: Adding a student unsuccessful. Make sure that the fields are entered correctly"
           );
         });
+
     },
     cancel() {
       this.$router.push({ name: "students" });
