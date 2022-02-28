@@ -118,6 +118,7 @@ export default {
       users: [{}],
       usersOrg: [{}],
       usersOrgID: 0,
+      events: []
     };
   },
 
