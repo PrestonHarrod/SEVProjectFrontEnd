@@ -66,7 +66,6 @@
 <script>
 import subjectServices from "@/services/subjectServices.js";
 import userServices from "@/services/UserServices.js";
-import tutorSubjectServices from "@/services/tutorSubjectServices.js";
 import userOrgServices from "@/services/userOrgServices.js";
 import Utils from '@/config/utils.js';
 export default {
