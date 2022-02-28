@@ -39,6 +39,16 @@
             type="text"
             id="phoneNumber"
           />
+
+          <v-radio-group v-model="tutor.orgID" column>
+          <v-radio label="Student Success" color="red" value="1"></v-radio>
+          <v-radio
+            label="Writing Center"
+            color="red darken-3"
+            value="2"
+          ></v-radio>
+          <v-radio label="New College" color="indigo" value="3"></v-radio>
+        </v-radio-group>
         </v-col>
         <v-btn
           :style="{ transform: 'translateX(-50%)' }"
@@ -62,6 +72,7 @@
 <script>
 import UserServices from "@/services/UserServices.js";
 import Utils from "@/config/utils.js";
+import UserOrgServices from "@/services/userOrgServices.js";
 export default {
   props: ["id"],
   components: {},
@@ -90,8 +101,21 @@ export default {
       this.tutor.userID = this.id;
 
       UserServices.updateUser(this.tutor)
-        .then(() => {
+        .then((response) => {
           this.$router.push({ name: "viewTutor" });
+          var id = response.data.userID;
+          let userOrg = {
+            userID: id,
+            orgID: this.tutor.orgID,
+          }; //add  for a userOrg
+
+          UserOrgServices.updateUserOrg(userOrg)
+            .then(() => {
+              console.log("user org update called...");
+            })
+            .catch((error) => {
+              console.log(error);
+            }); //post the userOrg
         })
         .catch((error) => {
           console.log("There was an error:", error.response);

@@ -39,6 +39,11 @@
           type="text"
           id="phoneNumber"
         />
+        <v-radio-group v-model="tutor.orgID" column>
+          <v-radio label="Student Success" color="red" value="1"></v-radio>
+          <v-radio label="Writing Center" color="red darken-3" value="2"></v-radio>
+          <v-radio label="New College" color="indigo" value="3"></v-radio>
+        </v-radio-group>
       </v-col>
       <v-btn
         :style="{ left: '50%', transform: 'translateX(-50%)' }"
@@ -62,6 +67,7 @@
 <script>
 import UserServices from "@/services/UserServices.js";
 import UserRoleServices from "@/services/userRoleServices.js";
+import UserOrgServices from "@/services/userOrgServices.js";
 export default {
   data() {
     return {
@@ -79,6 +85,11 @@ export default {
             userID: id,
             roleID: 3, //3 for a tutor
           };
+          let userOrg = {
+            userID: id,
+            orgID: this.tutor.orgID,
+          }; //add the ibject for a userOrg
+
           UserRoleServices.addUserRole(userRole)
             .then(() => {
               console.log("inside the post for a userRole");
@@ -86,6 +97,14 @@ export default {
             .catch((error) => {
               console.log(error);
             }); //post the user
+            UserOrgServices.addUserOrg(userOrg)
+            .then(() => {
+              console.log("user org called...");
+            })
+            .catch((error) => {
+              console.log(error);
+            }); //post the userOrg
+
           this.$router.push({ name: "tutors" });
         })
         .catch((error) => {
