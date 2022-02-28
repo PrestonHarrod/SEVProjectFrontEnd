@@ -231,7 +231,6 @@ export default {
   },
 };
 
-
       await subjectServices
       .getSubjects()
       .then((response) => {
@@ -240,7 +239,6 @@ export default {
       .catch((error) => {
         console.log(error);
       });
- }};
 
 </script>
 
