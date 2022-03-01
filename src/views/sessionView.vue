@@ -1,6 +1,6 @@
 <template>
   <div>
-<H1 style="background-color: #811429; color:#f2f2f2">Session View</H1>
+<H1 style="background-color: #1976d2; color:#f2f2f2">Session View</H1>
 <br>
  <h2><v-btn :style="{left: '50%', transform:'translateX(-50%)'}" v-on:click.prevent="cancel()" color="black" text rounded>Go Back</v-btn></h2>
    <br>
