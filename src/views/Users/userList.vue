@@ -5,14 +5,14 @@
       <br />
       <br />
       <h2>
-        <v-btn
+        <!-- <v-btn
           :style="{ left: '50%', transform: 'translateX(-50%)' }"
           @click="goToAdd()"
           color="black"
           text
           rounded
           >Add User</v-btn
-        >
+        > -->
       </h2>
       <br />
       <v-card width="100vw">
