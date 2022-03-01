@@ -2,6 +2,7 @@
   <v-layout>
     <v-flex>
       <v-sheet height="400">
+        <v-row>
           <v-btn
             fab
             text
@@ -24,6 +25,12 @@
               mdi-chevron-right
             </v-icon>
           </v-btn>
+          <v-col>
+           <H2 style="background-color: #1976d2; color: #f2f2f2">
+            {{ month }}
+          </H2>
+          </v-col>
+        </v-row>
         <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
         <br />
         <v-calendar
@@ -84,12 +91,16 @@ import SessionServices from "@/services/sessionServices.js";
     user: {},
     sessions: {},
     events: [],
-    value: ''
+    value: '',
+    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    month: '',
     }),
   async created() {
     // display completed and upcoming sessions depending on
     // if a student or tutor is logged in
     this.user = Utils.getStore("user");
+    let d = new Date();
+    this.month = this.months[d.getMonth()];
     SessionServices.getSessions()
       .then((response) => {
           response.data.forEach(session => 

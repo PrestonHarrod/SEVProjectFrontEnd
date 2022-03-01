@@ -48,12 +48,19 @@
               </div>
             </v-col>
           </v-row>
-          <v-btn fab text small color="grey darken-2" @click="prev">
+          <v-row>
+          <v-btn v-if="selected[0] != null" fab text small color="grey darken-2" @click="prev">
             <v-icon small> mdi-chevron-left </v-icon>
           </v-btn>
-          <v-btn fab text small color="grey darken-2" @click="next">
+          <v-btn v-if="selected[0] != null" fab text small color="grey darken-2" @click="next">
             <v-icon small> mdi-chevron-right </v-icon>
           </v-btn>
+          <v-col v-if="selected[0] != null">
+            <H2 style="background-color: #1976d2; color: #f2f2f2">
+            {{ month }}
+          </H2>
+          </v-col>
+          </v-row>
           <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
           <br />
           <v-calendar
@@ -94,6 +101,8 @@ export default {
       levels: ["Math", 2, 3, 4],
       level: "",
       value: "",
+      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      month: '',
       headers: [
         {
           text: "First Name",
@@ -128,6 +137,8 @@ export default {
  async created() {
     this.user = Utils.getStore('user');
     let id = this.user.userID;
+    let d = new Date();
+    this.month = this.months[d.getMonth()];
       // function to get users org
     userOrgServices.getUsersOrgID(id)
     .then((response) => {

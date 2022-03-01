@@ -35,7 +35,7 @@
           <v-text-field
           label="Phone Number"
           placeholder="405-555-5055"
-          v-model="student.phoneNumber"
+          v-model="mentee.phoneNumber"
           type="text"
           id="phoneNumber"
         />
