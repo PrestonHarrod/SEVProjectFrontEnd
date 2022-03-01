@@ -93,6 +93,7 @@ export default {
       tutorSubjects: [{}],
       levels: ["Math", 2, 3, 4],
       level: "",
+      value: "",
       headers: [
         {
           text: "First Name",
