@@ -3,14 +3,14 @@
   <v-container fluid fill-height>
       <v-row>
         <v-col>
-          <H1 style="background-color: #811429; color: #f2f2f2"
+          <H1 style="background-color: #1976d2; color: #f2f2f2"
             >Manage Subjects</H1
           >
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          <H2 style="background-color: #811429; color: #f2f2f2">
+          <H2 style="background-color: #1976d2; color: #f2f2f2">
             My Subjects
           </H2>
         </v-col>
@@ -28,7 +28,7 @@
 
       <v-row>
         <v-col>
-          <H2 style="background-color: #811429; color: #f2f2f2"> Subjects </H2>
+          <H2 style="background-color: #1976d2; color: #f2f2f2"> Subjects </H2>
         </v-col>
       </v-row>
       <v-row>
