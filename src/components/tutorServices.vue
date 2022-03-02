@@ -23,6 +23,9 @@
         <div class="menu-item" v-on:click.prevent="goToTutorSessions()">
           Sessions
         </div>
+        <div class="menu-item" v-on:click.prevent="goToTutorAvailability()">
+          Availability
+        </div>
       </div>
     </transition>
   </div>
@@ -66,6 +69,14 @@ export default {
     goToTutorSessions() {
       this.$router
         .push({ name: "tutorSessions" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToTutorAvailability() {
+      this.$router
+        .push({ name: "availability" })
         .then(() => {})
         .catch((error) => {
           console.log(error);

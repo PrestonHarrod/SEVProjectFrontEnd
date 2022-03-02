@@ -76,7 +76,7 @@
 <script>
 import Utils from "@/config/utils.js";
 import UserServices from "@/services/UserServices.js";
-import SessionServices from "@/services/sessionServices.js";
+import SessionServices from "@/services/SessionServices.js";
 
   export default {
     data: () => ({

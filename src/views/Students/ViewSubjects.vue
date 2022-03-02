@@ -7,57 +7,44 @@
       <br />
       <v-app>
         <v-form>
-          <v-row>
-            <v-col class="d-flex" cols="12" sm="6">
-              <v-select
-                v-model="subject"
-                :items="subjects"
-                label="Subject List"
-                item-text="name"
-                item-value="name"
-                dense
-                outlined
-              ></v-select>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col class="d-flex" cols="12" sm="6">
-              <!-- <v-select 
-          :items="users"
-          label="Course Level"
-          item-text="fName"
-          item-value="fName"
-          dense
-          outlined
-          v-model="subject"
-        ></v-select> -->
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <!-- <h2><v-btn color="#66BB6A" @click="findTutor(subjects.subjectID, level)">Submit</v-btn></h2> -->
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <div>
-                <v-card width="100vw">
-                  <v-data-table
-                    v-model="selected"
-                    :headers="headers"
-                    :items="users"
-                    item-key="userID"
-                    :items-per-page="25"
-                    single-select
-                    show-select
-                    :search="subject"
-                    class="elevation-1"
-                  >
-                  </v-data-table>
-                </v-card>
-              </div>
-            </v-col>
-          </v-row>
+          
+          <v-btn
+            fab
+            text
+            small
+            color="grey darken-2"
+            @click="prev"
+          >
+            <v-icon small>
+              mdi-chevron-left
+            </v-icon>
+          </v-btn>
+          <v-btn
+            fab
+            text
+            small
+            color="grey darken-2"
+            @click="next"
+          >
+            <v-icon small>
+              mdi-chevron-right
+            </v-icon>
+          </v-btn>
+        <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
+        <br />
+        <v-calendar
+          ref="calendar"
+          v-model="value"
+          :first-interval= 6
+          :interval-count= 19
+          :events="events"
+          @click:event="viewSession"
+          color="#811429"
+          event-text-color="#811429"
+          type="week"
+        >
+         
+        </v-calendar>
         </v-form>
       </v-app>
     </div>
@@ -66,8 +53,10 @@
 
 <script>
 import subjectServices from "@/services/subjectServices.js";
-import userServices from "@/services/UserServices.js";
+import UserServices from "@/services/UserServices.js";
 import tutorSubjectServices from "@/services/tutorSubjectServices.js";
+import SessionServices from "@/services/SessionServices.js";
+//import Utils from "@/config/utils.js";
 export default {
   data() {
     return {
@@ -102,6 +91,10 @@ export default {
         },
       ],
       users: [{}],
+      user: {},
+    sessions: {},
+    events: [],
+    value: '',
     };
   },
 
@@ -114,12 +107,38 @@ export default {
       .catch((error) => {
         console.log(error);
       });
-    userServices
-      .getTutorSubjects("3")
+    UserServices
+      .getTutors("3")
       .then((response) => {
         this.users = response.data;
       })
 
+      .catch((error) => {
+        console.log(error);
+      });
+      SessionServices.getSessions()
+      .then((response) => {
+          response.data.forEach(session => 
+          {
+           console.log(session.studentID)
+            UserServices.getUser(session.studentID) 
+            .then((student) => {
+                let s = session.scheduledStart;
+                console.log(session)
+                let i = s.indexOf("T");
+                let st = s.substr(0, i) + " " + s.substr(i+1, 8);
+                let e = session.scheduledEnd;
+                i = e.indexOf("T");
+                let end = e.substr(0, i) + " " + e.substr(i+1, 8);
+                if(session.tutorID == this.user.userID)
+                {
+                  console.log(this.user.userID);  
+                    this.events.push({id: session.sessionID, name: "Session: " + student.data.fName + " " + student.data.lName.substr(0,1), start: st, end: end})
+                }
+            })
+            
+          });
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -129,10 +148,34 @@ export default {
     findTutor(subjectID, level) {
       console.log(subjectID);
       console.log(level);
-    },
-  },
 
-  getTutorSubjectsForTutor(id) {
+      
+    },
+     viewSession(event) {
+        let start = event.eventParsed.start.date + " " + event.eventParsed.start.time + ":00";
+        let end = event.eventParsed.end.date + " " + event.eventParsed.end.time + ":00";
+        this.events.forEach(e => {
+            if(e.start == start && e.end == end)
+            {
+                console.log(e.id);
+                 this.$router.push({ name: 'sessionView', params: {id: e.id}})
+                .then(() => {
+                })
+                .catch(error => {
+                 console.log(error)
+                })
+            }
+        })
+       
+      },
+      prev () {
+        this.$refs.calendar.prev()
+      },
+      next () {
+        this.$refs.calendar.next()
+      },
+    
+    getTutorSubjectsForTutor(id) {
     tutorSubjectServices
       .getTutorSubjects(id)
       .then((response) => {
@@ -142,5 +185,9 @@ export default {
         console.log(error);
       });
   },
+  },
 };
 </script>
+
+<style  scoped>
+</style>
