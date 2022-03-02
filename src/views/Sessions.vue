@@ -110,6 +110,7 @@ export default {
       j: 0,
       k: 0,
       l: 0,
+      m: 0,
       tutor: "tutorName",
       location: "locationName",
     };
@@ -121,7 +122,7 @@ export default {
     SessionServices.getSessions()
       .then((response) => {
         this.i = 0;
-                for (this.i = 0; this.i < response.data.length; this.i++) {
+          for (this.i = 0; this.i < response.data.length; this.i++) {
           if (this.user.userID == response.data[this.i].studentID) {
             if (response.data[this.i].status == "Upcoming") {
               this.upcomingSessions[this.l] = response.data[this.i];
@@ -143,24 +144,58 @@ export default {
         }
         this.sessions = this.completedSessions;
         this.sessions2 = this.upcomingSessions;
-        console.log(this.sessions2.length);
-        console.log(this.sessions.length);
+        console.log(this.sessions2);
+        console.log(this.sessions);
         // Change location and user ID's to their corresponding 
         // actual names
-        for (this.j = 0; this.j < this.sessions2.length; this.j++) {
-          UserServices.getUser(this.sessions2[this.j].tutorID).then(
-            (response) => {
-              this.tutor = response.data.fName;
-              this.sessions2[this.j].tutorID = this.tutor;
-            },
-          );
-          LocationServices.getLocation(this.sessions2[this.j].locationID).then(
-              (response) => {
-                this.location = response.data.building
-                this.sessions2[this.j].locationID = this.location;
+        UserServices.getUsers()
+        .then((response) => {
+          for (this.j = 0; this.j < response.data.length; this.j++) {
+            for (this.m = 0; this.m < this.sessions.length; this.m++) {
+              if (response.data[this.j].userID == this.sessions[this.m].tutorID) {
+                this.tutor = response.data[this.j].fName
+                this.sessions2[this.m].tutorID = this.tutor
               }
-            )
-        }
+            }
+            for (this.m = 0; this.m < this.sessions2.length; this.m++) {
+              if (response.data[this.j].userID == this.sessions2[this.m].tutorID) {
+                this.tutor = response.data[this.j].fName
+                this.sessions2[this.m].tutorID = this.tutor
+              }
+            }
+          }
+        })
+        LocationServices.getLocations()
+        .then((response) => {
+          for (this.j = 0; this.j < response.data.length; this.j++) {
+            for (this.m = 0; this.m < this.sessions.length; this.m++) {
+              if (response.data[this.j].locationID == this.sessions[this.m].locationID) {
+                this.location = response.data[this.j].building
+                this.sessions[this.m].locationID = this.location
+              }
+            }
+            for (this.m = 0; this.m < this.sessions2.length; this.m++) {
+              if (response.data[this.j].locationID == this.sessions2[this.m].locationID) {
+                this.location = response.data[this.j].building
+                this.sessions2[this.m].locationID = this.location
+              }
+            }
+          }
+        })
+        // for (this.j = 0; this.j < this.sessions2.length; this.j++) {
+        //   UserServices.getUser(this.sessions2[this.j].tutorID).then(
+        //     (response) => {
+        //       this.tutor = response.data.fName;
+        //       this.sessions2[this.j - 1].tutorID = this.tutor;
+        //     },
+        //   );
+        //   LocationServices.getLocation(this.sessions2[this.j].locationID).then(
+        //       (response) => {
+        //         this.location = response.data.building
+        //         this.sessions2[this.j - 1].locationID = this.location;
+        //       }
+        //     )
+        // }
         // for (this.j = 0; this.j < this.sessions.length; this.j++) {
         //   this.j = 0;
         //   UserServices.getUser(this.sessions[this.j].tutorID).then(
