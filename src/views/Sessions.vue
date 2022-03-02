@@ -67,9 +67,9 @@
 
 <script>
 import Utils from "@/config/utils.js";
-import UserServices from "@/services/UserServices.js";
+//import UserServices from "@/services/UserServices.js";
 import SessionServices from "@/services/sessionServices.js";
-import LocationServices from "@/services/locationServices.js"
+//import LocationServices from "@/services/locationServices.js"
 // import Nav from '@/components/Nav.vue'
 
 export default {
@@ -109,6 +109,8 @@ export default {
       testArray: [{}],
       i: 0,
       j: 0,
+      k: 0,
+      l: 0,
       tutor: "tutorName",
       location: "locationName",
     };
@@ -120,58 +122,67 @@ export default {
     SessionServices.getSessions()
       .then((response) => {
         this.i = 0;
-        for (this.i = 0; this.i < response.data.length; this.i++) {
+                for (this.i = 0; this.i < response.data.length; this.i++) {
           if (this.user.userID == response.data[this.i].studentID) {
             if (response.data[this.i].status == "Upcoming") {
-              this.upcomingSessions[this.i - 1] = response.data[this.i];
+              this.upcomingSessions[this.l] = response.data[this.i];
+              this.l++;
             }
-            this.sessions[this.i] = response.data[this.i];
+         
           }
         }
+        this.i = 0;
         for (this.i = 0; this.i < response.data.length; this.i++) {
+        
           if (this.user.userID == response.data[this.i].studentID) {
             if (response.data[this.i].status == "Complete") {
-              this.completedSessions[this.i] = response.data[this.i];
+              this.completedSessions[this.k] = response.data[this.i];
+              this.k++;
             }
-            this.sessions[this.i] = response.data[this.i];
+        
           }
         }
 
-        this.sessions = this.completedSessions;
-        this.sessions2 = this.upcomingSessions;
+
+this.sessions = this.completedSessions;
+this.sessions2 = this.upcomingSessions;
+ console.log(this.sessions2.length);
+  console.log(this.sessions.length);
+
 
         // Change location and user ID's to their corresponding 
         // actual names
-        for (this.j = 0; this.j < this.sessions2.length; this.j++) {
-          UserServices.getUser(this.sessions2[this.j].tutorID).then(
-            (response) => {
-              this.tutor = response.data.fName;
-              this.sessions2[this.j - 1].tutorID = this.tutor;
-            },
-          );
-          LocationServices.getLocation(this.sessions2[this.j].locationID).then(
-              (response) => {
-                this.location = response.data.building
-                this.sessions2[this.j - 1].locationID = this.location;
-              }
-            )
-        }
-        for (this.j = 0; this.j < this.sessions.length; this.j++) {
-          this.j = 0;
-          UserServices.getUser(this.sessions[this.j].tutorID).then(
-            (response) => {
-              this.tutor = response.data.fName;
-              console.log(this.sessions[this.j - 1]);
-              this.sessions[this.j - 1].tutorID = this.tutor;
-            }
-          );
-          LocationServices.getLocation(this.sessions[this.j].locationID).then(
-              (response) => {
-                this.location = response.data.building
-                this.sessions[this.j - 1].locationID = this.location;
-              }
-            )
-        }
+        // for (this.j = 0; this.j < this.sessions2.length; this.j++) {
+        //   UserServices.getUser(this.sessions2[this.j].tutorID).then(
+        //     (response) => {
+        //       this.tutor = response.data.fName;
+        //       this.sessions2[this.j].tutorID = this.tutor;
+        //     },
+        //   );
+        //   LocationServices.getLocation(this.sessions2[this.j].locationID).then(
+        //       (response) => {
+        //         this.location = response.data.building
+        //         this.sessions2[this.j].locationID = this.location;
+        //       }
+        //     )
+        // }
+        // for (this.j = 0; this.j < this.sessions.length; this.j++) {
+        //   this.j = 0;
+        //   UserServices.getUser(this.sessions[this.j].tutorID).then(
+        //     (response) => {
+        //       this.tutor = response.data.fName;
+        //       console.log(this.sessions[this.j]);
+        //       this.sessions[this.j].tutorID = this.tutor;
+        //     }
+        //   );
+        //   this.j = 0;
+        //   LocationServices.getLocation(this.sessions[this.j].locationID).then(
+        //       (response) => {
+        //         this.location = response.data.building
+        //         this.sessions[this.j].locationID = this.location;
+        //       }
+        //     )
+        // }
       })
       .catch((error) => {
         console.log(error);
