@@ -67,9 +67,9 @@
 
 <script>
 import Utils from "@/config/utils.js";
-//import UserServices from "@/services/UserServices.js";
+import UserServices from "@/services/UserServices.js";
 import SessionServices from "@/services/sessionServices.js";
-//import LocationServices from "@/services/locationServices.js"
+import LocationServices from "@/services/locationServices.js"
 // import Nav from '@/components/Nav.vue'
 
 export default {
@@ -111,8 +111,9 @@ export default {
       j: 0,
       k: 0,
       l: 0,
-      tutor: "tutorName",
-      location: "locationName",
+      m: 0,
+      tutor: "",
+      location: "",
     };
   },
   async created() {
@@ -147,42 +148,39 @@ export default {
 this.sessions = this.completedSessions;
 this.sessions2 = this.upcomingSessions;
  console.log(this.sessions2.length);
-  console.log(this.sessions.length);
-
+  console.log(this.sessions2[0].tutorID);
 
         // Change location and user ID's to their corresponding 
         // actual names
-        // for (this.j = 0; this.j < this.sessions2.length; this.j++) {
-        //   UserServices.getUser(this.sessions2[this.j].tutorID).then(
-        //     (response) => {
-        //       this.tutor = response.data.fName;
-        //       this.sessions2[this.j].tutorID = this.tutor;
-        //     },
-        //   );
-        //   LocationServices.getLocation(this.sessions2[this.j].locationID).then(
-        //       (response) => {
-        //         this.location = response.data.building
-        //         this.sessions2[this.j].locationID = this.location;
-        //       }
-        //     )
-        // }
-        // for (this.j = 0; this.j < this.sessions.length; this.j++) {
-        //   this.j = 0;
-        //   UserServices.getUser(this.sessions[this.j].tutorID).then(
-        //     (response) => {
-        //       this.tutor = response.data.fName;
-        //       console.log(this.sessions[this.j]);
-        //       this.sessions[this.j].tutorID = this.tutor;
-        //     }
-        //   );
-        //   this.j = 0;
-        //   LocationServices.getLocation(this.sessions[this.j].locationID).then(
-        //       (response) => {
-        //         this.location = response.data.building
-        //         this.sessions[this.j].locationID = this.location;
-        //       }
-        //     )
-        // }
+        for (let j = 0; j < this.sessions2.length; j++) {
+          UserServices.getUser(this.sessions2[j].tutorID).then(
+            (response) => {
+              this.tutor = response.data.fName;
+              this.sessions2[j].tutorID = this.tutor;
+            },
+          );
+          LocationServices.getLocation(this.sessions2[j].locationID).then(
+              (response) => {
+                this.location = response.data.building
+                this.sessions2[j].locationID = this.location;
+              }
+            )
+        }
+        for (let m = 0; m < this.sessions.length; m++) {
+          UserServices.getUser(this.sessions[m].tutorID).then(
+            (response) => {
+              this.tutor = response.data.fName;
+              // console.log(this.tutor);
+              this.sessions[m].tutorID = this.tutor;
+            }
+          );
+          LocationServices.getLocation(this.sessions[m].locationID).then(
+              (response) => {
+                this.location = response.data.building
+                this.sessions[m].locationID = this.location;
+              }
+            )
+        }
       })
       .catch((error) => {
         console.log(error);
