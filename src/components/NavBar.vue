@@ -69,7 +69,7 @@ export default {
       }
     },
     getAuth(num) {
-      return this.roles.includes(num); //return if it includes the role responsible
+      return this.user.roles.includes(num); //return if it includes the role responsible
     },
   },
 };
