@@ -1,10 +1,12 @@
 <template>
   <nav id="vue">
     <div class="menu-item" v-on:click.prevent="goToHome()">Home</div>
-    <AdminServices title="Admin" />
-    <SupervisorServices title="Supervisor"/>
-    <TutorServices title="Tutor" />
-    <StudentServices title="Student" />
+    <AdminServices title="Admin" v-if="this.getAuth(1)" />
+    <SupervisorServices title="Supervisor" v-if="this.getAuth(1)" />
+    <SupervisorServices title="Supervisor" v-else-if="this.getAuth(2)" />
+    <TutorServices title="Tutor" v-if="this.getAuth(3)" />
+    <StudentServices title="Student" v-if="this.getAuth(3)" />
+    <StudentServices title="Student" v-else-if="this.getAuth(4)" />
     <div class="menu-item" v-on:click.prevent="goToLogin()">Logout</div>
   </nav>
 </template>
@@ -14,14 +16,38 @@ import AdminServices from "../components/adminServices";
 import StudentServices from "../components/studentServices";
 import TutorServices from "../components/tutorServices";
 import SupervisorServices from "../components/supervisorServices";
-// Import Utils from ""
+//import UserRoleServices from "@/services/userRoleServices.js";
+
+import Utils from "@/config/utils.js";
 export default {
   name: "navbar",
   components: {
     AdminServices,
     TutorServices,
     StudentServices,
-    SupervisorServices
+    SupervisorServices,
+  },
+  data: () => ({
+    user: {},
+    roles: [],
+  }),
+   beforeCreate() {
+    this.user = Utils.getStore("user"); //gets the user that is logged in
+    //the users roles should already be in there
+
+    // let id = this.user.userID;
+    // await UserRoleServices.getRolesFromUser(id)
+    //   .then((response) => {
+    //     let roleResponse = response.data;
+    //     for (let i = 0; i < roleResponse.length; i++) {
+    //       console.log("Role " + i + " is :" + this.roles[i]);
+    //       this.roles[i] = roleResponse[i].roleID;
+    //     } //sets the roles for an array of ints. used by getauth to hide and show available features
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   }); //get all userRoles and store in Roles{}
+    //   console.log('after await: ' + this.roles);
   },
   methods: {
     goToHome() {
@@ -38,10 +64,12 @@ export default {
           console.log(error);
         });
       } else {
-        // Utils.setStore("user", null); //needs utils
-        this.$router.push({ name: "home" });
-        location.reload();
+        Utils.setStore("user", null); //needs utils
+        this.$router.push({ name: "login" });
       }
+    },
+    getAuth(num) {
+      return this.roles.includes(num); //return if it includes the role responsible
     },
   },
 };
