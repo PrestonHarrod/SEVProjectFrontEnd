@@ -42,7 +42,7 @@
                     :search="subject"
                     @input="getTutorSlots(selected)"
                     class="elevation-1"
-                  >
+                    >
                   </v-data-table>
                 </v-card>
               </div>
@@ -71,8 +71,8 @@
             :interval-count="19"
             :events="events"
             @click:event="viewSession"
+            :event-color="getEventColor"
             color="blue"
-            event-color="green"
             event-text-color="white"
             type="week"
           >
@@ -103,7 +103,8 @@
               <v-btn
                 text
                 color="primary"
-                @click="scheduleSession(selectedEvent, session, selected)"
+                selectedOpen = true;
+                @click="scheduleSession(selectedEvent, session, selected, selectedOpen)"
               >
                 Book
               </v-btn>
@@ -176,6 +177,8 @@ export default {
       selectedElement: null,
       selectedOpen: false,
       session: {},
+      colors:['green', 'red'],
+      tutorSlot: {},
     };
   },
 
@@ -216,7 +219,17 @@ export default {
   },
 
   methods: {
-    scheduleSession(selectedEvent, session, selected) {
+    getEventColor (event) {
+       if (event.name == "Booked") {
+         event.color = "red";
+       }
+       else {
+         event.color = "green";
+       }
+        return event.color
+      },
+    scheduleSession(selectedEvent, session, selected, selectedOpen) {
+      if (selectedEvent.name != "Booked") {
       if (confirm("Do you want to book this time slot?")) {
          this.user = Utils.getStore('user');
          this.session = session;
@@ -226,9 +239,27 @@ export default {
          this.session.scheduledEnd = selectedEvent.end;
          this.session.status = "Upcoming";
          this.session.locationID = "1";
+         selectedEvent.name = "Booked";
+         selectedEvent.color = "red";
+         this.selectedOpen = selectedOpen;
+         this.selectedOpen = false;
+         this.session.tutorSlotID = selectedEvent.id;
        //  this.session.date = selectedEvent.date;
-         SessionServices.addSession(this.session)
-         
+         SessionServices.addSession(this.session);
+        this.tutorSlot.studentID = this.user.userID;
+        this.tutorSlot.tutorSlotID = selectedEvent.id;
+        console.log(selectedEvent.id + "just before update TS");
+                    console.log(this.tutorSlot.length + "length");
+
+         TutorSlotServices.updateTutorSlot(this.tutorSlot);
+      }
+      }
+      else {
+        alert(
+            "Bull shit"
+
+          );
+          this.selectedOpen = false;
       }
     },
     findTutor(subjectID, level) {
@@ -240,7 +271,7 @@ export default {
           this.selectedEvent = event
           console.log(event.id);
           this.selectedElement = nativeEvent.target
-
+          
           requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
         }
 
@@ -250,7 +281,7 @@ export default {
         } else {
           open()
         }
-
+        
         nativeEvent.stopPropagation()
       },
     // Get and display tutor slots for selected tutor
@@ -285,18 +316,24 @@ export default {
               let newdate = year + "-" + month + "-" + day;
               let starttime = newdate + " " + response.data[i].startTime;
               let endtime = newdate + " " + response.data[i].endTime;
-
+              if (response.data[i].studentID == null) {
+                this.name1 = "Open Slot ";
+                }
+                else {
+                  this.name1 = "Booked";
+                };
               // add event to calender
               this.events.push({
                 id: response.data[i].tuturSlotID,
-                name: "Open Slot ",
+                name: this.name1,
+                
                 date: newdate,
                 start: starttime,
                 end: endtime,
                 details: date + ": " + response.data[i].startTime + " - " + response.data[i].endTime,
               });
             }
-
+            
             // display tutor slots for each day after current day
             for (let j = 0; j < 6; j++) {
               if (response.data[i].day == days[j]) {
@@ -313,16 +350,22 @@ export default {
                 let newdate = year2 + "-" + month2 + "-" + day2;
                 let starttime = newdate + " " + response.data[i].startTime;
                 let endtime = newdate + " " + response.data[i].endTime;
-
+                 if (response.data[i].studentID == null) {
+                this.name1 = "Open Slot ";
+                }
+                else {
+                  this.name1 = "Booked";
+                };
                 this.events.push({
                   id: response.data[i].tutorSlotID,
-                  name: "Open Slot ",
+                  name: this.name1,
                   date: newdate,
                   start: starttime,
                   end: endtime,
                   details: response.data[i].startTime + " - " + response.data[i].endTime,
-
+                  
                 });
+                
               }
             }
           }

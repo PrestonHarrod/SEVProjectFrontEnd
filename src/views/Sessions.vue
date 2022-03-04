@@ -28,10 +28,12 @@
           :single-select="singleSelect"
           show-select
           :search="search"
-          @click:row="viewCourse"
+          @click:row="viewSession2"
           class="elevation-1"
         >
+        
         </v-data-table>
+         
       </v-card>
       <br />
       <h2 style="background-color: #1976d2; color: #f2f2f2">
@@ -40,7 +42,7 @@
       <v-card width="100vw">
         <v-card-title>
           <v-text-field
-            v-model="search"
+            v-model="search2"
             append-icon="mdi-magnify"
             label="Search by Session Date"
             single-line
@@ -56,9 +58,10 @@
           :single-select="singleSelect"
           show-select
           :search="search"
-          @click:row="viewCourse"
+          @click:row="viewSession"
           class="elevation-1"
         >
+        
         </v-data-table>
       </v-card>
     </div>
@@ -80,6 +83,7 @@ export default {
       user: {},
       singleSelect: true,
       search: "",
+      search2: "",
       headers: [
         {
           text: "Date&Time",
@@ -108,10 +112,8 @@ export default {
       sessions2: [{}],
       testArray: [{}],
       i: 0,
-      j: 0,
       k: 0,
       l: 0,
-      m: 0,
       tutor: "",
       location: "",
     };
@@ -120,12 +122,12 @@ export default {
     // display completed and upcoming sessions depending on
     // if a student or tutor is logged in
     this.user = Utils.getStore("user");
-    SessionServices.getSessions()
+     SessionServices.getSessions()
       .then((response) => {
         this.i = 0;
-                for (this.i = 0; this.i < response.data.length; this.i++) {
+        for (this.i = 0; this.i < response.data.length; this.i++) {
           if (this.user.userID == response.data[this.i].studentID) {
-            if (response.data[this.i].status == "Upcoming") {
+            if (response.data[this.i].status === "Upcoming") {
               this.upcomingSessions[this.l] = response.data[this.i];
               this.l++;
             }
@@ -134,22 +136,28 @@ export default {
         }
         this.i = 0;
         for (this.i = 0; this.i < response.data.length; this.i++) {
-        
           if (this.user.userID == response.data[this.i].studentID) {
-            if (response.data[this.i].status == "Complete") {
+            if (response.data[this.i].status === "Complete") {
               this.completedSessions[this.k] = response.data[this.i];
               this.k++;
             }
-        
+           
           }
         }
-
-
-this.sessions = this.completedSessions;
+if (JSON.stringify(this.upcomingSessions[0]) === "{}") {
+  this.upcomingSessions.pop();
+  this.sessions2 = this.upcomingSessions;
+}
+else {
 this.sessions2 = this.upcomingSessions;
- console.log(this.sessions2.length);
-  console.log(this.sessions2[0].tutorID);
-
+}
+if (JSON.stringify(this.completedSessions[0]) === "{}") {
+  this.completedSessions.pop();
+  this.sessions = this.completedSessions;
+}
+else {
+this.sessions = this.completedSessions;
+}
         // Change location and user ID's to their corresponding 
         // actual names
         for (let j = 0; j < this.sessions2.length; j++) {
@@ -159,7 +167,7 @@ this.sessions2 = this.upcomingSessions;
               this.sessions2[j].tutorID = this.tutor;
             },
           );
-          LocationServices.getLocation(this.sessions2[j].locationID).then(
+           LocationServices.getLocation(this.sessions2[j].locationID).then(
               (response) => {
                 this.location = response.data.building
                 this.sessions2[j].locationID = this.location;
@@ -174,7 +182,7 @@ this.sessions2 = this.upcomingSessions;
               this.sessions[m].tutorID = this.tutor;
             }
           );
-          LocationServices.getLocation(this.sessions[m].locationID).then(
+           LocationServices.getLocation(this.sessions[m].locationID).then(
               (response) => {
                 this.location = response.data.building
                 this.sessions[m].locationID = this.location;
@@ -188,7 +196,24 @@ this.sessions2 = this.upcomingSessions;
   },
 
   methods: {
-    viewCourse() {},
+    viewSession(session) {
+        let id = session.sessionID
+          this.$router.push({ name: 'studentSessionView', params: {id: id}})
+        .then(() => {
+        })
+        .catch(error => {
+         console.log(error)
+        })
+    },
+    viewSession2(session2) {
+        let id = session2.sessionID
+          this.$router.push({ name: 'studentSessionView', params: {id: id}})
+        .then(() => {
+        })
+        .catch(error => {
+         console.log(error)
+        })
+    },
   },
 };
 </script>

@@ -20,7 +20,7 @@ export default {
     // updateAdvisor(advisor) {
     //   return apiClient.put("advisors/" + advisor.advisorID, advisor);
     // },
-    // deleteAdvisor(id) {
-    //   return apiClient.delete("advisors/" + id);
-    // }
+    deleteSession(sessionID) {
+      return apiClient.delete("sessions/" + sessionID);
+    }
 };

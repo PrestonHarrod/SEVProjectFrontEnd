@@ -15,7 +15,7 @@ import SubjectList from "./views/subjectList.vue";
 import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
 //apply for tutor?
-
+import studentSessionView from "./views/Students/studentViewSession";
 import SessionList from "./views/Sessions.vue";
 import SessionView from "./views/sessionView.vue";
 
@@ -273,6 +273,12 @@ export default new Router({
       path: "/tutor/session/:id",
       name: "sessionView",
       component: SessionView,
+      props: true,
+    },
+    {
+      path: "/student/viewSessionDetails/",
+      name: "studentSessionView",
+      component: studentSessionView,
       props: true,
     },
   ],
