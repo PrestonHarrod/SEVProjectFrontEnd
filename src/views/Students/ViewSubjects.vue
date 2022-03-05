@@ -75,6 +75,7 @@
             color="blue"
             event-text-color="white"
             type="week"
+
           >
           </v-calendar>
           <v-menu
@@ -179,6 +180,7 @@ export default {
       session: {},
       colors:['green', 'red'],
       tutorSlot: {},
+
     };
   },
 
@@ -256,7 +258,7 @@ export default {
       }
       else {
         alert(
-            "Bull shit"
+            "This session is already booked!"
 
           );
           this.selectedOpen = false;
@@ -324,13 +326,13 @@ export default {
                 };
               // add event to calender
               this.events.push({
-                id: response.data[i].tuturSlotID,
+                id: response.data[i].tutorSlotID,
                 name: this.name1,
                 
                 date: newdate,
                 start: starttime,
                 end: endtime,
-                details: date + ": " + response.data[i].startTime + " - " + response.data[i].endTime,
+                details: response.data[i].startTime + " - " + response.data[i].endTime,
               });
             }
             
@@ -347,9 +349,9 @@ export default {
                 }
                 var day2 = tomorrow.getUTCDate();
                 var year2 = tomorrow.getUTCFullYear();
-                let newdate = year2 + "-" + month2 + "-" + day2;
-                let starttime = newdate + " " + response.data[i].startTime;
-                let endtime = newdate + " " + response.data[i].endTime;
+                let newdate2 = year2 + "-" + month2 + "-" + day2;
+                let starttime2 = newdate2 + " " + response.data[i].startTime;
+                let endtime2 = newdate2 + " " + response.data[i].endTime;
                  if (response.data[i].studentID == null) {
                 this.name1 = "Open Slot ";
                 }
@@ -359,9 +361,9 @@ export default {
                 this.events.push({
                   id: response.data[i].tutorSlotID,
                   name: this.name1,
-                  date: newdate,
-                  start: starttime,
-                  end: endtime,
+                  date: newdate2,
+                  start: starttime2,
+                  end: endtime2,
                   details: response.data[i].startTime + " - " + response.data[i].endTime,
                   
                 });
