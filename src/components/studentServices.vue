@@ -20,7 +20,9 @@
         </div>
         <div class="menu-item">
           <router-link :to="{name: 'studentSubjectView'}">Schedule Session</router-link>
-
+        </div>
+         <div class="menu-item">
+          <router-link :to="{name: 'studentRequest'}">Request</router-link>
         </div>
       </div>
     </transition>

@@ -7,6 +7,7 @@ import StudentHome from "./views/Students/studentHome.vue";
 import AdminHome from "./views/Admins/adminHome.vue";
 import TutorHome from "./views/Tutors/tutorHome.vue";
 import StudentSubjectView from "./views/Students/ViewSubjects.vue";
+import Request from "./views/Students/Request.vue"
 
 import Schedule from "./views/schedule.vue";
 import Availability from "./views/availability.vue";
@@ -73,6 +74,11 @@ export default new Router({
       path: "/student",
       name: "student",
       component: StudentHome,
+    },
+    {
+      path: "/student/request",
+      name: "studentRequest",
+      component: Request,
     },
     //do we include subjects or tutors as a page or on booking?
     {
