@@ -1,11 +1,13 @@
+
+
 <template>
+
   <nav id="vue">
     <div class="menu-item" v-on:click.prevent="goToHome()">Home</div>
     <AdminServices title="Admin" />
     <SupervisorServices title="Supervisor"/>
     <TutorServices title="Tutor" />
     <StudentServices title="Student" />
-    <div class="menu-item" v-on:click.prevent="goToLogin()">Logout</div>
   </nav>
 </template>
 
@@ -14,16 +16,31 @@ import AdminServices from "../components/adminServices";
 import StudentServices from "../components/studentServices";
 import TutorServices from "../components/tutorServices";
 import SupervisorServices from "../components/supervisorServices";
+import Utils from '@/config/utils.js';
+import {mdiAccount} from '@mdi/js'
 // Import Utils from ""
 export default {
+  data: () => ({
+    icons: {
+      mdiAccount
+    }
+  }),
   name: "navbar",
   components: {
     AdminServices,
     TutorServices,
     StudentServices,
-    SupervisorServices
+    SupervisorServices,
   },
   methods: {
+    goToProfile() {
+        this.user = Utils.getStore('user');
+        let id = this.user.userID;
+       if (this.user != null) {
+       this.$router.push({ name: "userprofile", params: id});
+       }
+      
+    },
     goToHome() {
       this.$router
         .push({ name: "/" })
