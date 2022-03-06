@@ -77,9 +77,10 @@ export default new Router({
       component: StudentHome,
     },
     {
-      path: "/student/request",
-      name: "studentRequest",
+      path: "/request",
+      name: "request",
       component: Request,
+      props: true
     },
     //do we include subjects or tutors as a page or on booking?
     {
