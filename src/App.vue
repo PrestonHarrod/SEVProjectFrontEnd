@@ -2,12 +2,13 @@
   <v-container fluid>
     <v-layout>
       <v-flex>
-        <div>
+        <v-app>
           <div v-if="isLogin()">
-            <NavBar />
+            <h1><Avatar /></h1>
+            <p><NavBar /></p>
           </div>
           <router-view />
-        </div>
+        </v-app>
       </v-flex>
     </v-layout>
   </v-container>
@@ -15,10 +16,14 @@
 
 <script>
 import NavBar from "./components/NavBar.vue";
+import Avatar from "./components/avatar.vue";
+
 export default {
   name: "App",
   components: {
     NavBar,
+    Avatar,
+
   },
   methods: {
     isLogin() {
@@ -36,5 +41,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+p {
+  margin-top: -65px;
+}
+
+h1 {
+  margin-left: 25px;
 }
 </style>
