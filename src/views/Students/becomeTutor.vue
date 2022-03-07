@@ -86,7 +86,7 @@ export default {
       // create request based off users input
       createRequest() {
          this.submitRequest.userID = this.user.userID;
-         this.submitRequest.Type = "Becoming a tutor";
+         this.submitRequest.type = "Becoming a tutor";
          this.submitRequest.desc = this.desc;
          this.submitRequest.orgID = this.selectedOrg;
          this.submitRequest.studentID = this.user.userID
