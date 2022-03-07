@@ -1,5 +1,9 @@
 <template>
+
   <v-container>
+     <H1 style="background-color: #1976d2; color: #f2f2f2"
+      >Contact Office</H1
+    >
     <div>
       <br />
       <v-app>
@@ -38,6 +42,11 @@
               </template>
               
             </v-textarea>
+            <v-radio-group v-model="selectedOrg" column>
+            <v-radio label="Student Success" color="red" value="1"></v-radio>
+            <v-radio label="Writing Center" color="red darken-3" value="2"></v-radio>
+            <v-radio label="New College" color="indigo" value="3"></v-radio>
+         </v-radio-group>
             <v-btn @click="createRequest()" color="primary">
                Submit
             </v-btn>
@@ -49,7 +58,7 @@
 
 <script>
 import Utils from '@/config/utils.js';
-import userOrgServices from '@/services/userOrgServices.js'
+import requestServices from "@/services/requestServices.js"
 
 export default {
    data() {
@@ -61,7 +70,8 @@ export default {
          request: "",
          desc: "",
          submitRequest: {},
-         selected: [],
+         selected: {},
+         selectedOrg: {},
          user: {},
          usersOrg: [{}]
       };
@@ -69,24 +79,20 @@ export default {
    },
    async created() {
       this.user = Utils.getStore('user');
-       userOrgServices.getUsersOrgID(this.user.userID)
-      .then((response) => {
-         this.usersOrg = response.data;
-      });
-
-
-      
-
-
 
    },
    methods: {
+      // create request based off users input
       createRequest() {
+         console.log(this.request)
          this.submitRequest.userID = this.user.userID;
-         this.submitRequest.type = this.request;
+         this.submitRequest.type = this.selected;
          this.submitRequest.desc = this.desc;
-         this.submitRequest.userID = this.user.userID
-         //this.submitRequest.orgID = 
+         this.submitRequest.orgID = this.selectedOrg;
+         this.submitRequest.studentID = this.user.userID
+         requestServices.addRequest(this.submitRequest)
+         this.$router.push({ name: "home" });
+      
       }
    }
 }
