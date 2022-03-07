@@ -93,7 +93,7 @@ export default {
          console.log(this.submitRequest)
 
          requestServices.addRequest(this.submitRequest)
-        // this.$router.push({ name: "home" });
+         this.$router.push({ name: "home" });
       
       }
    }
