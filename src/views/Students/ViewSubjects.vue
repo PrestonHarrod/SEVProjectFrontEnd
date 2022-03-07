@@ -301,47 +301,15 @@ export default {
               "Friday",
               "Saturday",
             ];
-            var d = new Date();
-            var dayName = days[d.getDay()];
-
-            // display tutor slots for current day
-            if (response.data[i].day == dayName) {
-              var date = new Date();
-              console.log(date);
-              var month = date.getUTCMonth() + 1; //months from 1-12
-              if (month < 10) {
-                month = "0" + month;
-              }
-              var day = date.getUTCDate();
-              var year = date.getUTCFullYear();
-
-              let newdate = year + "-" + month + "-" + day;
-              let starttime = newdate + " " + response.data[i].startTime;
-              let endtime = newdate + " " + response.data[i].endTime;
-              if (response.data[i].studentID == null) {
-                this.name1 = "Open Slot ";
-                }
-                else {
-                  this.name1 = "Booked";
-                };
-              // add event to calender
-              this.events.push({
-                id: response.data[i].tutorSlotID,
-                name: this.name1,
-                
-                date: newdate,
-                start: starttime,
-                end: endtime,
-                details: response.data[i].startTime + " - " + response.data[i].endTime,
-              });
-            }
+            
             
             // display tutor slots for each day after current day
             for (let j = 0; j < 6; j++) {
               if (response.data[i].day == days[j]) {
                 // create date for next day in the week
+                console.log(response.data[i])
                 var tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + j);
+                tomorrow.setDate(tomorrow.getDate() + j - 1);
 
                 var month2 = tomorrow.getUTCMonth() + 1; //months from 1-12
                 if (month2 < 10) {
