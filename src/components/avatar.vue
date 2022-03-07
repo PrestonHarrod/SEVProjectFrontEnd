@@ -47,7 +47,7 @@
                 Contracts
               </v-btn>
               <v-divider class="my-3"></v-divider>
-              <v-btn @click="goToLogout()"
+              <v-btn @click="goToBecomeTutor()"
                 depressed
                 rounded
                 text
@@ -106,11 +106,20 @@ export default {
 
   methods: {
     goToProfile() {
-        this.user = Utils.getStore('user');
-        let id = this.user.userID;
-       if (this.user != null) {
-       this.$router.push({ name: "userprofile", params: id});
-       }
+
+      this.user = Utils.getStore('user');
+      //let id = this.user.userID;
+      if (this.user != null) {
+        this.$router.push({ name: "userprofile"});
+      }
+    },
+    goToBecomeTutor() {
+      this.user = Utils.getStore('user');
+      //let id = this.user.userID;
+      if (this.user != null) {
+        this.$router.push({ name: "becometutor"});
+      }
+
   },
   goToRequest() {
       console.log("HERE")
@@ -119,6 +128,7 @@ export default {
           console.log(error);
         });
       } 
+
     },
    goToLogout() {
      console.log("here");

@@ -310,7 +310,6 @@ export default {
                 console.log(response.data[i])
                 var tomorrow = new Date();
                 tomorrow.setDate(tomorrow.getDate() + j - 1);
-
                 var month2 = tomorrow.getUTCMonth() + 1; //months from 1-12
                 if (month2 < 10) {
                   month2 = "0" + month2;
