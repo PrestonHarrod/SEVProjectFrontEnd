@@ -42,7 +42,7 @@
                     :search="subject"
                     @input="getTutorSlots(selected)"
                     class="elevation-1"
-                  >
+                    >
                   </v-data-table>
                 </v-card>
               </div>
@@ -71,12 +71,54 @@
             :interval-count="19"
             :events="events"
             @click:event="viewSession"
+            :event-color="getEventColor"
             color="blue"
-            event-color="green"
             event-text-color="white"
             type="week"
+
           >
           </v-calendar>
+          <v-menu
+          v-model="selectedOpen"
+          :close-on-content-click="false"
+          :activator="selectedElement"
+          offset-x
+        >
+          <v-card
+            color="grey lighten-4"
+            min-width="350px"
+            flat
+          >
+            <v-toolbar
+              style="background-color: #1976d2; color: #f2f2f2"
+            >
+             
+              <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+              <v-spacer></v-spacer>
+              
+            </v-toolbar>
+            <v-card-text>
+              <span v-html="selectedEvent.details"></span>
+            </v-card-text>
+            <v-card-actions>
+              <v-btn
+                text
+                color="primary"
+                selectedOpen = true;
+                @click="scheduleSession(selectedEvent, session, selected, selectedOpen)"
+              >
+                Book
+              </v-btn>
+              <v-btn
+                text
+                color="secondary"
+                @click="selectedOpen = false"
+              >
+                Cancel
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
         </v-form>
       </v-app>
     </div>
@@ -89,6 +131,8 @@ import TutorSlotServices from "@/services/tutorSlotServices.js"
 import UserServices from "@/services/UserServices.js";
 import userOrgServices from "@/services/userOrgServices.js";
 import Utils from '@/config/utils.js';
+import SessionServices from "@/services/sessionServices.js";
+
 
 export default {
   data() {
@@ -129,7 +173,14 @@ export default {
       users: [{}],
       usersOrg: [{}],
       usersOrgID: 0,
-      events: []
+      events: [],
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false,
+      session: {},
+      colors:['green', 'red'],
+      tutorSlot: {},
+
     };
   },
 
@@ -170,10 +221,71 @@ export default {
   },
 
   methods: {
+    getEventColor (event) {
+       if (event.name == "Booked") {
+         event.color = "red";
+       }
+       else {
+         event.color = "green";
+       }
+        return event.color
+      },
+    scheduleSession(selectedEvent, session, selected, selectedOpen) {
+      if (selectedEvent.name != "Booked") {
+      if (confirm("Do you want to book this time slot?")) {
+         this.user = Utils.getStore('user');
+         this.session = session;
+         this.session.studentID = this.user.userID;
+         this.session.tutorID = selected[0].userID;
+         this.session.scheduledStart = selectedEvent.start;
+         this.session.scheduledEnd = selectedEvent.end;
+         this.session.status = "Upcoming";
+         this.session.locationID = "1";
+         selectedEvent.name = "Booked";
+         selectedEvent.color = "red";
+         this.selectedOpen = selectedOpen;
+         this.selectedOpen = false;
+         this.session.tutorSlotID = selectedEvent.id;
+       //  this.session.date = selectedEvent.date;
+         SessionServices.addSession(this.session);
+        this.tutorSlot.studentID = this.user.userID;
+        this.tutorSlot.tutorSlotID = selectedEvent.id;
+        console.log(selectedEvent.id + "just before update TS");
+                    console.log(this.tutorSlot.length + "length");
+
+         TutorSlotServices.updateTutorSlot(this.tutorSlot);
+      }
+      }
+      else {
+        alert(
+            "This session is already booked!"
+
+          );
+          this.selectedOpen = false;
+      }
+    },
     findTutor(subjectID, level) {
       console.log(subjectID);
       console.log(level);
     },
+    viewSession({ nativeEvent, event }) {
+        const open = () => {
+          this.selectedEvent = event
+          console.log(event.id);
+          this.selectedElement = nativeEvent.target
+          
+          requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
+        }
+
+        if (this.selectedOpen) {
+          this.selectedOpen = false
+          requestAnimationFrame(() => requestAnimationFrame(() => open()))
+        } else {
+          open()
+        }
+        
+        nativeEvent.stopPropagation()
+      },
     // Get and display tutor slots for selected tutor
     getTutorSlots(selected) {
       this.events = [];
@@ -206,16 +318,24 @@ export default {
               let newdate = year + "-" + month + "-" + day;
               let starttime = newdate + " " + response.data[i].startTime;
               let endtime = newdate + " " + response.data[i].endTime;
-
+              if (response.data[i].studentID == null) {
+                this.name1 = "Open Slot ";
+                }
+                else {
+                  this.name1 = "Booked";
+                };
               // add event to calender
               this.events.push({
-                id: response.data[i].tuturSlotID,
-                name: "Open Slot ",
+                id: response.data[i].tutorSlotID,
+                name: this.name1,
+                
+                date: newdate,
                 start: starttime,
                 end: endtime,
+                details: response.data[i].startTime + " - " + response.data[i].endTime,
               });
             }
-
+            
             // display tutor slots for each day after current day
             for (let j = 0; j < 6; j++) {
               if (response.data[i].day == days[j]) {
@@ -232,13 +352,22 @@ export default {
                 let newdate2 = year2 + "-" + month2 + "-" + day2;
                 let starttime2 = newdate2 + " " + response.data[i].startTime;
                 let endtime2 = newdate2 + " " + response.data[i].endTime;
-
+                 if (response.data[i].studentID == null) {
+                this.name1 = "Open Slot ";
+                }
+                else {
+                  this.name1 = "Booked";
+                };
                 this.events.push({
-                  id: response.data[i].tuturSlotID,
-                  name: "Open Slot ",
+                  id: response.data[i].tutorSlotID,
+                  name: this.name1,
+                  date: newdate2,
                   start: starttime2,
                   end: endtime2,
+                  details: response.data[i].startTime + " - " + response.data[i].endTime,
+                  
                 });
+                
               }
             }
           }

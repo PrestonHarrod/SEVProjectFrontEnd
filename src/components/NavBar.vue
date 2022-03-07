@@ -1,4 +1,7 @@
+
+
 <template>
+
   <nav id="vue">
     <div class="menu-item" v-on:click.prevent="goToHome()">Home</div>
     <AdminServices title="Admin" v-if="this.getAuth(1)" />
@@ -17,9 +20,15 @@ import StudentServices from "../components/studentServices";
 import TutorServices from "../components/tutorServices";
 import SupervisorServices from "../components/supervisorServices";
 //import UserRoleServices from "@/services/userRoleServices.js";
+import Utils from '@/config/utils.js';
+import {mdiAccount} from '@mdi/js'
 
-import Utils from "@/config/utils.js";
 export default {
+  data: () => ({
+    icons: {
+      mdiAccount
+    }
+  }),
   name: "navbar",
   components: {
     AdminServices,
@@ -33,8 +42,17 @@ export default {
   }),
    created() {
     this.user = Utils.getStore("user"); //gets the user that is logged in
+
   },
   methods: {
+    goToProfile() {
+        this.user = Utils.getStore('user');
+        let id = this.user.userID;
+       if (this.user != null) {
+       this.$router.push({ name: "userprofile", params: id});
+       }
+      
+    },
     goToHome() {
       this.$router
         .push({ name: "/" })

@@ -14,13 +14,13 @@ export default {
   getSessionsForTutor(id) {
     return apiClient.get("sessions?tutorID=" + id);
   },
-  //   addAdvisor(advisor) {
-  //     return apiClient.post("users/", advisor);
-  //   },
-  //   updateAdvisor(advisor) {
-  //     return apiClient.put("advisors/" + advisor.advisorID, advisor);
-  //   },
-  //   deleteAdvisor(id) {
-  //     return apiClient.delete("advisors/" + id);
-  //   }
+    addSession(session) {
+      return apiClient.post("sessions/", session);
+    },
+    // updateAdvisor(advisor) {
+    //   return apiClient.put("advisors/" + advisor.advisorID, advisor);
+    // },
+    deleteSession(sessionID) {
+      return apiClient.delete("sessions/" + sessionID);
+    }
 };
