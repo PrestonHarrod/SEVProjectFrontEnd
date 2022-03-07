@@ -31,23 +31,8 @@ export default {
     user: {},
     roles: [],
   }),
-   beforeCreate() {
+   created() {
     this.user = Utils.getStore("user"); //gets the user that is logged in
-    //the users roles should already be in there
-
-    // let id = this.user.userID;
-    // await UserRoleServices.getRolesFromUser(id)
-    //   .then((response) => {
-    //     let roleResponse = response.data;
-    //     for (let i = 0; i < roleResponse.length; i++) {
-    //       console.log("Role " + i + " is :" + this.roles[i]);
-    //       this.roles[i] = roleResponse[i].roleID;
-    //     } //sets the roles for an array of ints. used by getauth to hide and show available features
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   }); //get all userRoles and store in Roles{}
-    //   console.log('after await: ' + this.roles);
   },
   methods: {
     goToHome() {
@@ -69,6 +54,7 @@ export default {
       }
     },
     getAuth(num) {
+      console.log(this.user.roles);
       return this.user.roles.includes(num); //return if it includes the role responsible
     },
   },
