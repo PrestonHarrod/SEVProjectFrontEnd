@@ -36,10 +36,6 @@ export default {
     StudentServices,
     SupervisorServices,
   },
-  data: () => ({
-    user: {},
-    roles: [],
-  }),
    created() {
     this.user = Utils.getStore("user"); //gets the user that is logged in
 
