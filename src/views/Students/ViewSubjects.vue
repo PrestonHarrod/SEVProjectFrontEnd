@@ -358,6 +358,10 @@ export default {
                 else {
                   this.name1 = "Booked";
                 };
+                let index = days.indexOf(response.data[i].day)
+                console.log(index)
+                console.log(tomorrow.getDay())
+                if (index >= today.getDay()) {
                 this.events.push({
                   id: response.data[i].tutorSlotID,
                   name: this.name1,
@@ -367,7 +371,7 @@ export default {
                   details: response.data[i].startTime + " - " + response.data[i].endTime,
                   
                 });
-                
+                }
               }
             }
           }
