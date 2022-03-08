@@ -91,7 +91,7 @@ export default {
          this.submitRequest.orgID = this.selectedOrg;
          this.submitRequest.studentID = this.user.userID
          requestServices.addRequest(this.submitRequest)
-         this.$router.push({ name: "home" });
+         this.$router.push({ name: "/" });
       
       }
    }
