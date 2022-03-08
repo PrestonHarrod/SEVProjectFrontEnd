@@ -50,6 +50,7 @@
                     :id="role.id"
                     :value="role.name"
                     v-model="selectedRoles"
+                    @change="isRoleCheck($event, role.id)"
                   />
                   <label :for="role.name">{{ role.name }}</label>
                 </li>
@@ -73,6 +74,7 @@
                     :id="org.title"
                     :value="org.title"
                     v-model="selectedOrgs"
+                    @change="isOrgCheck($event, org.id)"
                   />
                   <label :for="org.title">{{ org.title }}</label>
                 </li>
@@ -152,15 +154,6 @@ export default {
       UserServices.updateUser(this.student)
         .then(() => {
           this.$router.push({ name: "viewStudent" });
-          // var id = response.data.userID;
-
-          // UserOrgServices.updateUserOrg(userOrg)
-          //   .then(() => {
-          //     console.log("user org update called...");
-          //   })
-          //   .catch((error) => {
-          //     console.log(error);
-          //   }); //post the userOrg
         })
         .catch((error) => {
           console.log("There was an error:", error.response);
@@ -169,31 +162,58 @@ export default {
           );
         });
     },
-    addUserOrg() {
-      //define the userRole
-      UserRoleServices.addUserRole(userRole)
-        .then(() => {})
-        .catch((error) => {
-          console.log(error);
-        }); //post the user
-
-      
+    isOrgCheck(event, orgID) {
+      //if it just got checked, then add it
+      if (event.target.checked == true) {
+        let userOrg = {
+          userID: this.student.userID,
+          orgID: orgID,
+        };
+        UserOrgServices.addUserOrg(userOrg)
+          .then(() => {
+            console.log("user org called...");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      if (event.target.checked == false) {
+        UserOrgServices.deleteSpecificUserOrg(this.student.userID, orgID)
+          .then(() => {
+            console.log("deleted User Org");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      //if it is unchecked, delete it
+      //event.target.checked will check to see if it got checked
     },
-    deleteUserOrg() {
-      //deletes a single userOrg Entry when the checkbox is checked
-    },
-    addUserRole() {
-     //define userOrg
-     UserOrgServices.addUserOrg(userOrg)
-        .then(() => {
-          console.log("user org called...");
-        })
-        .catch((error) => {
-          console.log(error);
-        }); //post the userOrg
-    },
-    deleteUserRole() {
-      //deletes a single userRole Entry when the checkbox is checked
+    isRoleCheck(event, roleID) {
+     
+     console.log("userid: " + this.st)
+     if (event.target.checked == true) {
+        let userRole = {
+          userID: this.student.userID,
+          roleID: roleID,
+        };
+        UserRoleServices.addUserRole(userRole)
+          .then(() => {
+            console.log("user role called...");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+      if (event.target.checked == false) {
+        UserRoleServices.deleteSpecificUserRole(this.student.userID, roleID)
+          .then(() => {
+            console.log("deleted User Role");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     },
   },
 };
