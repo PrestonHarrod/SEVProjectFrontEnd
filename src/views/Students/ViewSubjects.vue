@@ -200,6 +200,13 @@ export default {
          UserServices.getTutors("3", this.usersOrgID)
           .then((response) => {
             this.users = response.data;
+            for (let i = 0; i < this.users.length; i++) {
+              console.log(this.users)
+              if (this.users[i].userID == this.user.userID) {
+                this.users.splice(i, 1)
+                console.log("HERE")
+              }
+      }
          })
           .catch((error) => {
           console.log(error);
