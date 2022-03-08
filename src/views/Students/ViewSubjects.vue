@@ -180,6 +180,7 @@ export default {
       session: {},
       colors:['green', 'red'],
       tutorSlot: {},
+      z: 0,
 
     };
   },
@@ -199,6 +200,13 @@ export default {
          UserServices.getTutors("3", this.usersOrgID)
           .then((response) => {
             this.users = response.data;
+            for (let i = 0; i < this.users.length; i++) {
+              console.log(this.users)
+              if (this.users[i].userID == this.user.userID) {
+                this.users.splice(i, 1)
+                console.log("HERE")
+              }
+      }
          })
           .catch((error) => {
           console.log(error);
@@ -301,17 +309,40 @@ export default {
               "Friday",
               "Saturday",
             ];
-            var currDay = new Date();
-            
-            
+            var today = new Date();
+            today.getDay();
+               if (today.getDay() === "Sunday") {
+                 this.z = 0;
+               }
+                if (today.getDay() === "Monday") {
+                 this.z = 1;
+               }
+                if (today.getDay() === "Tuesday") {
+                 this.z = 2;
+               }
+                if (today.getDay() === "Wednesday") {
+                 this.z = 3;
+               }
+                if (today.getDay() === "Thursday") {
+                 this.z = 4;
+               }
+                if (today.getDay() === "Friday") {
+                 this.z = 5;
+               }
+                if (today.getDay() === "Saturday") {
+                 this.z = 6;
+               }
             // display tutor slots for each day after current day
             for (let j = 0; j < 6; j++) {
-            
               if (response.data[i].day == days[j]) {
                 // create date for next day in the week
-                console.log(response.data[i])
+                
+
+                console.log(response.data[i].day)
                 var tomorrow = new Date();
-                tomorrow.setDate(tomorrow.getDate() + j - 2);
+                console.log (this.z + " " + j);
+                tomorrow.setDate((tomorrow.getDate() + j) - today.getDay());
+
                 var month2 = tomorrow.getUTCMonth() + 1; //months from 1-12
                 if (month2 < 10) {
                   month2 = "0" + month2;
@@ -327,10 +358,6 @@ export default {
                 else {
                   this.name1 = "Booked";
                 };
-                let index = days.indexOf(response.data[i].day)
-                console.log(index)
-                console.log(tomorrow.getDay())
-                if (index >= currDay.getDay()) {
                 this.events.push({
                   id: response.data[i].tutorSlotID,
                   name: this.name1,
@@ -340,7 +367,6 @@ export default {
                   details: response.data[i].startTime + " - " + response.data[i].endTime,
                   
                 });
-                }
                 
               }
             }
