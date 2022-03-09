@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import sessionServices from '@/services/sessionServices.js'
+import sessionServices from '@/services/SessionServices.js'
 import userServices from '@/services/UserServices.js'
 import locationServices from '@/services/locationServices.js'
 import Utils from '@/config/utils.js'

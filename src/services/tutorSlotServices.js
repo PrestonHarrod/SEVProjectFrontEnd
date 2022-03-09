@@ -7,6 +7,9 @@ export default {
   getTutorSlot(id) {
     return apiClient.get("tutorSlots/" + id);
   },
+  getTutorSlotsForTutor(id) {
+    return apiClient.get("tutorSlots?tutorID=" + id);
+  },
   addTutorSlot(tutorSlot) {
     return apiClient.post("tutorSlots/", tutorSlot);
   },
@@ -15,5 +18,8 @@ export default {
   },
   deleteTutorSlot(tutorSlotID) {
     return apiClient.delete("tutorSlots/" + tutorSlotID);
+  },
+  deleteTutorSlotsForTutor(id) {
+    return apiClient.delete("tutorSlots?tutorID=" + id);
   },
 };
