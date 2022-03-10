@@ -1,6 +1,19 @@
 <template>
   <v-row class="fill-height">
     <v-col>
+      <v-row justify="center">
+      <v-checkbox
+        :label="`Private Session`"
+        v-model="checkbox1"
+        @change="checkbox12"
+      ></v-checkbox>
+            <v-checkbox
+        :label="`Group Session`"
+        v-model="checkbox2"
+        @change="checkbox23"
+      ></v-checkbox>
+      </v-row>
+      <br>
       <v-sheet height="600">
         <v-calendar
           ref="calendar"
@@ -10,7 +23,7 @@
           :first-interval= 6
           :interval-count= 19
           :events="events"
-          :event-color=colors[0]
+          :event-color="getEventColor"
           :event-ripple="false"
           @click:event="viewSession"
           @change="getTutorSlots"
@@ -98,6 +111,9 @@
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
+      checkbox1: false,
+      checkbox2: false
+
     }),
    
     methods: {
@@ -109,6 +125,7 @@
         }
       },
       startTime (tms) {
+        if (this.checkbox1 || this.checkbox2) {
         const mouse = this.toTime(tms)
 
         if (this.dragEvent && this.dragTime === null) {
@@ -116,16 +133,24 @@
 
           this.dragTime = mouse - start
         } else {
+          this.name1 = "";
           this.createStart = this.roundTime(mouse)
+          if (this.checkbox1) {
+            this.name1 == "Open Slot"
+          }
+          else if (this.checkbox2) {
+            this.name1 == "Group Session"
+
+          }
           this.createEvent = {
-            name: "Open Slot",
-            color: this.rndElement(this.colors),
+            name: this.name1,
             start: this.createStart,
             end: this.createStart,
             timed: true,
           }
           
           this.events.push(this.createEvent)
+        }
         }
       },
       extendBottom (event) {
@@ -161,12 +186,20 @@
             this.tutorSlot.day = new Date(this.createEvent.start).toLocaleDateString("en-US", { weekday: 'long' })
             this.tutorSlot.startTime = new Date(this.createEvent.start).getHours() + ":" + new Date(this.createEvent.start).getMinutes() + ":" + new Date(this.createEvent.start).getSeconds();
             this.tutorSlot.endTime = new Date(this.createEvent.end).getHours() + ":" + new Date(this.createEvent.end).getMinutes() + ":" + new Date(this.createEvent.end).getSeconds();
+            if (this.checkbox1) {
+              this.tutorSlot.status = "Private Session";
+            }
+            else if (this.checkbox2) {
+              this.tutorSlot.status = "Group Session";
+            }
             TutorSlotServices.addTutorSlot(this.tutorSlot);
         this.dragTime = null
         this.dragEvent = null
         this.createEvent = null
         this.createStart = null
         this.extendOriginal = null
+                  this.$router.go();
+
       },
       cancelDrag () {
         if (this.createEvent) {
@@ -197,16 +230,20 @@
         return new Date(tms.year, tms.month - 1, tms.day, tms.hour, tms.minute).getTime()
       },
       getEventColor (event) {
-        const rgb = parseInt(event.color.substring(1), 16)
-        const r = (rgb >> 16) & 0xFF
-        const g = (rgb >> 8) & 0xFF
-        const b = (rgb >> 0) & 0xFF
+       if (event.name == "Group Session") {
+         this.color = "blue";
+       }
+       else if (event.name == "Open Slot") {
+         this.color = "green";
+       }
+       else if (event.name == "Booked"){
+         this.color = "red";
+       }
+       else {
+         this.color = "grey"
+       }
 
-        return event === this.dragEvent
-          ? `rgba(${r}, ${g}, ${b}, 0.7)`
-          : event === this.createEvent
-            ? `rgba(${r}, ${g}, ${b}, 0.7)`
-            : event.color
+       return this.color;
       },
     getTutorSlots() {
       console.log(this.events.length);
@@ -265,8 +302,11 @@
                 let newdate2 = year2 + "-" + month2 + "-" + day2;
                 let starttime2 = newdate2 + " " + response.data[i].startTime;
                 let endtime2 = newdate2 + " " + response.data[i].endTime;
-                 if (response.data[i].studentID == null) {
-                this.name1 = "Open Slot ";
+                 if (response.data[i].studentID == null && response.data[i].status == "Private Session") {
+                this.name1 = "Open Slot";
+                }
+                else if (response.data[i].status == "Group Session") {
+                this.name1 = "Group Session";
                 }
                 else {
                   this.name1 = "Booked";
@@ -281,6 +321,7 @@
                   details: response.data[i].startTime + " - " + response.data[i].endTime,
                   
                 });
+                console.log(this.events);
                 
               }
             }
@@ -331,7 +372,23 @@
           //this.$router.go();
       
       },
-
+        checkbox12() {
+          if (this.checkbox1) {
+            this.checkbox2 = false;
+          }
+          console.log(this.checkbox1);
+          console.log(this.checkbox2);
+     
+ 
+        },
+        checkbox23() {
+          if (this.checkbox2) {
+            this.checkbox1 = false;
+          }
+          console.log(this.checkbox2);
+          console.log(this.checkbox1);
+  
+        }
       },
   }
 </script>
