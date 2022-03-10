@@ -48,9 +48,8 @@
                   <input
                     type="checkbox"
                     :id="role.id"
-                    :value="role.name"
+                    :value="role"
                     v-model="selectedRoles"
-                    @change="isRoleCheck($event, role.id)"
                   />
                   <label :for="role.name">{{ role.name }}</label>
                 </li>
@@ -71,10 +70,9 @@
                 <li v-for="org in orgs" :key="org.id">
                   <input
                     type="checkbox"
-                    :id="org.title"
-                    :value="org.title"
+                    :id="org.id"
+                    :value="org"
                     v-model="selectedOrgs"
-                    @change="isOrgCheck($event, org.id)"
                   />
                   <label :for="org.title">{{ org.title }}</label>
                 </li>
@@ -150,7 +148,40 @@ export default {
     },
     updateStudent() {
       this.student.userID = this.id;
-      console.log("this is the line of code's student: " + this.student);
+      console.log("adding all the userRoles and userOrgs: " + this.student);
+
+      //looping throught the selectedRole and posting each ones
+      console.log("the selected roles" + this.selectedRoles);
+      for (let i = 0; i < this.selectedRoles.length; i++) {
+        let userRole = {
+          userID: this.student.userID,
+          roleID: this.selectedRoles[i].id,
+        };
+        UserRoleServices.addUserRole(userRole)
+          .then(() => {
+            console.log("user role called...");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      //update the orgs
+
+      for (let i = 0; i < this.selectedOrgs.length; i++) {
+        let userOrg = {
+          userID: this.student.userID,
+          orgID: this.selectedOrgs[i].id,
+        };
+        UserOrgServices.addUserOrg(userOrg)
+          .then(() => {
+            console.log("user org called...");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
       UserServices.updateUser(this.student)
         .then(() => {
           this.$router.push({ name: "viewStudent" });
@@ -162,59 +193,58 @@ export default {
           );
         });
     },
-    isOrgCheck(event, orgID) {
-      //if it just got checked, then add it
-      if (event.target.checked == true) {
-        let userOrg = {
-          userID: this.student.userID,
-          orgID: orgID,
-        };
-        UserOrgServices.addUserOrg(userOrg)
-          .then(() => {
-            console.log("user org called...");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      if (event.target.checked == false) {
-        UserOrgServices.deleteSpecificUserOrg(this.student.userID, orgID)
-          .then(() => {
-            console.log("deleted User Org");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
+    // isOrgCheck(event, orgID) {
+    //   //if it just got checked, then add it
+    //   if (event.target.checked == true) {
+    //     let userOrg = {
+    //       userID: this.student.userID,
+    //       orgID: orgID,
+    //     };
+    //     UserOrgServices.addUserOrg(userOrg)
+    //       .then(() => {
+    //         console.log("user org called...");
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //       });
+    //   }
+    //   if (event.target.checked == false) {
+    //     UserOrgServices.deleteSpecificUserOrg(this.student.userID, orgID)
+    //       .then(() => {
+    //         console.log("deleted User Org");
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //       });
+    //   }
       //if it is unchecked, delete it
       //event.target.checked will check to see if it got checked
-    },
-    isRoleCheck(event, roleID) {
-     
-     console.log("userid: " + this.st)
-     if (event.target.checked == true) {
-        let userRole = {
-          userID: this.student.userID,
-          roleID: roleID,
-        };
-        UserRoleServices.addUserRole(userRole)
-          .then(() => {
-            console.log("user role called...");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-      if (event.target.checked == false) {
-        UserRoleServices.deleteSpecificUserRole(this.student.userID, roleID)
-          .then(() => {
-            console.log("deleted User Role");
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    },
+    // },
+    // isRoleCheck(event, roleID) {
+    //   console.log("userid: " + this.st);
+    //   if (event.target.checked == true) {
+    //     let userRole = {
+    //       userID: this.student.userID,
+    //       roleID: roleID,
+    //     };
+    //     UserRoleServices.addUserRole(userRole)
+    //       .then(() => {
+    //         console.log("user role called...");
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //       });
+    //   }
+    //   if (event.target.checked == false) {
+    //     UserRoleServices.deleteSpecificUserRole(this.student.userID, roleID)
+    //       .then(() => {
+    //         console.log("deleted User Role");
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //       });
+    //   }
+    // },
   },
 };
 </script>
