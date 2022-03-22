@@ -21,7 +21,8 @@ import SessionList from "./views/Sessions.vue";
 import SessionView from "./views/sessionView.vue";
 import userProfileView from "./views/Users/userProfile.vue";
 import becomeTutor from "./views/Students/becomeTutor.vue";
-
+import tutorsessionlist from  "./views/Tutors/tutorSessionList.vue";
+import tutorsessiondetails from "./views/Tutors/tutorViewSession.vue";
 //User Crud
 import UserList from "./views/Users/userList.vue";
 
@@ -302,5 +303,18 @@ export default new Router({
       component: becomeTutor,
       props: true,
     },
+    {
+      path: "/user/tutor/sessionlist",
+      name: "tutorsessionlist",
+      component: tutorsessionlist,
+      props: true,
+    },
+    {
+      path: "/user/tutor/sessionlist/session/",
+      name: "tutorsessiondetails",
+      component: tutorsessiondetails,
+      props: true,
+    },
+
   ],
 });
