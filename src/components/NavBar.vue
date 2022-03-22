@@ -10,7 +10,6 @@
     <TutorServices title="Tutor" v-if="this.getAuth(3)" />
     <StudentServices title="Student" v-if="this.getAuth(3)" />
     <StudentServices title="Student" v-else-if="this.getAuth(4)" />
-    <div class="menu-item" v-on:click.prevent="goToLogin()">Logout</div>
   </nav>
 </template>
 
