@@ -3,7 +3,7 @@
 <H1 style="background-color: #1976d2; color:#f2f2f2">Session View</H1>
 <br>
  <h2><v-btn :style="{left: '50%', transform:'translateX(-50%)'}" v-on:click.prevent="cancel()" color="black" text rounded>Go Back</v-btn></h2>
-    <h3><v-btn :style="{left: '50%', transform:'translateX(-50%)'}" v-on:click.prevent="cancel()" color="black" text rounded>Cancel Session</v-btn></h3>
+    <h3><v-btn :style="{left: '50%', transform:'translateX(-50%)'}" v-on:click.prevent="deleteSession(session)" color="red" text rounded>Cancel Session</v-btn></h3>
     <br>
   <v-form>
         <v-col>
@@ -25,11 +25,13 @@
 import sessionServices from '@/services/sessionServices.js'
 import userServices from '@/services/UserServices.js'
 import locationServices from '@/services/locationServices.js'
+import TutorSlotServices from "@/services/tutorSlotServices.js"
 import Utils from '@/config/utils.js'
 export default {
-  props: ['id'],
+    props: ['id'],
   data() {
     return {
+    tutorSlot: {},
       user: {},
       session: {},
       tutor: {},
@@ -80,7 +82,33 @@ export default {
   },
   methods: {
     cancel() {
-      this.$router.push({ name: 'schedule' })
+      this.$router.push({ name: 'tutorsessionlist' })
+    },
+    async deleteSession(session) {
+      let id = session.sessionID;
+      if (confirm("Do you really want to cancel this session?")) {
+        TutorSlotServices.cancelSlot(session.tutorSlotID)
+        .then((response) => {
+            this.tutorSlot = response.data[0];
+            this.tutorSlot.studentID = null;
+            TutorSlotServices.updateTutorSlot(this.tutorSlot)
+            .then(() => {
+            sessionServices.deleteSession(id)
+            })
+        
+          .then(() => {
+            this.$router.push({ name: "tutorsessionlist" });
+          })
+
+          .catch((error) => {
+            console.log(error);
+          });
+         })
+          .catch((error) => {
+          console.log(error);
+          });
+        
+      }
     },
     
 }

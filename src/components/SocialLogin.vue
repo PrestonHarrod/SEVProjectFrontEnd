@@ -65,6 +65,7 @@ export default {
               console.log("Returned User:" + user);
               //               this.$store.commit('setLoginUser', user);
               Utils.setStore("user", user);
+              console.log("loggedf in: " + user);
               this.$router.push({ name: "/" });
             })
             .catch((error) => {

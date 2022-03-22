@@ -7,6 +7,7 @@ import StudentHome from "./views/Students/studentHome.vue";
 import AdminHome from "./views/Admins/adminHome.vue";
 import TutorHome from "./views/Tutors/tutorHome.vue";
 import StudentSubjectView from "./views/Students/ViewSubjects.vue";
+import Request from "./views/Students/Request.vue"
 
 import Schedule from "./views/schedule.vue";
 import Availability from "./views/availability.vue";
@@ -15,10 +16,13 @@ import SubjectList from "./views/subjectList.vue";
 import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
 //apply for tutor?
-
+import studentSessionView from "./views/Students/studentViewSession";
 import SessionList from "./views/Sessions.vue";
 import SessionView from "./views/sessionView.vue";
-
+import userProfileView from "./views/Users/userProfile.vue";
+import becomeTutor from "./views/Students/becomeTutor.vue";
+import tutorsessionlist from  "./views/Tutors/tutorSessionList.vue";
+import tutorsessiondetails from "./views/Tutors/tutorViewSession.vue";
 //User Crud
 import UserList from "./views/Users/userList.vue";
 
@@ -73,6 +77,12 @@ export default new Router({
       path: "/student",
       name: "student",
       component: StudentHome,
+    },
+    {
+      path: "/request",
+      name: "request",
+      component: Request,
+      props: true
     },
     //do we include subjects or tutors as a page or on booking?
     {
@@ -275,5 +285,36 @@ export default new Router({
       component: SessionView,
       props: true,
     },
+    {
+      path: "/student/viewSessionDetails/",
+      name: "studentSessionView",
+      component: studentSessionView,
+      props: true,
+    },
+    {
+      path: "/userProfile//",
+      name: "userprofile",
+      component: userProfileView,
+      props: true,
+    },
+    {
+      path: "/user/student/becomeTutor",
+      name: "becometutor",
+      component: becomeTutor,
+      props: true,
+    },
+    {
+      path: "/user/tutor/sessionlist",
+      name: "tutorsessionlist",
+      component: tutorsessionlist,
+      props: true,
+    },
+    {
+      path: "/user/tutor/sessionlist/session/",
+      name: "tutorsessiondetails",
+      component: tutorsessiondetails,
+      props: true,
+    },
+
   ],
 });

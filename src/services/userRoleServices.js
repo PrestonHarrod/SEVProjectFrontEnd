@@ -20,5 +20,9 @@ export default {
     return apiClient.delete(
       "userroles?userID=" + uID + "&roleID=" + rID
     );
-  }
+  },
+  getRolesFromUser(id) {
+    return apiClient.get("userroles/roles/" + id);
+  },
+
 };

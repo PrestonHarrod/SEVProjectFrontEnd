@@ -99,10 +99,10 @@ export default {
           value: "locationID",
         },
         {
-          text: "Tutor",
+          text: "Student",
           align: "start",
           filterable: false,
-          value: "tutorID",
+          value: "studentID",
         },
       ],
       allSessions: [{}],
@@ -126,7 +126,7 @@ export default {
       .then((response) => {
         this.i = 0;
         for (this.i = 0; this.i < response.data.length; this.i++) {
-          if (this.user.userID == response.data[this.i].studentID) {
+          if (this.user.userID == response.data[this.i].tutorID) {
             if (response.data[this.i].status === "Upcoming") {
               this.upcomingSessions[this.l] = response.data[this.i];
               this.l++;
@@ -136,7 +136,7 @@ export default {
         }
         this.i = 0;
         for (this.i = 0; this.i < response.data.length; this.i++) {
-          if (this.user.userID == response.data[this.i].studentID) {
+          if (this.user.userID == response.data[this.i].tutorID) {
             if (response.data[this.i].status === "Complete") {
               this.completedSessions[this.k] = response.data[this.i];
               this.k++;
@@ -161,10 +161,10 @@ this.sessions = this.completedSessions;
         // Change location and user ID's to their corresponding 
         // actual names
         for (let j = 0; j < this.sessions2.length; j++) {
-          UserServices.getUser(this.sessions2[j].tutorID).then(
+          UserServices.getUser(this.sessions2[j].studentID).then(
             (response) => {
-              this.tutor = response.data.fName;
-              this.sessions2[j].tutorID = this.tutor;
+              this.student = response.data.fName;
+              this.sessions2[j].studentID = this.student;
             },
           );
            LocationServices.getLocation(this.sessions2[j].locationID).then(
@@ -175,11 +175,11 @@ this.sessions = this.completedSessions;
             )
         }
         for (let m = 0; m < this.sessions.length; m++) {
-          UserServices.getUser(this.sessions[m].tutorID).then(
+          UserServices.getUser(this.sessions[m].studentID).then(
             (response) => {
-              this.tutor = response.data.fName;
+              this.student = response.data.fName;
               // console.log(this.tutor);
-              this.sessions[m].tutorID = this.tutor;
+              this.sessions[m].studentID = this.student;
             }
           );
            LocationServices.getLocation(this.sessions[m].locationID).then(
@@ -198,7 +198,7 @@ this.sessions = this.completedSessions;
   methods: {
     viewSession(session) {
         let id = session.sessionID
-          this.$router.push({ name: 'studentSessionView', params: {id: id}})
+          this.$router.push({ name: 'tutorsessiondetails', params: {id: id}})
         .then(() => {
         })
         .catch(error => {
@@ -207,7 +207,7 @@ this.sessions = this.completedSessions;
     },
     viewSession2(session2) {
         let id = session2.sessionID
-          this.$router.push({ name: 'studentSessionView', params: {id: id}})
+          this.$router.push({ name: 'tutorsessiondetails', params: {id: id}})
         .then(() => {
         })
         .catch(error => {

@@ -20,7 +20,6 @@
         </div>
         <div class="menu-item">
           <router-link :to="{name: 'studentSubjectView'}">Schedule Session</router-link>
-
         </div>
       </div>
     </transition>
