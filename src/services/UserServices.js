@@ -8,8 +8,8 @@ export default {
   getTutors(roleID, orgID) {
     return apiClient.get("users/tutors/" + roleID + orgID);
   },
-  getUsersByRole(roleID) {
-    return apiClient.get("users/tutorRole/" + roleID);
+  getUsersByRole(roleID, orgID) {
+    return apiClient.get("users/tutorRole/" + roleID + orgID);
   },
   getStudents(roleID) {
     return apiClient.get("users/studentRole/" + roleID);
