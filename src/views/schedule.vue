@@ -68,7 +68,7 @@
               <span v-html="selectedEvent.details"></span>
             </v-card-text>
             <v-card-actions>
-              <v-btn
+              <v-btn v-if="selectedEvent.name != 'Booked'"
                 text
                 color="error"
                 @click="removeTimeSlot(selectedEvent)"
