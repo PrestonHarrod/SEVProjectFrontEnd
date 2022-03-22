@@ -103,13 +103,21 @@
               <span v-html="selectedEvent.details"></span>
             </v-card-text>
             <v-card-actions>
-              <v-btn
+              <v-btn v-if="selectedEvent.name == 'Open Slot'"
                 text
                 color="primary"
                 selectedOpen = true;
                 @click="scheduleSession(selectedEvent, session, selected, selectedOpen)"
               >
                 Book
+              </v-btn>
+              <v-btn v-if="selectedEvent.name == 'Group Session'"
+                text
+                color="primary"
+                selectedOpen = true;
+                @click="signUp(selectedEvent, session, selected, selectedOpen)"
+              >
+                Sign Up
               </v-btn>
               <v-btn
                 text
@@ -279,6 +287,43 @@ export default {
           );
           this.selectedOpen = false;
       }
+    },
+
+    signUp(selectedEvent, session, selected, selectedOpen) {
+       if (selectedEvent.name != "Booked") {
+      if (confirm("Do you want to sign up for this group session?")) {
+         this.user = Utils.getStore('user');
+         this.session = session;
+         this.session.studentID = this.user.userID;
+         this.session.tutorID = selected[0].userID;
+         this.session.scheduledStart = selectedEvent.start;
+         this.session.scheduledEnd = selectedEvent.end;
+         this.session.status = "Upcoming";
+         this.session.locationID = "1";
+         if (selectedEvent.name != "Group Session") {
+         selectedEvent.name = "Booked";
+         selectedEvent.color = "red";
+         }
+         this.selectedOpen = selectedOpen;
+         this.selectedOpen = false;
+         this.session.tutorSlotID = selectedEvent.id;
+       //  this.session.date = selectedEvent.date;
+         SessionServices.addSession(this.session);
+        //this.tutorSlot.studentID = this.user.userID;
+        //this.tutorSlot.tutorSlotID = selectedEvent.id;
+
+
+         //TutorSlotServices.updateTutorSlot(this.tutorSlot);
+      }
+      }
+      else {
+        alert(
+            "This session is already booked!"
+
+          );
+          this.selectedOpen = false;
+      }
+
     },
     findTutor(subjectID, level) {
       console.log(subjectID);
