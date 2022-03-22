@@ -19,10 +19,5 @@ export default {
   getUsersOrgID(id) {
     return apiClient.get("userOrgs/student/" + id);
   },
-  deleteSpecificUserOrg(uID, oID) {
-    return apiClient.delete(
-      "userOrgs?userID=" + uID + "&orgID=" + oID
-    );
-  }
 
 };
