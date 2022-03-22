@@ -16,7 +16,13 @@ export default {
   deleteUserRole(userRoleID) {
     return apiClient.delete("userroles/" + userRoleID);
   },
+  deleteSpecificUserRole(uID, rID) {
+    return apiClient.delete(
+      "userroles?userID=" + uID + "&roleID=" + rID
+    );
+  },
   getRolesFromUser(id) {
     return apiClient.get("userroles/roles/" + id);
   },
+
 };

@@ -18,15 +18,7 @@
           v-model="users.lName"
           type="text"
           id="lName"
-        />
-        <v-text-field
-          label="Email"
-          readonly
-          v-model="users.email"
-          type="text"
-          id="email"
-        />
-   
+        />   
         <v-text-field
           label="Phone Number"
           readonly

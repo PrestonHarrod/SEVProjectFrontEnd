@@ -52,6 +52,7 @@ export default {
     return {
       selected: [],
       student: {},
+      user: {},
       search: "",
       headers: [
         {
@@ -84,6 +85,7 @@ export default {
   },
   created() {
     this.user = Utils.getStore("user");
+    console.log(this.user.orgs);
     UserServices.getUsersByRole("4")
       .then((response) => {
         this.students = response.data;
