@@ -11,10 +11,6 @@
     </svg>
     <transition name="fade" apear>
       <div class="sub-menu" v-if="isOpen">
-        <div class="menu-item" v-on:click.prevent="goToBooking()">Booking</div>
-        <div class="menu-item" v-on:click.prevent="goToStudentSessions()">
-          Sessions
-        </div>
         <div class="menu-item">
           <router-link to="/student/sessions">Sessions</router-link>
         </div>
