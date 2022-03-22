@@ -65,7 +65,7 @@ export default {
     },
     goToTutorSessions() {
       this.$router
-        .push({ name: "tutorSessions" })
+        .push({ name: "tutorsessionlist" })
         .then(() => {})
         .catch((error) => {
           console.log(error);
