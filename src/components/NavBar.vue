@@ -68,7 +68,8 @@ export default {
       }
     },
     getAuth(num) {
-      console.log(this.user.roles);
+      console.log("roles: " + this.user.roles);
+      console.log("orgs: " + this.user.orgs);
       return this.user.roles.includes(num); //return if it includes the role responsible
     },
   },

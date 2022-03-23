@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>{{ message }}</h3>
-    <v-btn class="ma-2" outlined color="indigo" @click="loginWithGoogle()">
+    <v-btn class="ma-2" outlined color="indigo"  @click="loginWithGoogle();" >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="18"
