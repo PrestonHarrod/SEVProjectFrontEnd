@@ -4,20 +4,21 @@
       <br>
       <v-sheet height="600">
         <v-calendar
-          ref="calendar"
-          v-model="value"
-          color="primary"
-          type = "week"
-          :first-interval= 6
-          :interval-count= 19
-          :events="events"
-          :event-color="getEventColor"
-          :event-ripple="false"
-          @click:event="viewSession"
-          @change="getTutorSlots"
-        >
-        </v-calendar>
-         <v-menu
+            ref="calendar"
+            v-model="value"
+            :first-interval="6"
+            :interval-count="19"
+            :events="events"
+            @click:event="viewSession"
+            @change="getTutorSlots"
+            color="blue"
+            event-text-color="white"
+            :event-ripple="false"
+            type="week"
+
+          >
+          </v-calendar>
+          <v-menu
           v-model="selectedOpen"
           :close-on-content-click="false"
           :activator="selectedElement"
@@ -37,7 +38,9 @@
               
             </v-toolbar>
             <v-card-text>
-              <span v-html="selectedEvent.details"></span>
+              <span v-html="'Tutor: ' + getTutor(selectedEvent)"></span>
+              <br>
+              <span v-html="'Location: ' + getLocation(selectedEvent)"></span>
             </v-card-text>
             <v-card-actions>
               <v-btn v-if="selectedEvent.name == 'Open Slot'"
@@ -73,6 +76,8 @@
 
 <script>
  import SessionServices from "@/services/sessionServices.js"
+ import UserServices from "@/services/UserServices.js";
+ import LocationServices from "@/services/locationServices.js"
  import Utils from '@/config/utils.js';
 
   export default {
@@ -94,13 +99,47 @@
       selectedOpen: false,
       i: 0,
       color: null,
-      name1: null
+      name1: null,
+      name2: null
+      
 
     }),
    
     methods: {
+
+      getTutor(selectedEvent) {
+        UserServices.getUser(selectedEvent.tutorID).then(
+            (response) => {
+              this.name1 = response.data.fName
+              this.name2 = response.data.lName
+        })
+        return this.name1 + ' ' + this.name2
+      },
+      getLocation(selectedEvent) {
+        let build = null;
+        let room = null;
+        LocationServices.getLocation(selectedEvent.locationID).then(
+            (response) => {
+              build = response.data.building
+              room = response.data.roomNum
+        })
+        return build + ' ' + room
+      },
       
-      
+      viewSession({ nativeEvent, event }) {
+        const open = () => {
+          this.selectedEvent = event
+          this.selectedElement = nativeEvent.target
+          requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
+        }
+        if (this.selectedOpen) {
+          this.selectedOpen = false
+          requestAnimationFrame(() => requestAnimationFrame(() => open()))
+        } else {
+          open()
+        }        
+        nativeEvent.stopPropagation()
+      },
       
     getTutorSlots() {
       console.log(this.events.length);
@@ -108,7 +147,6 @@
 
       SessionServices.getSessions()
       .then((response) => {
-          //let today = new Date();
           for (this.i = 0; this.i < response.data.length; this.i++) {
           if (this.user.userID == response.data[this.i].studentID) {
             if (response.data[this.i].status === "Complete") {
@@ -148,14 +186,16 @@
             endtime = endtime.replace('.', '')
             endtime = endtime.substring(0, endtime.length - 6)
 
-
-            
             this.events.push({
                 id: response.data[this.i].sessionID,
                 name: "Upcoming Session",
                 start: starttime1,
                 end: endtime,
-                color: "blue"
+                color: "blue",
+                details: "tutor name and session location",
+                locationID: response.data[this.i].locationID,
+                tutorID: response.data[this.i].tutorID
+
                 
             }
             )
@@ -170,42 +210,7 @@
       })
     },
     
-    //  viewSession({ nativeEvent, event }) {
-    //    console.log("here");
-    //     const open = () => {
-    //       this.selectedEvent = event
-    //       console.log(event.id);
-    //       this.selectedElement = nativeEvent.target
-          
-    //       requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
-    //     }
-
-    //     if (this.selectedOpen) {
-    //       this.selectedOpen = false
-    //       requestAnimationFrame(() => requestAnimationFrame(() => open()))
-    //     } else {
-    //       open()
-    //     }
-        
-    //     nativeEvent.stopPropagation()
-    //   },
-
-    //   removeTimeSlot(selectedEvent) {
-    //      if (confirm("Do you want to delete this time slot?")) {
-    //     console.log(selectedEvent.id)
-    //     TutorSlotServices.deleteTutorSlot(selectedEvent.id);
-    //     for (let i = 0; i < this.events.length; i++) {
-    //       if (this.events[i].id === selectedEvent.id) {
-    //          this.events.splice(i, 1)
-    //       }
-    //     }
-    //      }
-      
-
-    //       this.selectedOpen = false;
-    //       //this.$router.go();
-      
-    //   },
+    
       },
   }
 </script>
