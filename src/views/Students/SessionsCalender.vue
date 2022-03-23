@@ -40,17 +40,26 @@
               <span v-html="selectedEvent.details"></span>
             </v-card-text>
             <v-card-actions>
-              <v-btn v-if="selectedEvent.name != 'Booked'"
+              <v-btn v-if="selectedEvent.name == 'Open Slot'"
                 text
-                color="error"
-                @click="removeTimeSlot(selectedEvent)"
+                color="primary"
+                selectedOpen = true;
+                @click="scheduleSession(selectedEvent, session, selected, selectedOpen)"
               >
-                Remove
+                Book
+              </v-btn>
+              <v-btn v-if="selectedEvent.name == 'Group Session'"
+                text
+                color="primary"
+                selectedOpen = true;
+                @click="signUp(selectedEvent, session, selected, selectedOpen)"
+              >
+                Sign Up
               </v-btn>
               <v-btn
                 text
-                color="primary"
-                 @click="selectedOpen = false"
+                color="secondary"
+                @click="selectedOpen = false"
               >
                 Cancel
               </v-btn>
@@ -77,41 +86,87 @@
       createEvent: null,
       createStart: null,
       extendOriginal: null,
-      sessions: {},
+      session: {},
       months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
       month: '',
       selectedEvent: {},
       selectedElement: null,
       selectedOpen: false,
+      i: 0,
+      color: null,
+      name1: null
 
     }),
    
     methods: {
       
       
-      getEventColor (event) {
-       if (event.name == "Group Session") {
-         this.color = "blue";
-       }
-       else if (event.name == "Open Slot") {
-         this.color = "green";
-       }
-       else if (event.name == "Booked"){
-         this.color = "red";
-       }
-       else {
-         this.color = "grey"
-       }
-
-       return this.color;
-      },
+      
     getTutorSlots() {
       console.log(this.events.length);
       this.user = Utils.getStore('user');
 
       SessionServices.getSessions()
       .then((response) => {
-          this.sessions = response.data
+          //let today = new Date();
+          for (this.i = 0; this.i < response.data.length; this.i++) {
+          if (this.user.userID == response.data[this.i].studentID) {
+            if (response.data[this.i].status === "Complete") {
+            let starttime1 = response.data[this.i].scheduledStart
+            starttime1 = starttime1.replace('Z', '')
+            starttime1 = starttime1.replace('T', ' ')
+            starttime1 = starttime1.replace('.', '')
+            starttime1 = starttime1.substring(0, starttime1.length - 6)
+            
+            let endtime = response.data[this.i].scheduledEnd
+            endtime = endtime.replace('Z', '')
+            endtime = endtime.replace('T', ' ')
+            endtime = endtime.replace('.', '')
+            endtime = endtime.substring(0, endtime.length - 6)
+
+            this.events.push({
+                id: response.data[this.i].sessionID,
+                name: "Completed Session",
+                start: starttime1,
+                end: endtime,
+                color: "grey"
+                
+            }
+            )
+            console.log(this.events)
+            }
+            if (response.data[this.i].status === "Upcoming") {
+            let starttime1 = response.data[this.i].scheduledStart
+            starttime1 = starttime1.replace('Z', '')
+            starttime1 = starttime1.replace('T', ' ')
+            starttime1 = starttime1.replace('.', '')
+            starttime1 = starttime1.substring(0, starttime1.length - 6)
+            
+            let endtime = response.data[this.i].scheduledEnd
+            endtime = endtime.replace('Z', '')
+            endtime = endtime.replace('T', ' ')
+            endtime = endtime.replace('.', '')
+            endtime = endtime.substring(0, endtime.length - 6)
+
+
+            
+            this.events.push({
+                id: response.data[this.i].sessionID,
+                name: "Upcoming Session",
+                start: starttime1,
+                end: endtime,
+                color: "blue"
+                
+            }
+            )
+            console.log(this.events)
+            }
+         
+          
+         
+          }
+        }
+        console.log(this.events)
       })
     },
     
