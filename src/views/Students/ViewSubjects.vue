@@ -100,6 +100,8 @@
               
             </v-toolbar>
             <v-card-text>
+               <!-- <span v-if="selectedEvent.name == 'Group Session'" v-html="'Registered/Max Occupancy: ' + this.registered + '/' + this.maxOccupancy"></span> -->
+               <br>
               <span v-html="selectedEvent.details"></span>
             </v-card-text>
             <v-card-actions>
@@ -111,7 +113,7 @@
               >
                 Book
               </v-btn>
-              <v-btn v-if="selectedEvent.name == 'Group Session'"
+              <v-btn v-if="selectedEvent.name == 'Group Session' && (this.registered != this.maxOccupancy)"
                 text
                 color="primary"
                 selectedOpen = true;
@@ -124,7 +126,7 @@
                 color="secondary"
                 @click="selectedOpen = false"
               >
-                Cancel
+                Close
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -191,6 +193,9 @@ export default {
       colors:['green', 'red'],
       tutorSlot: {},
       z: 0,
+      tutorSlotRequest: {},
+      registered: 0,
+      maxOccupancy: 5,
 
     };
   },
@@ -249,11 +254,15 @@ export default {
        else if (event.name == "Booked"){
          this.color = "red";
        }
+        else if (event.name == "Pending"){
+         this.color = "purple";
+       }
+
 
         return event.color;
       },
     scheduleSession(selectedEvent, session, selected, selectedOpen) {
-      if (selectedEvent.name != "Booked") {
+      if (selectedEvent.name != "Booked" || selectedEvent.name != "Pending") {
       if (confirm("Do you want to book this time slot?")) {
          this.user = Utils.getStore('user');
          this.session = session;
@@ -261,11 +270,11 @@ export default {
          this.session.tutorID = selected[0].userID;
          this.session.scheduledStart = selectedEvent.start;
          this.session.scheduledEnd = selectedEvent.end;
-         this.session.status = "Upcoming";
-         this.session.locationID = "1";
+         this.session.status = "Pending";
+         //this.session.locationID = "1";
          if (selectedEvent.name != "Group Session") {
-         selectedEvent.name = "Booked";
-         selectedEvent.color = "red";
+         selectedEvent.name = "Pending";
+         selectedEvent.color = "purple";
          }
          this.selectedOpen = selectedOpen;
          this.selectedOpen = false;
@@ -274,6 +283,7 @@ export default {
          SessionServices.addSession(this.session);
         this.tutorSlot.studentID = this.user.userID;
         this.tutorSlot.tutorSlotID = selectedEvent.id;
+        this.tutorSlot.tutorSlotRequestID = "1";
         console.log(selectedEvent.id + "just before update TS");
                     console.log(this.tutorSlot.length + "length");
 
@@ -309,6 +319,7 @@ export default {
          this.session.tutorSlotID = selectedEvent.id;
        //  this.session.date = selectedEvent.date;
          SessionServices.addSession(this.session);
+         //this.registered++;
         //this.tutorSlot.studentID = this.user.userID;
         //this.tutorSlot.tutorSlotID = selectedEvent.id;
 
@@ -415,10 +426,14 @@ export default {
                 this.color = "blue";
 
                 }
+                else if (response.data[i].tutorSlotRequestID == "1"){
+                  this.name1 = "Pending";
+                  this.color = "purple";
+                }
                 else {
                   this.name1 = "Booked";
                   this.color = "red";
-                };
+                }
                 let index = days.indexOf(response.data[i].day)
                 console.log(index)
                 console.log(tomorrow.getDay())
