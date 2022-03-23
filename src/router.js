@@ -37,6 +37,8 @@ import StudentAdd from "./views/Students/addStudent.vue";
 import StudentEdit from "./views/Students/studentEdit.vue";
 import StudentView from "./views/Students/studentView.vue";
 import StudentList from "./views/Students/studentList.vue";
+import StudentFeedback from "./views/Students/studentGiveFeedback.vue"
+import StudentSessionCalender from "./views/Students/SessionsCalender.vue"
 
 //Mentee Crud
 import MenteeAdd from "./views/Mentees/addMentee.vue";
@@ -94,6 +96,11 @@ export default new Router({
       path: "/student/sessions",
       name: "studentSessions",
       component: SessionList,
+    },
+    {
+      path: "/student/sessionsCalender",
+      name: "studentsessionscalender",
+      component: StudentSessionCalender,
     },
 
     //Needs schedule sessions
@@ -188,6 +195,11 @@ export default new Router({
       name: "editStudent",
       component: StudentEdit,
       props: true,
+    },
+    {
+      path: "/session/GiveFeedback",
+      name: "feedback",
+      component: StudentFeedback
     },
     {
       path: "/tutors/:id",

@@ -12,7 +12,7 @@
     <transition name="fade" apear>
       <div class="sub-menu" v-if="isOpen">
         <div class="menu-item">
-          <router-link to="/student/sessions">Sessions</router-link>
+          <router-link to="/student/sessionsCalender">Sessions</router-link>
         </div>
         <div class="menu-item">
           <router-link :to="{name: 'studentSubjectView'}">Schedule Session</router-link>
