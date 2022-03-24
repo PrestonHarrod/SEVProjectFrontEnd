@@ -14,6 +14,7 @@
       Switch Organization
     </div>
     <div class="menu-item" v-on:click.prevent="goToLogin()">Logout</div>
+
   </nav>
 </template>
 
