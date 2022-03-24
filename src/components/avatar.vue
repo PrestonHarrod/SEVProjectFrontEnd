@@ -75,7 +75,7 @@
         </v-card>
       </v-menu>
     </v-row>
-   </template>
+</template>
 
 <script>
 import Utils from '@/config/utils.js';
@@ -146,6 +146,6 @@ export default {
   }
 </script>
 
-<style scoped>
+<style>
 
 </style>

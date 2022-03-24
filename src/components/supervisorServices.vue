@@ -16,7 +16,7 @@
           Students
         </div>
         <div class="menu-item" v-on:click.prevent="goToTutors()">Tutors</div>
-        <div class="menu-item" v-on:click.prevent="goToMentees()">Mentees</div>
+        <div class="menu-item" v-if="isSS()" v-on:click.prevent="goToMentees()">Mentees</div>
         <div class="menu-item" v-on:click.prevent="goToSessions()">
           Sessions
         </div>
@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import Utils from "@/config/utils.js";
 export default {
   name: "services",
   props: ["title"],
@@ -45,6 +46,10 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    isSS(){
+       var currentOrg = Utils.getStore("currentOrg");
+      return  currentOrg == 1;
     },
     goToStudents() {
       this.$router

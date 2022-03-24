@@ -65,22 +65,50 @@
               
             </v-toolbar>
             <v-card-text>
-              <span v-html="selectedEvent.details"></span>
+               <span v-if="selectedEvent.name == 'Booked'" v-html="'Student: ' + getName(selectedEvent)"></span> 
+               <br>
+                <span v-html="'Day: '+ selectedEvent.day"></span>
+               <br>
+              <span v-html="'Time: '+ selectedEvent.details"></span>
+              
+              
+
             </v-card-text>
             <v-card-actions>
-              <v-btn v-if="selectedEvent.name != 'Booked'"
+              <v-btn v-if="selectedEvent.name == 'Open Slot'"
                 text
                 color="error"
                 @click="removeTimeSlot(selectedEvent)"
               >
                 Remove
               </v-btn>
+               <v-btn v-if="selectedEvent.name == 'Booked'"
+                text
+                color="error"
+                @click="cancelSession(selectedEvent)"
+              >
+                Cancel
+              </v-btn>
+              <v-btn v-if="selectedEvent.name == 'Pending'"
+                text
+                color="black"
+                @click="confirm(selectedEvent)"
+              >
+                Confirm
+              </v-btn>
+              <v-btn v-if="selectedEvent.name == 'Pending'"
+                text
+                color="error"
+                @click="deny(selectedEvent)"
+              >
+                Deny
+              </v-btn>
               <v-btn
                 text
                 color="primary"
                  @click="selectedOpen = false"
               >
-                Cancel
+                Close
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -92,6 +120,8 @@
 
 <script>
  import TutorSlotServices from "@/services/tutorSlotServices.js"
+ import sessionServices from "@/services/sessionServices.js"
+ import userServices from "@/services/UserServices.js"
  import Utils from '@/config/utils.js';
 
   export default {
@@ -112,8 +142,11 @@
       selectedElement: null,
       selectedOpen: false,
       checkbox1: false,
-      checkbox2: false
-
+      checkbox2: false,
+      confirmTutorSlot: {},
+      denyTutorSlot: {},
+      confirmSession: {},
+      student: {},
     }),
    
     methods: {
@@ -239,6 +272,9 @@
        else if (event.name == "Booked"){
          this.color = "red";
        }
+       else if (event.name == "Pending"){
+         this.color = "purple";
+       }
        else {
          this.color = "grey"
        }
@@ -246,7 +282,6 @@
        return this.color;
       },
     getTutorSlots() {
-      console.log(this.events.length);
       this.user = Utils.getStore('user');
 
       TutorSlotServices.getTutorSlotForTutor(this.user.userID).then(
@@ -288,11 +323,11 @@
             for (let j = 0; j < 6; j++) {
               if (response.data[i].day == days[j]) {
                 // create date for next day in the week
-                
+                this.thisDay = response.data[i].day;
+
 
                 var tomorrow = new Date();
                 tomorrow.setDate((tomorrow.getDate() + j) - (today.getDay()));
-                console.log(today.getDay())
                 var month2 = tomorrow.getUTCMonth() + 1; //months from 1-12
                 if (month2 < 10) {
                   month2 = "0" + month2;
@@ -304,24 +339,41 @@
                 let endtime2 = newdate2 + " " + response.data[i].endTime;
                  if (response.data[i].studentID == null && response.data[i].status == "Private Session") {
                 this.name1 = "Open Slot";
+                this.color = "green";
+              this.studentIDForEvent = "";
+
+
                 }
                 else if (response.data[i].status == "Group Session") {
                 this.name1 = "Group Session";
+                this.color = "blue";
+              this.studentIDForEvent = "";
+
+
+                }
+                else if (response.data[i].tutorSlotRequestID == "1"){
+                  this.name1 = "Pending";
+                  this.color = "purple";
+               this.studentIDForEvent = "";
                 }
                 else {
                   this.name1 = "Booked";
-                };
+                  this.color = "red";
+                  this.studentIDForEvent = response.data[i].studentID;
 
+                }
                 this.events.push({
                   id: response.data[i].tutorSlotID,
+                  studentID: this.studentIDForEvent,
                   name: this.name1,
                   date: newdate2,
+                  day: this.thisDay,
                   start: starttime2,
                   end: endtime2,
                   details: response.data[i].startTime + " - " + response.data[i].endTime,
                   
                 });
-                console.log(this.events);
+                
                 
               }
             }
@@ -372,6 +424,40 @@
           //this.$router.go();
       
       },
+      confirm(event) {
+        TutorSlotServices.getTutorSlot(event.id).then(
+        (response) => { 
+          this.confirmTutorSlot = response.data;
+          this.confirmTutorSlot.tutorSlotRequestID = null;
+           TutorSlotServices.updateTutorSlot(this.confirmTutorSlot);
+           sessionServices.getSessionByTutorSlot(event.id).then(
+             (response) => {
+               this.confirmSession = response.data[0];
+               this.confirmSession.status = "Upcoming";
+               console.log(this.confirmSession.sessionID + "session ID");
+               sessionServices.updateSession(this.confirmSession);
+               this.$router.go();
+             }
+           )
+        }),
+          event.color = "red";
+          event.name = "Booked";
+          
+
+      },
+       deny(event) {
+         TutorSlotServices.getTutorSlot(event.id).then(
+        (response) => { 
+          this.confirmTutorSlot = response.data;
+          this.confirmTutorSlot.tutorSlotRequestID = null;
+          this.confirmTutorSlot.studentID = null;
+          TutorSlotServices.updateTutorSlot(this.confirmTutorSlot);
+          sessionServices.deleteSessionByTutorSlotID(event.id)
+        }),
+          event.color = "green";
+          event.name = "Open Slot";
+
+       },
         checkbox12() {
           if (this.checkbox1) {
             this.checkbox2 = false;
@@ -388,6 +474,42 @@
           console.log(this.checkbox2);
           console.log(this.checkbox1);
   
+        },
+        getName(event) {
+          let id = event.studentID;
+          console.log(id + "in getName function");
+           userServices.getUser(id)
+                .then(response => {
+                this.student = response.data;
+                console.log(this.student.fName + "inside loop");
+
+                })
+                console.log(this.student.fName + "outside loop");
+
+                this.studentName = this.student.fName + " " + this.student.lName;
+                return this.studentName;
+        },
+        cancelSession(event){
+          let id = event.id;
+      if (confirm("Do you really want to cancel this session?")) {
+        sessionServices.deleteSessionByTutorSlotID(id);
+          TutorSlotServices.cancelSlot(id)
+        .then((response) => {
+            this.tutorSlot = response.data[0];
+            this.tutorSlot.studentID = null;
+            TutorSlotServices.updateTutorSlot(this.tutorSlot)
+            .then(() => {
+            sessionServices.deleteSession(id)
+            this.$router.go();
+            })
+
+          .catch((error) => {
+            console.log(error);
+          });
+         })
+        
+      }
+
         }
       },
   }

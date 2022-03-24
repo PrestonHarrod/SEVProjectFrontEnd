@@ -7,7 +7,7 @@
       <br />
 
       <h2 style="background-color: #1976d2; color: #f2f2f2">
-        Upcoming Sessions
+        Pending Sessions
       </h2>
       <v-card width="100vw">
         <v-card-title>
@@ -37,7 +37,7 @@
       </v-card>
       <br />
       <h2 style="background-color: #1976d2; color: #f2f2f2">
-        Completed Sessions
+        Upcoming Sessions
       </h2>
       <v-card width="100vw">
         <v-card-title>
@@ -127,7 +127,7 @@ export default {
         this.i = 0;
         for (this.i = 0; this.i < response.data.length; this.i++) {
           if (this.user.userID == response.data[this.i].studentID) {
-            if (response.data[this.i].status === "Upcoming") {
+            if (response.data[this.i].status === "Pending") {
               this.upcomingSessions[this.l] = response.data[this.i];
               this.l++;
             }
@@ -137,7 +137,7 @@ export default {
         this.i = 0;
         for (this.i = 0; this.i < response.data.length; this.i++) {
           if (this.user.userID == response.data[this.i].studentID) {
-            if (response.data[this.i].status === "Complete") {
+            if (response.data[this.i].status === "Upcoming") {
               this.completedSessions[this.k] = response.data[this.i];
               this.k++;
             }

@@ -52,6 +52,8 @@ import SupervisorEdit from "./views/Supervisors/supervisorEdit.vue";
 import SupervisorView from "./views/Supervisors/supervisorView.vue";
 import Supervisors from "./views/Supervisors/supervisors.vue";
 
+import SelectOrg from "./views/selectOrgPage.vue";
+
 Vue.use(Router);
 export default new Router({
   mode: "hash",
@@ -216,6 +218,13 @@ export default new Router({
       path: "/students/:id",
       name: "viewStudent",
       component: StudentView,
+      props: true,
+    },
+
+    {
+      path: "/SelectOrg",
+      name: "selectOrg",
+      component: SelectOrg,
       props: true,
     },
 
