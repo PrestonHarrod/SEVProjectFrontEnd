@@ -100,7 +100,9 @@
       i: 0,
       color: null,
       name1: null,
-      name2: null
+      name2: null,
+      build: null,
+      room: null,
       
 
     }),
@@ -116,14 +118,13 @@
         return this.name1 + ' ' + this.name2
       },
       getLocation(selectedEvent) {
-        let build = null;
-        let room = null;
         LocationServices.getLocation(selectedEvent.locationID).then(
             (response) => {
-              build = response.data.building
-              room = response.data.roomNum
+              console.log(response)
+              this.build = response.data.building
+              this.room = response.data.roomNum
         })
-        return build + ' ' + room
+        return this.build + ', ' + this.room
       },
       
       viewSession({ nativeEvent, event }) {
@@ -167,7 +168,11 @@
                 name: "Completed Session",
                 start: starttime1,
                 end: endtime,
-                color: "grey"
+                color: "grey",
+                details: "tutor name and session location",
+                locationID: response.data[this.i].locationID,
+                tutorID: response.data[this.i].tutorID,
+                
                 
             }
             )
@@ -186,6 +191,7 @@
             endtime = endtime.replace('.', '')
             endtime = endtime.substring(0, endtime.length - 6)
 
+            
             this.events.push({
                 id: response.data[this.i].sessionID,
                 name: "Upcoming Session",
