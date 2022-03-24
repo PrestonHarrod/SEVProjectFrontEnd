@@ -46,7 +46,7 @@
               
             </v-card-text>
             <v-card-actions>
-              <v-btn v-if="selectedEvent.name == 'Upcoming Session'"
+              <v-btn v-if="selectedEvent.name != 'Completed Session'"
                 text
                 color="error"
                 @click="removeTimeSlot(selectedEvent)"
@@ -176,7 +176,9 @@
       SessionServices.getSessions()
       .then((response) => {
           for (this.i = 0; this.i < response.data.length; this.i++) {
+            console.log(response.data.length)
           if (this.user.userID == response.data[this.i].studentID) {
+            
             if (response.data[this.i].status === "Complete") {
             let starttime1 = response.data[this.i].scheduledStart
             starttime1 = starttime1.replace('Z', '')
@@ -225,6 +227,37 @@
                 start: starttime1,
                 end: endtime,
                 color: "blue",
+                details: "tutor name and session location",
+                locationID: response.data[this.i].locationID,
+                tutorID: response.data[this.i].tutorID,
+                tutorSlotID: response.data[this.i].tutorSlotID
+
+                
+            }
+            )
+            console.log(this.events)
+            }
+            if (response.data[this.i].status === "Pending") {
+              console.log("HERE")
+            let starttime1 = response.data[this.i].scheduledStart
+            starttime1 = starttime1.replace('Z', '')
+            starttime1 = starttime1.replace('T', ' ')
+            starttime1 = starttime1.replace('.', '')
+            starttime1 = starttime1.substring(0, starttime1.length - 6)
+            
+            let endtime = response.data[this.i].scheduledEnd
+            endtime = endtime.replace('Z', '')
+            endtime = endtime.replace('T', ' ')
+            endtime = endtime.replace('.', '')
+            endtime = endtime.substring(0, endtime.length - 6)
+
+            
+            this.events.push({
+                id: response.data[this.i].sessionID,
+                name: "Pending Session",
+                start: starttime1,
+                end: endtime,
+                color: "purple",
                 details: "tutor name and session location",
                 locationID: response.data[this.i].locationID,
                 tutorID: response.data[this.i].tutorID,
