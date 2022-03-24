@@ -23,12 +23,12 @@ export default {
   components: {
     NavBar,
     Avatar,
-
   },
   methods: {
     isLogin() {
-      return this.$route.name != "login";
+      return this.$route.name != "login" && this.$route.name != "selectOrg";
     },
+
   },
 };
 </script>

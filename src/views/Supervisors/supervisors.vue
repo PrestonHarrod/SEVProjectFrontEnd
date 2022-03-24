@@ -84,7 +84,8 @@ export default {
   },
   created() {
     this.user = Utils.getStore("user");
-    UserServices.getUsersByRole("2")
+    var currentOrg = Utils.getStore("currentOrg");
+    UserServices.getUsersByRole("2", currentOrg)
       .then((response) => {
         this.supervisors = response.data;
       })
