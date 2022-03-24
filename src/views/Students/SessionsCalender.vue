@@ -10,7 +10,7 @@
             :interval-count="19"
             :events="events"
             @click:event="viewSession"
-            @change="getTutorSlots"
+            @change="getSessions"
             color="blue"
             event-text-color="white"
             :event-ripple="false"
@@ -40,31 +40,25 @@
             <v-card-text>
               <span v-html="'Tutor: ' + getTutor(selectedEvent)"></span>
               <br>
+              <span v-html="'Type: ' + getType(selectedEvent)"></span>
+              <br>
               <span v-html="'Location: ' + getLocation(selectedEvent)"></span>
+              
             </v-card-text>
             <v-card-actions>
-              <v-btn v-if="selectedEvent.name == 'Open Slot'"
+              <v-btn v-if="selectedEvent.name == 'Upcoming Session'"
                 text
-                color="primary"
-                selectedOpen = true;
-                @click="scheduleSession(selectedEvent, session, selected, selectedOpen)"
+                color="error"
+                @click="removeTimeSlot(selectedEvent)"
               >
-                Book
-              </v-btn>
-              <v-btn v-if="selectedEvent.name == 'Group Session'"
-                text
-                color="primary"
-                selectedOpen = true;
-                @click="signUp(selectedEvent, session, selected, selectedOpen)"
-              >
-                Sign Up
+                Cancel Session
               </v-btn>
               <v-btn
                 text
                 color="secondary"
                 @click="selectedOpen = false"
               >
-                Cancel
+                Close
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -79,6 +73,7 @@
  import UserServices from "@/services/UserServices.js";
  import LocationServices from "@/services/locationServices.js"
  import Utils from '@/config/utils.js';
+ import TutorSlotServices from '@/services/tutorSlotServices.js'
 
   export default {
     data: () => ({
@@ -103,11 +98,43 @@
       name2: null,
       build: null,
       room: null,
+      type: null,
+      tutorSlot: null,
       
 
     }),
    
     methods: {
+
+      removeTimeSlot(selectedEvent) {
+         if (confirm("Do you want to delete this time slot?")) {
+        TutorSlotServices.cancelSlot(selectedEvent.tutorSlotID)
+        .then((response) => {
+            this.tutorSlot = response.data[0];
+            this.tutorSlot.studentID = null;
+            TutorSlotServices.updateTutorSlot(this.tutorSlot)
+            .then(() => {
+            SessionServices.deleteSession(selectedEvent.id)
+            })
+         })
+        for (let i = 0; i < this.events.length; i++) {
+          if (this.events[i].id === selectedEvent.id) {
+             this.events.splice(i, 1)
+          }
+        }
+         }
+          this.selectedOpen = false;
+          //this.$router.go();
+      
+      },
+
+      getType(selectedEvent) {
+        TutorSlotServices.getTutorSlot(selectedEvent.tutorSlotID)
+        .then(response => {
+          this.type = response.data.status
+        })
+        return this.type;
+      },
 
       getTutor(selectedEvent) {
         UserServices.getUser(selectedEvent.tutorID).then(
@@ -142,7 +169,7 @@
         nativeEvent.stopPropagation()
       },
       
-    getTutorSlots() {
+    getSessions() {
       console.log(this.events.length);
       this.user = Utils.getStore('user');
 
@@ -200,7 +227,8 @@
                 color: "blue",
                 details: "tutor name and session location",
                 locationID: response.data[this.i].locationID,
-                tutorID: response.data[this.i].tutorID
+                tutorID: response.data[this.i].tutorID,
+                tutorSlotID: response.data[this.i].tutorSlotID
 
                 
             }
