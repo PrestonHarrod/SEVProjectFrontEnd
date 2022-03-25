@@ -46,11 +46,20 @@
               
             </v-card-text>
             <v-card-actions>
+              <v-btn v-if="selectedEvent.name == 'Completed Session'"
+                text
+                color="secondary"
+                @click="removeTimeSlot(selectedEvent)"
+              >
+              
+                Give Feedback
+              </v-btn>
               <v-btn v-if="selectedEvent.name != 'Completed Session'"
                 text
                 color="error"
                 @click="removeTimeSlot(selectedEvent)"
               >
+              
                 Cancel Session
               </v-btn>
               <v-btn
@@ -184,13 +193,13 @@
             starttime1 = starttime1.replace('Z', '')
             starttime1 = starttime1.replace('T', ' ')
             starttime1 = starttime1.replace('.', '')
-            starttime1 = starttime1.substring(0, starttime1.length - 6)
+            starttime1 = starttime1.substring(0, starttime1.length)
             
             let endtime = response.data[this.i].scheduledEnd
             endtime = endtime.replace('Z', '')
             endtime = endtime.replace('T', ' ')
             endtime = endtime.replace('.', '')
-            endtime = endtime.substring(0, endtime.length - 6)
+            endtime = endtime.substring(0, endtime.length)
 
             this.events.push({
                 id: response.data[this.i].sessionID,
@@ -212,13 +221,13 @@
             starttime1 = starttime1.replace('Z', '')
             starttime1 = starttime1.replace('T', ' ')
             starttime1 = starttime1.replace('.', '')
-            starttime1 = starttime1.substring(0, starttime1.length - 6)
+            starttime1 = starttime1.substring(0, starttime1.length)
             
             let endtime = response.data[this.i].scheduledEnd
             endtime = endtime.replace('Z', '')
             endtime = endtime.replace('T', ' ')
             endtime = endtime.replace('.', '')
-            endtime = endtime.substring(0, endtime.length - 6)
+            endtime = endtime.substring(0, endtime.length)
 
             
             this.events.push({
@@ -243,13 +252,13 @@
             starttime1 = starttime1.replace('Z', '')
             starttime1 = starttime1.replace('T', ' ')
             starttime1 = starttime1.replace('.', '')
-            starttime1 = starttime1.substring(0, starttime1.length - 6)
+            starttime1 = starttime1.substring(0, starttime1.length)
             
             let endtime = response.data[this.i].scheduledEnd
             endtime = endtime.replace('Z', '')
             endtime = endtime.replace('T', ' ')
             endtime = endtime.replace('.', '')
-            endtime = endtime.substring(0, endtime.length - 6)
+            endtime = endtime.substring(0, endtime.length)
 
             
             this.events.push({
