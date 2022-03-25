@@ -24,8 +24,7 @@
             <v-col class="d-flex" cols="12" sm="6"> </v-col>
           </v-row>
           <v-row>
-            <v-col>
-            </v-col>
+            <v-col> </v-col>
           </v-row>
           <v-row>
             <v-col>
@@ -49,17 +48,31 @@
             </v-col>
           </v-row>
           <v-row>
-          <v-btn v-if="selected[0] != null" fab text small color="grey darken-2" @click="prev">
-            <v-icon small> mdi-chevron-left </v-icon>
-          </v-btn>
-          <v-btn v-if="selected[0] != null" fab text small color="grey darken-2" @click="next">
-            <v-icon small> mdi-chevron-right </v-icon>
-          </v-btn>
-          <v-col v-if="selected[0] != null">
-            <H2 style="background-color: #1976d2; color: #f2f2f2">
-            {{ month }}
-          </H2>
-          </v-col>
+            <v-btn
+              v-if="selected[0] != null"
+              fab
+              text
+              small
+              color="grey darken-2"
+              @click="prev"
+            >
+              <v-icon small> mdi-chevron-left </v-icon>
+            </v-btn>
+            <v-btn
+              v-if="selected[0] != null"
+              fab
+              text
+              small
+              color="grey darken-2"
+              @click="next"
+            >
+              <v-icon small> mdi-chevron-right </v-icon>
+            </v-btn>
+            <v-col v-if="selected[0] != null">
+              <H2 style="background-color: #1976d2; color: #f2f2f2">
+                {{ month }}
+              </H2>
+            </v-col>
           </v-row>
           <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
           <br />
@@ -77,6 +90,10 @@
             type="week"
           >
           </v-calendar>
+
+          <v-btn depressed @click="sendNotification()" color="blue">
+            Book Session
+          </v-btn>
         </v-form>
       </v-app>
     </div>
@@ -85,10 +102,11 @@
 
 <script>
 import subjectServices from "@/services/subjectServices.js";
-import TutorSlotServices from "@/services/tutorSlotServices.js"
+import TutorSlotServices from "@/services/tutorSlotServices.js";
 import UserServices from "@/services/UserServices.js";
 import userOrgServices from "@/services/userOrgServices.js";
-import Utils from '@/config/utils.js';
+import smsServices from "@/services/smsServices.js";
+import Utils from "@/config/utils.js";
 
 export default {
   data() {
@@ -101,8 +119,21 @@ export default {
       levels: ["Math", 2, 3, 4],
       level: "",
       value: "",
-      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      month: '',
+      months: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ],
+      month: "",
       headers: [
         {
           text: "First Name",
@@ -126,38 +157,38 @@ export default {
           value: "tutorSubject.subject.name",
         },
       ],
+      user: [],
       users: [{}],
       usersOrg: [{}],
       usersOrgID: 0,
-      events: []
+      events: [],
     };
   },
-
-
- async created() {
-    this.user = Utils.getStore('user');
+  async created() {
+    this.user = Utils.getStore("user");
     let id = this.user.userID;
     let d = new Date();
     this.month = this.months[d.getMonth()];
-      // function to get users org
-    userOrgServices.getUsersOrgID(id)
-    .then((response) => {
+    // function to get users org
+    userOrgServices
+      .getUsersOrgID(id)
+      .then((response) => {
         this.usersOrg = response.data;
-        for( let i = 0; i < response.data.length; i++) {
-        this.usersOrgID = this.usersOrg[i].orgID;
-         UserServices.getTutors("3", this.usersOrgID)
-          .then((response) => {
-            this.users = response.data;
-         })
-          .catch((error) => {
-          console.log(error);
-          });
+        for (let i = 0; i < response.data.length; i++) {
+          this.usersOrgID = this.usersOrg[i].orgID;
+          UserServices.getTutors("3", this.usersOrgID)
+            .then((response) => {
+              this.users = response.data;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         }
       })
       .catch((error) => {
         console.log(error);
       });
-      await subjectServices
+    await subjectServices
       .getSubjects()
       .then((response) => {
         this.subjects = response.data;
@@ -165,7 +196,7 @@ export default {
       .catch((error) => {
         console.log(error);
       });
-      
+
     this.user = Utils.getStore("user");
   },
 
@@ -245,6 +276,39 @@ export default {
         }
       );
     },
+    sendNotification() {
+      UserServices.getUser(this.user.userID)
+      .then((user) => {
+        console.log(user.data.phoneNumber + " " + user.data.email);
+        smsServices.sendMessage(user.data);
+      });
+  
+      // var nodemailer = require("nodemailer");
+
+      // var transporter = nodemailer.createTransport({
+      //   service: "gmail",
+      //   auth: {
+      //     user: "octutorservice@gmail.com",
+      //     pass: "ukdqxggbjjfdvlfz",
+      //   },
+      // });
+
+      // var mailOptions = {
+      //   from: "octutorservice@gmail.com",
+      //   to: this.user.email,
+      //   subject: "Tutor Session Scheduled",
+      //   text: "",
+      // };
+      
+
+      // transporter.sendMail(mailOptions, function (error, info) {
+      //   if (error) {
+      //     console.log(error);
+      //   } else {
+      //     console.log("Email sent: " + info.response);
+      //   }
+      // });
+    },
     prev() {
       this.$refs.calendar.prev();
     },
@@ -253,8 +317,6 @@ export default {
     },
   },
 };
-
-
 </script>
 
 <style  scoped>
