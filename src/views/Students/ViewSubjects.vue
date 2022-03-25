@@ -72,7 +72,7 @@
             :events="events"
             @click:event="viewSession"
             :event-color="getEventColor"
-            @change="getTutorSlots"
+            
             color="blue"
             event-text-color="white"
             :event-ripple="false"
@@ -398,14 +398,21 @@ export default {
                }
             // display tutor slots for each day after current day
             for (let j = 0; j < 6; j++) {
+              
               if (response.data[i].day == days[j]) {
                 // create date for next day in the week
                 
-
+              
                 console.log(response.data[i].day)
                 var tomorrow = new Date();
-                console.log (this.z + " " + j);
-                tomorrow.setDate((tomorrow.getDate() + j) - today.getDay());
+
+                let index = days.indexOf(response.data[i].day)
+                if (index >= today.getDay()) {
+                  tomorrow.setDate((tomorrow.getDate() + j) - today.getDay());
+                }
+                else {
+                tomorrow.setDate((tomorrow.getDate() + j) - today.getDay() + 7);
+                }
 
                 var month2 = tomorrow.getUTCMonth() + 1; //months from 1-12
                 if (month2 < 10) {
@@ -434,11 +441,26 @@ export default {
                   this.name1 = "Booked";
                   this.color = "red";
                 }
-                let index = days.indexOf(response.data[i].day)
+                
                 console.log(index)
                 console.log(tomorrow.getDay())
                 if (index >= today.getDay()) {
+                //starttime2 = starttime2 + 7
                 this.events.push({
+                  id: response.data[i].tutorSlotID,
+                  name: this.name1,
+                  date: newdate2,
+                  start: starttime2,
+                  color: this.color,
+                  end: endtime2,
+                  details: response.data[i].startTime + " - " + response.data[i].endTime,
+                  
+                });
+                }
+                else {
+
+                  console.log(newdate2)
+                  this.events.push({
                   id: response.data[i].tutorSlotID,
                   name: this.name1,
                   date: newdate2,
