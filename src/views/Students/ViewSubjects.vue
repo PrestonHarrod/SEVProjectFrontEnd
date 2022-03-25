@@ -282,32 +282,6 @@ export default {
         console.log(user.data.phoneNumber + " " + user.data.email);
         smsServices.sendMessage(user.data);
       });
-  
-      // var nodemailer = require("nodemailer");
-
-      // var transporter = nodemailer.createTransport({
-      //   service: "gmail",
-      //   auth: {
-      //     user: "octutorservice@gmail.com",
-      //     pass: "ukdqxggbjjfdvlfz",
-      //   },
-      // });
-
-      // var mailOptions = {
-      //   from: "octutorservice@gmail.com",
-      //   to: this.user.email,
-      //   subject: "Tutor Session Scheduled",
-      //   text: "",
-      // };
-      
-
-      // transporter.sendMail(mailOptions, function (error, info) {
-      //   if (error) {
-      //     console.log(error);
-      //   } else {
-      //     console.log("Email sent: " + info.response);
-      //   }
-      // });
     },
     prev() {
       this.$refs.calendar.prev();
