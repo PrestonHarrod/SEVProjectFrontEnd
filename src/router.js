@@ -199,9 +199,10 @@ export default new Router({
       props: true,
     },
     {
-      path: "/session/GiveFeedback",
-      name: "feedback",
-      component: StudentFeedback
+      path: "/session/GiveFeedback/:id",
+      name: "giveFeedback",
+      component: StudentFeedback,
+      props: true,
     },
     {
       path: "/tutors/:id",

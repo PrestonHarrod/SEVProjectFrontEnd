@@ -1,6 +1,12 @@
 <template>
   <v-row class="fill-height">
     <v-col>
+      <v-btn fab text small color="grey darken-2" @click="prev">
+            <v-icon small> mdi-chevron-left </v-icon>
+          </v-btn>
+          <v-btn fab text small color="grey darken-2" @click="next">
+            <v-icon small> mdi-chevron-right </v-icon>
+          </v-btn>
       <br>
       <v-sheet height="600">
         <v-calendar
@@ -37,7 +43,7 @@
               <v-spacer></v-spacer>
               
             </v-toolbar>
-            <v-card-text>
+            <v-card-text v-if="selectedElement != null">
               <span v-html="'Tutor: ' + getTutor(selectedEvent)"></span>
               <br>
               <span v-html="'Type: ' + getType(selectedEvent)"></span>
@@ -49,7 +55,7 @@
               <v-btn v-if="selectedEvent.name == 'Completed Session'"
                 text
                 color="secondary"
-                @click="removeTimeSlot(selectedEvent)"
+                @click="giveFeedback(selectedEvent)"
               >
               
                 Give Feedback
@@ -114,6 +120,16 @@
     }),
    
     methods: {
+      prev() {
+      this.$refs.calendar.prev();
+    },
+    next() {
+      this.$refs.calendar.next();
+    },
+    giveFeedback(selectedEvent) {
+      console.log(selectedEvent.id)
+      this.$router.push({ name: "giveFeedback", params: { id: selectedEvent.id } });
+    },
 
       removeTimeSlot(selectedEvent) {
          if (confirm("Do you want to delete this time slot?")) {
@@ -138,11 +154,7 @@
       },
 
       getType(selectedEvent) {
-        TutorSlotServices.getTutorSlot(selectedEvent.tutorSlotID)
-        .then(response => {
-          this.type = response.data.status
-        })
-        return this.type;
+        return selectedEvent.type;
       },
 
       getTutor(selectedEvent) {
@@ -154,6 +166,7 @@
         return this.name1 + ' ' + this.name2
       },
       getLocation(selectedEvent) {
+        console.log("HERE")
         LocationServices.getLocation(selectedEvent.locationID).then(
             (response) => {
               console.log(response)
@@ -179,6 +192,7 @@
       },
       
     getSessions() {
+      this.events = []
       console.log(this.events.length);
       this.user = Utils.getStore('user');
 
@@ -210,6 +224,7 @@
                 details: "tutor name and session location",
                 locationID: response.data[this.i].locationID,
                 tutorID: response.data[this.i].tutorID,
+                type: response.data[this.i].Type
                 
                 
             }
@@ -239,7 +254,8 @@
                 details: "tutor name and session location",
                 locationID: response.data[this.i].locationID,
                 tutorID: response.data[this.i].tutorID,
-                tutorSlotID: response.data[this.i].tutorSlotID
+                tutorSlotID: response.data[this.i].tutorSlotID,
+                type: response.data[this.i].Type
 
                 
             }
@@ -270,7 +286,8 @@
                 details: "tutor name and session location",
                 locationID: response.data[this.i].locationID,
                 tutorID: response.data[this.i].tutorID,
-                tutorSlotID: response.data[this.i].tutorSlotID
+                tutorSlotID: response.data[this.i].tutorSlotID,
+                type: response.data[this.i].Type
 
                 
             }

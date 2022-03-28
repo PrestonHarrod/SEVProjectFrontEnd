@@ -51,3 +51,26 @@
     </div>
   </v-container>
 </template>
+
+<script>
+import Utils from "@/config/utils.js"
+import SessionServices from "@/services/sessionServices.js"
+
+export default {
+  props: ["id"],
+  data:  () => ({
+    user: {},
+    session: {},
+
+  }),
+  created() {
+    this.user = Utils.getStore("user")
+    SessionServices.getSession(this.id)
+    .then(response => {
+      this.session = response.data;
+    })
+    console.log(this.session)
+  }
+}
+
+</script>
