@@ -17,6 +17,7 @@
         </div>
         <div class="menu-item" v-on:click.prevent="goToTutors()">Tutors</div>
         <div class="menu-item" v-if="isSS()" v-on:click.prevent="goToMentees()">Mentees</div>
+       <div class="menu-item" v-if="isSS()" v-on:click.prevent="goToDropIn()">Drop In Tutoring</div>    
         <div class="menu-item" v-on:click.prevent="goToSessions()">
           Sessions
         </div>
@@ -70,6 +71,14 @@ export default {
     goToMentees() {
       this.$router
         .push({ name: "mentees" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+     goToDropIn() {
+      this.$router
+        .push({ name: "dropInList" })
         .then(() => {})
         .catch((error) => {
           console.log(error);

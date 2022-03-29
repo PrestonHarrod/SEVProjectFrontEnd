@@ -15,7 +15,12 @@
           <router-link to="/student/sessions">Sessions</router-link>
         </div>
         <div class="menu-item">
-          <router-link :to="{name: 'studentSubjectView'}">Schedule Session</router-link>
+          <router-link :to="{ name: 'studentSubjectView' }"
+            >Schedule Session</router-link
+          >
+        </div>
+        <div class="menu-item" v-if="isSS()" v-on:click.prevent="goToDropIn()">
+          Drop In Tutoring
         </div>
       </div>
     </transition>
@@ -23,6 +28,7 @@
 </template>
 
 <script>
+import Utils from "@/config/utils.js";
 export default {
   name: "services",
   props: ["title"],
@@ -55,6 +61,18 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+    },
+    goToDropIn() {
+      this.$router
+        .push({ name: "dropInTutoring" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    isSS() {
+      var currentOrg = Utils.getStore("currentOrg");
+      return currentOrg == 1;
     },
   },
 };
