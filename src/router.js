@@ -51,6 +51,9 @@ import SupervisorView from "./views/Supervisors/supervisorView.vue";
 import Supervisors from "./views/Supervisors/supervisors.vue";
 
 import SelectOrg from "./views/selectOrgPage.vue";
+//Drop in tutoring
+import DropInTutoring from "./views/Students/dropInTutoring.vue";
+import DropInTutorList from "./views/Supervisors/dropInTutorList.vue";
 
 Vue.use(Router);
 export default new Router({
@@ -234,6 +237,7 @@ export default new Router({
       component: MenteeView,
       props: true,
     },
+
     {
       path: "/Mentee-Edit/:id",
       name: "editMentee",
@@ -322,6 +326,18 @@ export default new Router({
       path: "/user/tutor/sessionlist/session/",
       name: "tutorsessiondetails",
       component: tutorsessiondetails,
+      props: true,
+    },
+    {
+      path: "/student/DropIn",
+      name: "dropInTutoring",
+      component: DropInTutoring,
+      props: true,
+    },
+    {
+      path: "/supervisor/DropIn",
+      name: "dropInList",
+      component: DropInTutorList,
       props: true,
     },
 
