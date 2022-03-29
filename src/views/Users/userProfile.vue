@@ -27,6 +27,23 @@
           id="phoneNumber"
         />
       </v-col>
+      <v-row>
+      Contact Preference:
+      <v-radio-group
+     v-model="u.contactPref"
+     v-on:change="changeContactPref"
+      row
+    >
+      <v-radio
+        label="Email"
+        value="Email"
+      ></v-radio>
+      <v-radio
+        label="Text"
+        value="Text"
+      ></v-radio>
+    </v-radio-group>
+      </v-row>
     </v-form>
   </div>
 </template>
@@ -39,15 +56,21 @@ export default {
   props: ["id"],
   data() {
     return {
+      u: {},
       user: {},
       users: {},
     };
   },
   created() {
     this.user = Utils.getStore("user");
+    this.u.userID = this.user.userID;
     UserServices.getUser(this.user.userID)
       .then((response) => {
         this.users = response.data;
+        if(this.users.contactPref != "Text")
+          this.u.contactPref = "Email";
+        else
+          this.u.contactPref = "Text";
       })
 
       .catch((error) => {
@@ -55,7 +78,9 @@ export default {
       });
   },
   methods: {
-   
+   changeContactPref() {
+     UserServices.updateUser(this.u);
+   }
   }
 };
 </script>
