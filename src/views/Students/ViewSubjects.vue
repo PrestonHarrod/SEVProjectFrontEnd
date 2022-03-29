@@ -144,6 +144,7 @@
             </v-card-actions>
           </v-card>
         </v-menu>
+        <v-btn @click="sendReminder">Try it</v-btn>
         </v-form>
       </v-app>
     </div>
@@ -290,6 +291,7 @@ export default {
     scheduleSession(selectedEvent, session, selected, selectedOpen) {
       if (selectedEvent.name != "Booked" || selectedEvent.name != "Pending") {
       if (confirm("Do you want to book this time slot?")) {
+        
          this.user = Utils.getStore('user');
          this.session = session;
          this.session.studentID = this.user.userID;
@@ -297,6 +299,10 @@ export default {
          this.session.scheduledStart = selectedEvent.start;
          this.session.scheduledEnd = selectedEvent.end;
          this.session.status = "Pending";
+         let d = new Date(selectedEvent.start);
+         console.log(d);
+         this.sendReminder(d);
+         this.sendNotification(null);
          //this.session.locationID = "1";
          if (selectedEvent.name != "Group Session") {
          selectedEvent.name = "Pending";
@@ -481,12 +487,25 @@ export default {
         }
       );
     },
-    sendNotification() {
+    sendNotification(waitTime) {
       UserServices.getUser(this.user.userID)
       .then((user) => {
         console.log(user.data.phoneNumber + " " + user.data.email);
-        smsServices.sendMessage(user.data);
+        if(waitTime == null)
+          smsServices.sendMessage(user.data);
+        else
+        {
+          setTimeout(() => {smsServices.sendMessage(user.data)}, waitTime);
+          console.log("Scheduled Message Time Reached");
+        }
       });
+    },
+    sendReminder(waitDate) {
+      waitDate = new Date(waitDate - (15 * 60 * 1000));
+      console.log(waitDate);
+      let scheduledTime = waitDate - Date.now();
+      console.log(scheduledTime);
+      this.sendNotification(scheduledTime);
     },
     prev() {
       this.$refs.calendar.prev();
