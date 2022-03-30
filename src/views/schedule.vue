@@ -2,16 +2,16 @@
   <v-row class="fill-height">
     <v-col>
       <v-row justify="center">
-      <v-checkbox
-        :label="`Private Session`"
-        v-model="checkbox1"
-        @change="checkbox12"
-      ></v-checkbox>
-            <v-checkbox
-        :label="`Group Session`"
-        v-model="checkbox2"
-        @change="checkbox23"
-      ></v-checkbox>
+        <v-checkbox
+          :label="`Private Session`"
+          v-model="checkbox1"
+          @change="checkbox12"
+        ></v-checkbox>
+        <v-checkbox
+          :label="`Group Session`"
+          v-model="checkbox2"
+          @change="checkbox23"
+        ></v-checkbox>
       </v-row>
       <br>
       <v-sheet height="600">
@@ -19,9 +19,9 @@
           ref="calendar"
           v-model="value"
           color="primary"
-          type = "week"
-          :first-interval= 6
-          :interval-count= 19
+          type="week"
+          :first-interval="6"
+          :interval-count="19"
           :events="events"
           :event-color="getEventColor"
           :event-ripple="false"
@@ -33,10 +33,7 @@
           @mouseleave.native="cancelDrag"
         >
           <template v-slot:event="{ event, timed, eventSummary }">
-            <div
-              class="v-event-draggable"
-              v-html="eventSummary()"
-            ></div>
+            <div class="v-event-draggable" v-html="eventSummary()"></div>
             <div
               v-if="timed"
               class="v-event-drag-bottom"
@@ -44,71 +41,116 @@
             ></div>
           </template>
         </v-calendar>
-         <v-menu
+        <v-menu
           v-model="selectedOpen"
           :close-on-content-click="false"
           :activator="selectedElement"
           offset-x
         >
-          <v-card
-            color="grey lighten-4"
-            min-width="350px"
-            flat
-          >
-            <v-toolbar
-              style="background-color: #1976d2; color: #f2f2f2"
-            >
-             
+          <v-card color="grey lighten-4" min-width="350px" flat>
+            <v-toolbar style="background-color: #1976d2; color: #f2f2f2">
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
-              
             </v-toolbar>
             <v-card-text>
-              <span v-if="selectedEvent.name == 'Group Session'" v-html="'Students: ' + this.someValue"></span> 
-               <span v-if="selectedEvent.name == 'Booked'" v-html="'Student: ' + getName(selectedEvent)"></span> 
-                <span v-if="selectedEvent.name == 'Pending'" v-html="'Student: ' + getName(selectedEvent)"></span> 
-               <br>
-                <span v-html="'Day: '+ selectedEvent.day"></span>
-               <br>
-              <span v-html="'Time: '+ selectedEvent.details"></span>
-              
-              
-
+              <span
+                v-if="selectedEvent.name == 'Group Session'"
+                v-html="'Students: ' + this.someValue"
+              ></span>
+              <span
+                v-if="selectedEvent.name == 'Booked'"
+                v-html="'Student: ' + getName(selectedEvent)"
+              ></span>
+              <span
+                v-if="selectedEvent.name == 'Pending'"
+                v-html="'Student: ' + getName(selectedEvent)"
+              ></span>
+              <br />
+              <span
+                v-if="selectedEvent.numRegistered > 0"
+                v-html="'Location: ' + this.someLocation"
+              ></span>
+              <br />
+              <span v-html="'Day: ' + selectedEvent.day"></span>
+              <br />
+              <span v-html="'Time: ' + selectedEvent.details"></span>
             </v-card-text>
             <v-card-actions>
-              <v-btn v-if="selectedEvent.numRegistered == null"
+              <v-btn
+                v-if="selectedEvent.numRegistered == null"
                 text
                 color="error"
                 @click="removeTimeSlot(selectedEvent)"
               >
                 Remove
               </v-btn>
-               <v-btn v-if="selectedEvent.name == 'Booked'"
+              <v-btn
+                v-if="selectedEvent.numRegistered > 0"
                 text
                 color="error"
                 @click="cancelSession(selectedEvent)"
               >
                 Cancel
               </v-btn>
-              <v-btn v-if="selectedEvent.name == 'Pending'"
+              <v-dialog v-model="dialog" scrollable max-width="300px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-if="selectedEvent.numRegistered > 0"
+                    text
+                    color="black"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    Set Location
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-title>Select Location</v-card-title>
+                  <v-divider></v-divider>
+                  <v-card-text style="height: 300px">
+                    <v-select
+                      v-model="location"
+                      :items="locations"
+                      label="Location List"
+                      :item-text="getLocations"
+                      item-value="locationID"
+                      dense
+                      outlined
+                    >
+                    </v-select>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-btn
+                      color="primary"
+                      text
+                      @click="setLocation(selectedEvent, location)"
+                    >
+                      Save
+                    </v-btn>
+                    <v-btn color="black" text @click="dialog = false">
+                      Cancel
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+              <v-btn
+                v-if="selectedEvent.name == 'Pending'"
                 text
                 color="black"
                 @click="confirm(selectedEvent)"
               >
                 Confirm
               </v-btn>
-              <v-btn v-if="selectedEvent.name == 'Pending'"
+              <v-btn
+                v-if="selectedEvent.name == 'Pending'"
                 text
                 color="error"
                 @click="deny(selectedEvent)"
               >
                 Deny
               </v-btn>
-              <v-btn
-                text
-                color="primary"
-                 @click="selectedOpen = false"
-              >
+              <v-btn text color="primary" @click="selectedOpen = false">
                 Close
               </v-btn>
             </v-card-actions>
@@ -120,452 +162,482 @@
 </template>
 
 <script>
- import TutorSlotServices from "@/services/tutorSlotServices.js"
- import sessionServices from "@/services/sessionServices.js"
- import userServices from "@/services/UserServices.js"
- import Utils from '@/config/utils.js';
+import TutorSlotServices from "@/services/tutorSlotServices.js";
+import sessionServices from "@/services/sessionServices.js";
+import userServices from "@/services/UserServices.js";
+import Utils from "@/config/utils.js";
+import locationServices from "@/services/locationServices.js";
 
-  export default {
-    data: () => ({
-      value: '',
-      events: [],
-      colors: ['#4CAF50'],
-      names: ['Open Slot'],
-      dragEvent: null,
-      dragStart: null,
-      createEvent: null,
-      createStart: null,
-      extendOriginal: null,
-      tutorSlot: {},
-      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      month: '',
-      selectedEvent: {},
-      selectedElement: null,
-      selectedOpen: false,
-      checkbox1: false,
-      checkbox2: false,
-      confirmTutorSlot: {},
-      denyTutorSlot: {},
-      confirmSession: {},
-      student: {},
-      studentName: "",
-      someValue: "",
-      
-      studentsForGroupSession: [{}],
-    }),
-   created() {
-      
-      this.user = Utils.getStore('user');
+export default {
+  data: () => ({
+    locations: [],
+    location: "",
+    value: "",
+    events: [],
+    colors: ["#4CAF50"],
+    names: ["Open Slot"],
+    dragEvent: null,
+    dragStart: null,
+    createEvent: null,
+    createStart: null,
+    extendOriginal: null,
+    tutorSlot: {},
+    months: [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ],
+    month: "",
+    selectedEvent: {},
+    selectedElement: null,
+    selectedOpen: false,
+    checkbox1: false,
+    checkbox2: false,
+    confirmTutorSlot: {},
+    denyTutorSlot: {},
+    confirmSession: {},
+    student: {},
+    studentName: "",
+    someValue: "",
+    dialogm1: "",
+    someLocation: "",
+    dialog: false,
 
-      TutorSlotServices.getTutorSlotForTutor(this.user.userID).then(
-        (response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            var days = [
-              "Sunday",
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Saturday",
-            ];
-            var today = new Date();
-            today.getDay();
-               if (today.getDay() === "Sunday") {
-                 this.z = 0;
-               }
-                if (today.getDay() === "Monday") {
-                 this.z = 1;
-               }
-                if (today.getDay() === "Tuesday") {
-                 this.z = 2;
-               }
-                if (today.getDay() === "Wednesday") {
-                 this.z = 3;
-               }
-                if (today.getDay() === "Thursday") {
-                 this.z = 4;
-               }
-                if (today.getDay() === "Friday") {
-                 this.z = 5;
-               }
-                if (today.getDay() === "Saturday") {
-                 this.z = 6;
-               }
-            // display tutor slots for each day after current day
-            for (let j = 0; j < 6; j++) {
-              if (response.data[i].day == days[j]) {
-                // create date for next day in the week
-                this.thisDay = response.data[i].day;
+    studentsForGroupSession: [{}],
+  }),
+  created() {
+    locationServices.getLocations().then((response) => {
+      for (let i = 0; i < response.data.length; i++) {
+        this.locations[i] = response.data[i];
+      }
+    });
+    this.user = Utils.getStore("user");
 
+    TutorSlotServices.getTutorSlotForTutor(this.user.userID).then(
+      (response) => {
+        for (let i = 0; i < response.data.length; i++) {
+          var days = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+          ];
+          var today = new Date();
+          today.getDay();
+          if (today.getDay() === "Sunday") {
+            this.z = 0;
+          }
+          if (today.getDay() === "Monday") {
+            this.z = 1;
+          }
+          if (today.getDay() === "Tuesday") {
+            this.z = 2;
+          }
+          if (today.getDay() === "Wednesday") {
+            this.z = 3;
+          }
+          if (today.getDay() === "Thursday") {
+            this.z = 4;
+          }
+          if (today.getDay() === "Friday") {
+            this.z = 5;
+          }
+          if (today.getDay() === "Saturday") {
+            this.z = 6;
+          }
+          // display tutor slots for each day after current day
+          for (let j = 0; j < 6; j++) {
+            if (response.data[i].day == days[j]) {
+              // create date for next day in the week
+              this.thisDay = response.data[i].day;
 
-                var tomorrow = new Date();
-                tomorrow.setDate((tomorrow.getDate() + j) - (today.getDay()));
-                var month2 = tomorrow.getUTCMonth() + 1; //months from 1-12
-                if (month2 < 10) {
-                  month2 = "0" + month2;
-                }
-                var day2 = tomorrow.getUTCDate();
-                var year2 = tomorrow.getUTCFullYear();
-                let newdate2 = year2 + "-" + month2 + "-" + day2;
-                let starttime2 = newdate2 + " " + response.data[i].startTime;
-                let endtime2 = newdate2 + " " + response.data[i].endTime;
-                 if (response.data[i].studentID == null && response.data[i].status == "Private Session") {
+              var tomorrow = new Date();
+              tomorrow.setDate(tomorrow.getDate() + j - today.getDay());
+              var month2 = tomorrow.getUTCMonth() + 1; //months from 1-12
+              if (month2 < 10) {
+                month2 = "0" + month2;
+              }
+              var day2 = tomorrow.getUTCDate();
+              var year2 = tomorrow.getUTCFullYear();
+              let newdate2 = year2 + "-" + month2 + "-" + day2;
+              let starttime2 = newdate2 + " " + response.data[i].startTime;
+              let endtime2 = newdate2 + " " + response.data[i].endTime;
+              if (
+                response.data[i].studentID == null &&
+                response.data[i].status == "Private Session"
+              ) {
                 this.name1 = "Open Slot";
                 this.color = "green";
-              this.studentIDForEvent = "";
-              this.numReg = null;
-
-
-                }
-                else if (response.data[i].status == "Group Session") {
+                this.studentIDForEvent = "";
+                this.numReg = null;
+              } else if (response.data[i].status == "Group Session") {
                 this.name1 = "Group Session";
                 this.color = "blue";
-              this.studentIDForEvent = "";
-              this.numReg = response.data[i].numOfRegistered;
-
-
-                }
-                else if (response.data[i].tutorSlotRequestID == "1"){
-                  this.name1 = "Pending";
-                  this.color = "purple";
-                  this.studentIDForEvent = response.data[i].studentID;
-                  this.numReg = "1";
-                }
-                else {
-                  this.name1 = "Booked";
-                  this.color = "red";
-                  this.studentIDForEvent = response.data[i].studentID;
-                  this.numReg = "1";
-
-                }
-                this.events.push({
-                  id: response.data[i].tutorSlotID,
-                  studentID: this.studentIDForEvent,
-                  name: this.name1,
-                  date: newdate2,
-                  day: this.thisDay,
-                  start: starttime2,
-                  end: endtime2,
-                  numRegistered: this.numReg,
-                  details: response.data[i].startTime + " - " + response.data[i].endTime,
-                  
-                });
-                
-                
+                this.studentIDForEvent = "";
+                this.numReg = response.data[i].numOfRegistered;
+              } else if (response.data[i].tutorSlotRequestID == "1") {
+                this.name1 = "Pending";
+                this.color = "purple";
+                this.studentIDForEvent = response.data[i].studentID;
+                this.numReg = "0";
+              } else {
+                this.name1 = "Booked";
+                this.color = "red";
+                this.studentIDForEvent = response.data[i].studentID;
+                this.numReg = "1";
               }
+              this.events.push({
+                id: response.data[i].tutorSlotID,
+                studentID: this.studentIDForEvent,
+                name: this.name1,
+                date: newdate2,
+                day: this.thisDay,
+                start: starttime2,
+                end: endtime2,
+                numRegistered: this.numReg,
+                details:
+                  response.data[i].startTime + " - " + response.data[i].endTime,
+              });
             }
           }
         }
-      )
-    
-     
-   },
-    methods: {
-      startDrag ({ event, timed }) {
-        if (event && timed) {
-          this.dragEvent = event
-          this.dragTime = null
-          this.extendOriginal = null
-        }
-      },
-      startTime (tms) {
-        if (this.checkbox1 || this.checkbox2) {
-        const mouse = this.toTime(tms)
+      }
+    );
+  },
+  methods: {
+    startDrag({ event, timed }) {
+      if (event && timed) {
+        this.dragEvent = event;
+        this.dragTime = null;
+        this.extendOriginal = null;
+      }
+    },
+    startTime(tms) {
+      if (this.checkbox1 || this.checkbox2) {
+        const mouse = this.toTime(tms);
 
         if (this.dragEvent && this.dragTime === null) {
-          const start = this.dragEvent.start
+          const start = this.dragEvent.start;
 
-          this.dragTime = mouse - start
+          this.dragTime = mouse - start;
         } else {
           this.name1 = "";
-          this.createStart = this.roundTime(mouse)
+          this.createStart = this.roundTime(mouse);
           if (this.checkbox1) {
-            this.name1 == "Open Slot"
-          }
-          else if (this.checkbox2) {
-            this.name1 == "Group Session"
-
+            this.name1 == "Open Slot";
+          } else if (this.checkbox2) {
+            this.name1 == "Group Session";
           }
           this.createEvent = {
             name: this.name1,
             start: this.createStart,
             end: this.createStart,
             timed: true,
-          }
-          
-          this.events.push(this.createEvent)
+          };
+
+          this.events.push(this.createEvent);
         }
-        }
-      },
-      extendBottom (event) {
-        this.createEvent = event
-        this.createStart = event.start
-        this.extendOriginal = event.end
-      },
-      mouseMove (tms) {
-        const mouse = this.toTime(tms)
+      }
+    },
+    extendBottom(event) {
+      this.createEvent = event;
+      this.createStart = event.start;
+      this.extendOriginal = event.end;
+    },
+    mouseMove(tms) {
+      const mouse = this.toTime(tms);
 
-        if (this.dragEvent && this.dragTime !== null) {
-          const start = this.dragEvent.start
-          const end = this.dragEvent.end
-          const duration = end - start
-          const newStartTime = mouse - this.dragTime
-          const newStart = this.roundTime(newStartTime)
-          const newEnd = newStart + duration
+      if (this.dragEvent && this.dragTime !== null) {
+        const start = this.dragEvent.start;
+        const end = this.dragEvent.end;
+        const duration = end - start;
+        const newStartTime = mouse - this.dragTime;
+        const newStart = this.roundTime(newStartTime);
+        const newEnd = newStart + duration;
 
-          this.dragEvent.start = newStart
-          this.dragEvent.end = newEnd
-        } else if (this.createEvent && this.createStart !== null) {
-          const mouseRounded = this.roundTime(mouse, false)
-          const min = Math.min(mouseRounded, this.createStart)
-          const max = Math.max(mouseRounded, this.createStart)
+        this.dragEvent.start = newStart;
+        this.dragEvent.end = newEnd;
+      } else if (this.createEvent && this.createStart !== null) {
+        const mouseRounded = this.roundTime(mouse, false);
+        const min = Math.min(mouseRounded, this.createStart);
+        const max = Math.max(mouseRounded, this.createStart);
 
-          this.createEvent.start = min
-          this.createEvent.end = max
-        }
-      },
-      endDrag () {
-        this.user = Utils.getStore('user');
-         this.tutorSlot.tutorID = this.user.userID;
-            this.tutorSlot.day = new Date(this.createEvent.start).toLocaleDateString("en-US", { weekday: 'long' })
-            this.tutorSlot.startTime = new Date(this.createEvent.start).getHours() + ":" + new Date(this.createEvent.start).getMinutes() + ":" + new Date(this.createEvent.start).getSeconds();
-            this.tutorSlot.endTime = new Date(this.createEvent.end).getHours() + ":" + new Date(this.createEvent.end).getMinutes() + ":" + new Date(this.createEvent.end).getSeconds();
-            if (this.checkbox1) {
-              this.tutorSlot.status = "Private Session";
-            }
-            else if (this.checkbox2) {
-              this.tutorSlot.status = "Group Session";
-            }
-            TutorSlotServices.addTutorSlot(this.tutorSlot);
-        this.dragTime = null
-        this.dragEvent = null
-        this.createEvent = null
-        this.createStart = null
-        this.extendOriginal = null
-        this.$router.go();
-                 
-      },
-      cancelDrag () {
-        if (this.createEvent) {
-          if (this.extendOriginal) {
-            this.createEvent.end = this.extendOriginal
-          } else {
-            const i = this.events.indexOf(this.createEvent)
-            if (i !== -1) {
-              this.events.splice(i, 1)
-            }
-          }
-        }
-
-        this.createEvent = null
-        this.createStart = null
-        this.dragTime = null
-        this.dragEvent = null
-      },
-      roundTime (time, down = true) {
-        const roundTo = 15 // minutes
-        const roundDownTime = roundTo * 60 * 1000
-
-        return down
-          ? time - time % roundDownTime
-          : time + (roundDownTime - (time % roundDownTime))
-      },
-      toTime (tms) {
-        return new Date(tms.year, tms.month - 1, tms.day, tms.hour, tms.minute).getTime()
-      },
-      getEventColor (event) {
-       if (event.name == "Group Session") {
-         this.color = "blue";
-       }
-       else if (event.name == "Open Slot") {
-         this.color = "green";
-       }
-       else if (event.name == "Booked"){
-         this.color = "red";
-       }
-       else if (event.name == "Pending"){
-         this.color = "purple";
-       }
-       else {
-         this.color = "grey"
-       }
-
-       return this.color;
-      },
-      rnd (a, b) {
-        return Math.floor((b - a + 1) * Math.random()) + a
-      },
-      rndElement (arr) {
-        return arr[this.rnd(0, arr.length - 1)]
-      },
-    
-      async viewSession({ nativeEvent, event }) {
-       console.log("here");
-        const open = () => {
-          this.selectedEvent = event
-          this.selectedElement = nativeEvent.target
-          
-          requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
-        }
-
-        if (this.selectedOpen) {
-          this.selectedOpen = false
-          requestAnimationFrame(() => requestAnimationFrame(() => open()))
+        this.createEvent.start = min;
+        this.createEvent.end = max;
+      }
+    },
+    endDrag() {
+      this.user = Utils.getStore("user");
+      this.tutorSlot.tutorID = this.user.userID;
+      this.tutorSlot.day = new Date(this.createEvent.start).toLocaleDateString(
+        "en-US",
+        { weekday: "long" }
+      );
+      this.tutorSlot.startTime =
+        new Date(this.createEvent.start).getHours() +
+        ":" +
+        new Date(this.createEvent.start).getMinutes() +
+        ":" +
+        new Date(this.createEvent.start).getSeconds();
+      this.tutorSlot.endTime =
+        new Date(this.createEvent.end).getHours() +
+        ":" +
+        new Date(this.createEvent.end).getMinutes() +
+        ":" +
+        new Date(this.createEvent.end).getSeconds();
+      if (this.checkbox1) {
+        this.tutorSlot.status = "Private Session";
+      } else if (this.checkbox2) {
+        this.tutorSlot.status = "Group Session";
+      }
+      TutorSlotServices.addTutorSlot(this.tutorSlot);
+      this.dragTime = null;
+      this.dragEvent = null;
+      this.createEvent = null;
+      this.createStart = null;
+      this.extendOriginal = null;
+      this.$router.go();
+    },
+    cancelDrag() {
+      if (this.createEvent) {
+        if (this.extendOriginal) {
+          this.createEvent.end = this.extendOriginal;
         } else {
-          open()
+          const i = this.events.indexOf(this.createEvent);
+          if (i !== -1) {
+            this.events.splice(i, 1);
+          }
         }
-        nativeEvent.stopPropagation()
+      }
 
-        await this.getNames(event);
+      this.createEvent = null;
+      this.createStart = null;
+      this.dragTime = null;
+      this.dragEvent = null;
+    },
+    roundTime(time, down = true) {
+      const roundTo = 15; // minutes
+      const roundDownTime = roundTo * 60 * 1000;
 
-      },
+      return down
+        ? time - (time % roundDownTime)
+        : time + (roundDownTime - (time % roundDownTime));
+    },
+    toTime(tms) {
+      return new Date(
+        tms.year,
+        tms.month - 1,
+        tms.day,
+        tms.hour,
+        tms.minute
+      ).getTime();
+    },
+    getEventColor(event) {
+      if (event.name == "Group Session") {
+        this.color = "blue";
+      } else if (event.name == "Open Slot") {
+        this.color = "green";
+      } else if (event.name == "Booked") {
+        this.color = "red";
+      } else if (event.name == "Pending") {
+        this.color = "purple";
+      } else {
+        this.color = "grey";
+      }
 
-      removeTimeSlot(selectedEvent) {
-         if (confirm("Do you want to delete this time slot?")) {
-        console.log(selectedEvent.id)
+      return this.color;
+    },
+    rnd(a, b) {
+      return Math.floor((b - a + 1) * Math.random()) + a;
+    },
+    rndElement(arr) {
+      return arr[this.rnd(0, arr.length - 1)];
+    },
+
+    async viewSession({ nativeEvent, event }) {
+      console.log("here");
+      const open = () => {
+        this.selectedEvent = event;
+        this.selectedElement = nativeEvent.target;
+
+        requestAnimationFrame(() =>
+          requestAnimationFrame(() => (this.selectedOpen = true))
+        );
+      };
+
+      if (this.selectedOpen) {
+        this.selectedOpen = false;
+        requestAnimationFrame(() => requestAnimationFrame(() => open()));
+      } else {
+        open();
+      }
+      nativeEvent.stopPropagation();
+
+      await this.getLocation(event);
+      await this.getNames(event);
+    },
+
+    removeTimeSlot(selectedEvent) {
+      if (confirm("Do you want to delete this time slot?")) {
+        console.log(selectedEvent.id);
         TutorSlotServices.deleteTutorSlot(selectedEvent.id);
         for (let i = 0; i < this.events.length; i++) {
           if (this.events[i].id === selectedEvent.id) {
-             this.events.splice(i, 1)
+            this.events.splice(i, 1);
           }
         }
-         }
-      
+      }
 
+      this.selectedOpen = false;
+    },
+    confirm(event) {
+      TutorSlotServices.getTutorSlot(event.id).then((response) => {
+        this.confirmTutorSlot = response.data;
+        this.confirmTutorSlot.tutorSlotRequestID = null;
+        this.confirmTutorSlot.numOfRegistered = "1";
+        TutorSlotServices.updateTutorSlot(this.confirmTutorSlot);
+        sessionServices.getSessionByTutorSlot(event.id).then((response) => {
+          this.confirmSession = response.data[0];
+          this.confirmSession.status = "Upcoming";
+          sessionServices.updateSession(this.confirmSession);
           this.selectedOpen = false;
-  
-      
-      },
-      confirm(event) {
-        TutorSlotServices.getTutorSlot(event.id).then(
-        (response) => { 
-          this.confirmTutorSlot = response.data;
-          this.confirmTutorSlot.tutorSlotRequestID = null;
-           TutorSlotServices.updateTutorSlot(this.confirmTutorSlot);
-           sessionServices.getSessionByTutorSlot(event.id).then(
-             (response) => {
-               this.confirmSession = response.data[0];
-               this.confirmSession.status = "Upcoming";
-               sessionServices.updateSession(this.confirmSession);
-                this.selectedOpen = false;
 
-                this.$router.go(); //will need to show students name
-
-
-}
-           )
-        }),
-        
-          event.color = "red";
-          event.name = "Booked";
-
-          
-          
-
-      },
-       deny(event) {
-         TutorSlotServices.getTutorSlot(event.id).then(
-        (response) => { 
-          this.confirmTutorSlot = response.data;
-          this.confirmTutorSlot.tutorSlotRequestID = null;
-          this.confirmTutorSlot.studentID = null;
-          TutorSlotServices.updateTutorSlot(this.confirmTutorSlot);
-          sessionServices.deleteSessionByTutorSlotID(event.id)
-          this.selectedOpen = false
-        }),
-          event.color = "green";
-          event.name = "Open Slot";
-    
-
-
-       },
-        checkbox12() {
-          if (this.checkbox1) {
-            this.checkbox2 = false;
+          this.$router.go(); //will need to show students name
+        });
+      }),
+        (event.color = "red");
+      event.name = "Booked";
+    },
+    deny(event) {
+      TutorSlotServices.getTutorSlot(event.id).then((response) => {
+        this.confirmTutorSlot = response.data;
+        this.confirmTutorSlot.tutorSlotRequestID = null;
+        this.confirmTutorSlot.studentID = null;
+        TutorSlotServices.updateTutorSlot(this.confirmTutorSlot);
+        sessionServices.deleteSessionByTutorSlotID(event.id);
+        this.selectedOpen = false;
+      }),
+        (event.color = "green");
+      event.name = "Open Slot";
+    },
+    checkbox12() {
+      if (this.checkbox1) {
+        this.checkbox2 = false;
+      }
+      console.log(this.checkbox1);
+      console.log(this.checkbox2);
+    },
+    checkbox23() {
+      if (this.checkbox2) {
+        this.checkbox1 = false;
+      }
+      console.log(this.checkbox2);
+      console.log(this.checkbox1);
+    },
+    getName(event) {
+      let id = event.studentID;
+      console.log(id + "in getName function");
+      userServices.getUser(id).then((response) => {
+        this.student = response.data;
+        console.log(this.student.fName + "inside loop");
+        this.studentName = this.student.fName + " " + this.student.lName;
+      });
+      return this.studentName;
+    },
+    async getNames(event) {
+      let id = event.id;
+      sessionServices.getSessionByTutorSlot(id).then((response) => {
+        console.log(response.data.length + "length of session array");
+        if (response.data.length != 0) {
+          this.someValue = "";
+          for (let i = 0; i < response.data.length; i++) {
+            this.studentsForGroupSession[i] = response.data[i];
+            userServices
+              .getUser(this.studentsForGroupSession[i].studentID)
+              .then((response1) => {
+                console.log(response1.data.fName + "dudes first name");
+                this.someValue +=
+                  response1.data.fName + " " + response1.data.lName + "<br>";
+              });
           }
-          console.log(this.checkbox1);
-          console.log(this.checkbox2);
-     
- 
-        },
-        checkbox23() {
-          if (this.checkbox2) {
-            this.checkbox1 = false;
-          }
-          console.log(this.checkbox2);
-          console.log(this.checkbox1);
-  
-        },
-        getName(event) {
-          let id = event.studentID;
-          console.log(id + "in getName function");
-           userServices.getUser(id)
-                .then(response => {
-                this.student = response.data;
-                console.log(this.student.fName + "inside loop");
-                this.studentName = this.student.fName + " " + this.student.lName;
+        } else {
+          this.someValue = "0";
+        }
+      });
+      return this.someValue;
+    },
 
-                })
-                  return this.studentName;
-        },
-         async getNames(event) {
-          let id = event.id;
-           sessionServices.getSessionByTutorSlot(id)
-                .then(response => {
-                  console.log(response.data.length + "length of session array");
-                if (response.data.length != 0) {
-                  this.someValue= "";
-                  for (let i = 0; i < response.data.length; i++) {
-                    this.studentsForGroupSession[i] = response.data[i];
-                    userServices.getUser(this.studentsForGroupSession[i].studentID)
-                    .then(response1 => {
-                      console.log(response1.data.fName + "dudes first name");
-                     this.someValue += response1.data.fName + " " + response1.data.lName + "<br>";
-                  
-                    })
-                    
-                  }
-                  
-                }
-                else {
-                  this.someValue = "0";
-                  
-                }
-                })
-               return this.someValue;
-                },
-
-
-      cancelSession(event){
-          let id = event.id;
+    cancelSession(event) {
+      let id = event.id;
       if (confirm("Do you really want to cancel this session?")) {
         sessionServices.deleteSessionByTutorSlotID(id);
-          TutorSlotServices.cancelSlot(id)
-        .then((response) => {
-            this.tutorSlot = response.data[0];
-            this.tutorSlot.studentID = null;
-            TutorSlotServices.updateTutorSlot(this.tutorSlot)
+        TutorSlotServices.cancelSlot(id).then((response) => {
+          this.tutorSlot = response.data[0];
+          this.tutorSlot.studentID = null;
+          this.tutorSlot.tutorSlotRequestID = null;
+          this.tutorSlot.numOfRegistered = null;
+          TutorSlotServices.updateTutorSlot(this.tutorSlot)
             .then(() => {
-            sessionServices.deleteSession(id)
+              sessionServices.deleteSession(id);
             })
 
-          .catch((error) => {
-            console.log(error);
-          });
-         })
-        
+            .catch((error) => {
+              console.log(error);
+            });
+        });
       }
-          event.color = "green";
-          event.name = "Open Slot";
-          this.selectedOpen = false
+      event.color = "green";
+      event.name = "Open Slot";
+      this.selectedOpen = false;
+    },
 
+    setLocation(event, location) {
+      console.log(event.id + " " + location + "setLocation");
+      sessionServices.getSessionByTutorSlot(event.id).then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+          this.sessionForLocation = response.data[i];
+          this.sessionForLocation.locationID = location;
+          sessionServices.updateSession(this.sessionForLocation);
         }
-      },
-  }
+        this.selectedOpen = false;
+      });
+    },
+    async getLocation(event) {
+      let id = event.id;
+      await sessionServices.getSessionByTutorSlot(id).then((response) => {
+        if (response.data.length != 0 && response.data[0].locationID != null) {
+          this.someLocation = "";
+          this.sessLoc = response.data[0].locationID;
+          locationServices.getLocation(this.sessLoc).then((response1) => {
+            this.build = response1.data.building;
+            this.room = response1.data.roomNum;
+            this.someLocation = this.build + ": " + this.room;
+          });
+        } else {
+          this.someLocation = "None";
+        }
+      });
+      return this.someLocation;
+    },
+    getLocations(location) {
+      return location.building + ": " + location.roomNum;
+    },
+  },
+};
 </script>
 
 <style  scoped>
-
 </style>
 
