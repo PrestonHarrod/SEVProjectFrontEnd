@@ -72,7 +72,6 @@
             :events="events"
             @click:event="viewSession"
             :event-color="getEventColor"
-            @change="getTutorSlots"
             color="blue"
             event-text-color="white"
             :event-ripple="false"
@@ -100,7 +99,7 @@
               
             </v-toolbar>
             <v-card-text>
-               <!-- <span v-if="selectedEvent.name == 'Group Session'" v-html="'Registered/Max Occupancy: ' + this.registered + '/' + this.maxOccupancy"></span> -->
+               <span v-if="selectedEvent.name == 'Group Session'" v-html="'Registered/Max Occupancy: ' + selectedEvent.registered + '/' + this.maxOccupancy"></span>
                <br>
               <span v-html="selectedEvent.details"></span>
             </v-card-text>
@@ -113,7 +112,7 @@
               >
                 Book
               </v-btn>
-              <v-btn v-if="selectedEvent.name == 'Group Session' && (this.registered != this.maxOccupancy)"
+              <v-btn v-if="selectedEvent.name == 'Group Session' && (selectedEvent.registered != this.maxOccupancy)"
                 text
                 color="primary"
                 selectedOpen = true;
@@ -273,8 +272,8 @@ export default {
          this.session.status = "Pending";
          //this.session.locationID = "1";
          if (selectedEvent.name != "Group Session") {
-         selectedEvent.name = "Pending";
-         selectedEvent.color = "purple";
+         selectedEvent.name = "Booked";
+         selectedEvent.color = "red";
          }
          this.selectedOpen = selectedOpen;
          this.selectedOpen = false;
@@ -300,8 +299,16 @@ export default {
     },
 
     signUp(selectedEvent, session, selected, selectedOpen) {
-       if (selectedEvent.name != "Booked") {
       if (confirm("Do you want to sign up for this group session?")) {
+        this.user = Utils.getStore('user');
+        let isIn = false;
+        SessionServices.getSessionByTutorSlot(selectedEvent.id).then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+        if (this.user.userID == response.data[i].studentID) {
+          isIn = true;
+        }
+        }
+        if (isIn == false) {
          this.user = Utils.getStore('user');
          this.session = session;
          this.session.studentID = this.user.userID;
@@ -309,7 +316,7 @@ export default {
          this.session.scheduledStart = selectedEvent.start;
          this.session.scheduledEnd = selectedEvent.end;
          this.session.status = "Upcoming";
-         this.session.locationID = "1";
+        // this.session.locationID = "1";
          if (selectedEvent.name != "Group Session") {
          selectedEvent.name = "Booked";
          selectedEvent.color = "red";
@@ -317,22 +324,27 @@ export default {
          this.selectedOpen = selectedOpen;
          this.selectedOpen = false;
          this.session.tutorSlotID = selectedEvent.id;
+         
        //  this.session.date = selectedEvent.date;
          SessionServices.addSession(this.session);
+
+         
          //this.registered++;
-        //this.tutorSlot.studentID = this.user.userID;
-        //this.tutorSlot.tutorSlotID = selectedEvent.id;
+        this.tutorSlot.numOfRegistered = selectedEvent.registered + 1;
+        this.tutorSlot.tutorSlotID = selectedEvent.id;
 
 
-         //TutorSlotServices.updateTutorSlot(this.tutorSlot);
-      }
-      }
-      else {
+         TutorSlotServices.updateTutorSlot(this.tutorSlot);
+          this.getTutorSlots(selected);
+        }
+         else {
         alert(
-            "This session is already booked!"
+            "You are already booked for this session!"
 
           );
           this.selectedOpen = false;
+      }
+        })
       }
 
     },
@@ -400,8 +412,12 @@ export default {
             for (let j = 0; j < 6; j++) {
               if (response.data[i].day == days[j]) {
                 // create date for next day in the week
-                
-
+                if (response.data[i].numOfRegistered != null) {
+                this.count = response.data[i].numOfRegistered;
+                }
+                else {
+                  this.count = 0;
+                }
                 console.log(response.data[i].day)
                 var tomorrow = new Date();
                 console.log (this.z + " " + j);
@@ -426,7 +442,7 @@ export default {
                 this.color = "blue";
 
                 }
-                else if (response.data[i].tutorSlotRequestID == "1"){
+                else if (response.data[i].tutorSlotRequestID == "1" && response.data[i].studentID == this.user.userID){
                   this.name1 = "Pending";
                   this.color = "purple";
                 }
@@ -445,6 +461,7 @@ export default {
                   start: starttime2,
                   color: this.color,
                   end: endtime2,
+                  registered: this.count,
                   details: response.data[i].startTime + " - " + response.data[i].endTime,
                   
                 });

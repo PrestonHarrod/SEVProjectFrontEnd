@@ -26,4 +26,8 @@ export default {
   deleteUser(userID) {
     return apiClient.delete("users/" + userID);
   },
+  getUsersForGroupSession(id) {
+    return apiClient.get("users/groupSessionStudentNames/" + id);
+
+  }
 };
