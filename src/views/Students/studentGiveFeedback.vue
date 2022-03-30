@@ -23,6 +23,13 @@
           </v-row>
           <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
           <br />
+          <v-rating
+            v-model="rating"
+            background-color="blue lighten-3"
+            color="blue"
+            large
+            @input="getRating()"
+          ></v-rating>
           <v-textarea
               color="teal"
               v-model="desc"
@@ -32,18 +39,9 @@
                   Description
                 </div>
               </template>
-              <v-rating
-                empty-icon="$mdiStarOutline"
-                full-icon="$mdiStar"
-                half-icon="$mdiStarHalfFull"
-                hover
-                length="5"
-                size="64"
-                value="3"
-            ></v-rating>
               
             </v-textarea>
-            <v-btn @click="createRequest()" color="primary">
+            <v-btn v-if="rating != 0" @click="sendFeedback()" color="primary">
                Submit
             </v-btn>
         </v-form>
@@ -59,18 +57,35 @@ import SessionServices from "@/services/sessionServices.js"
 export default {
   props: ["id"],
   data:  () => ({
+    sessionID: null,
     user: {},
     session: {},
+    rating: 0,
+    desc: "",
 
   }),
   created() {
     this.user = Utils.getStore("user")
     SessionServices.getSession(this.id)
     .then(response => {
+      this.sessionID = this.id
       this.session = response.data;
     })
     console.log(this.session)
+  },
+  methods: {
+    getRating() {
+      console.log(this.rating)
+    },
+    sendFeedback() {
+    this.session.feedback = this.desc
+    this.session.rating = this.rating
+    SessionServices.updateSession(this.session)
+    console.log(this.session)
+    this.$router.push({name: "sessionsCalender"})
   }
+
+  },
 }
 
 </script>

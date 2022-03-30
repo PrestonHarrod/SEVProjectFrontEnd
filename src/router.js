@@ -22,6 +22,7 @@ import SessionView from "./views/sessionView.vue";
 import userProfileView from "./views/Users/userProfile.vue";
 import becomeTutor from "./views/Students/becomeTutor.vue";
 import tutorsessionlist from  "./views/Tutors/tutorSessionList.vue";
+import SessionsCalender from "./views/Students/SessionsCalender.vue"
 import tutorsessiondetails from "./views/Tutors/tutorViewSession.vue";
 //User Crud
 import UserList from "./views/Users/userList.vue";
@@ -197,6 +198,12 @@ export default new Router({
       name: "editStudent",
       component: StudentEdit,
       props: true,
+    },
+    {
+      path: "/student/sessionsCalender",
+      name: "sessionsCalender",
+      component: SessionsCalender
+
     },
     {
       path: "/session/GiveFeedback/:id",
