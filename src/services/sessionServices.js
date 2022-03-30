@@ -16,7 +16,6 @@ export default {
   },
   getSessionByTutorSlot(id) {
     return apiClient.get("sessions/tutorSlot/" + id);
-
   },
     addSession(session) {
       return apiClient.post("sessions/", session);

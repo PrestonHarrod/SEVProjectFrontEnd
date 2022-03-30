@@ -26,7 +26,6 @@
           :event-color="getEventColor"
           :event-ripple="false"
           @click:event="viewSession"
-          @change="getTutorSlots"
           @mousedown:event="startDrag"
           @mousedown:time="startTime"
           @mousemove:time="mouseMove"
@@ -65,7 +64,9 @@
               
             </v-toolbar>
             <v-card-text>
+              <span v-if="selectedEvent.name == 'Group Session'" v-html="'Students: ' + this.someValue"></span> 
                <span v-if="selectedEvent.name == 'Booked'" v-html="'Student: ' + getName(selectedEvent)"></span> 
+                <span v-if="selectedEvent.name == 'Pending'" v-html="'Student: ' + getName(selectedEvent)"></span> 
                <br>
                 <span v-html="'Day: '+ selectedEvent.day"></span>
                <br>
@@ -75,7 +76,7 @@
 
             </v-card-text>
             <v-card-actions>
-              <v-btn v-if="selectedEvent.name == 'Open Slot'"
+              <v-btn v-if="selectedEvent.numRegistered == null"
                 text
                 color="error"
                 @click="removeTimeSlot(selectedEvent)"
@@ -147,8 +148,119 @@
       denyTutorSlot: {},
       confirmSession: {},
       student: {},
+      studentName: "",
+      someValue: "",
+      
+      studentsForGroupSession: [{}],
     }),
-   
+   created() {
+      
+      this.user = Utils.getStore('user');
+
+      TutorSlotServices.getTutorSlotForTutor(this.user.userID).then(
+        (response) => {
+          for (let i = 0; i < response.data.length; i++) {
+            var days = [
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ];
+            var today = new Date();
+            today.getDay();
+               if (today.getDay() === "Sunday") {
+                 this.z = 0;
+               }
+                if (today.getDay() === "Monday") {
+                 this.z = 1;
+               }
+                if (today.getDay() === "Tuesday") {
+                 this.z = 2;
+               }
+                if (today.getDay() === "Wednesday") {
+                 this.z = 3;
+               }
+                if (today.getDay() === "Thursday") {
+                 this.z = 4;
+               }
+                if (today.getDay() === "Friday") {
+                 this.z = 5;
+               }
+                if (today.getDay() === "Saturday") {
+                 this.z = 6;
+               }
+            // display tutor slots for each day after current day
+            for (let j = 0; j < 6; j++) {
+              if (response.data[i].day == days[j]) {
+                // create date for next day in the week
+                this.thisDay = response.data[i].day;
+
+
+                var tomorrow = new Date();
+                tomorrow.setDate((tomorrow.getDate() + j) - (today.getDay()));
+                var month2 = tomorrow.getUTCMonth() + 1; //months from 1-12
+                if (month2 < 10) {
+                  month2 = "0" + month2;
+                }
+                var day2 = tomorrow.getUTCDate();
+                var year2 = tomorrow.getUTCFullYear();
+                let newdate2 = year2 + "-" + month2 + "-" + day2;
+                let starttime2 = newdate2 + " " + response.data[i].startTime;
+                let endtime2 = newdate2 + " " + response.data[i].endTime;
+                 if (response.data[i].studentID == null && response.data[i].status == "Private Session") {
+                this.name1 = "Open Slot";
+                this.color = "green";
+              this.studentIDForEvent = "";
+              this.numReg = null;
+
+
+                }
+                else if (response.data[i].status == "Group Session") {
+                this.name1 = "Group Session";
+                this.color = "blue";
+              this.studentIDForEvent = "";
+              this.numReg = response.data[i].numOfRegistered;
+
+
+                }
+                else if (response.data[i].tutorSlotRequestID == "1"){
+                  this.name1 = "Pending";
+                  this.color = "purple";
+                  this.studentIDForEvent = response.data[i].studentID;
+                  this.numReg = "1";
+                }
+                else {
+                  this.name1 = "Booked";
+                  this.color = "red";
+                  this.studentIDForEvent = response.data[i].studentID;
+                  this.numReg = "1";
+
+                }
+                this.events.push({
+                  id: response.data[i].tutorSlotID,
+                  studentID: this.studentIDForEvent,
+                  name: this.name1,
+                  date: newdate2,
+                  day: this.thisDay,
+                  start: starttime2,
+                  end: endtime2,
+                  numRegistered: this.numReg,
+                  details: response.data[i].startTime + " - " + response.data[i].endTime,
+                  
+                });
+                
+                
+              }
+            }
+          }
+        }
+      )
+    
+     
+   },
     methods: {
       startDrag ({ event, timed }) {
         if (event && timed) {
@@ -231,8 +343,8 @@
         this.createEvent = null
         this.createStart = null
         this.extendOriginal = null
-                  this.$router.go();
-
+        this.$router.go();
+                 
       },
       cancelDrag () {
         if (this.createEvent) {
@@ -281,106 +393,6 @@
 
        return this.color;
       },
-    getTutorSlots() {
-      this.user = Utils.getStore('user');
-
-      TutorSlotServices.getTutorSlotForTutor(this.user.userID).then(
-        (response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            var days = [
-              "Sunday",
-              "Monday",
-              "Tuesday",
-              "Wednesday",
-              "Thursday",
-              "Friday",
-              "Saturday",
-            ];
-            var today = new Date();
-            today.getDay();
-               if (today.getDay() === "Sunday") {
-                 this.z = 0;
-               }
-                if (today.getDay() === "Monday") {
-                 this.z = 1;
-               }
-                if (today.getDay() === "Tuesday") {
-                 this.z = 2;
-               }
-                if (today.getDay() === "Wednesday") {
-                 this.z = 3;
-               }
-                if (today.getDay() === "Thursday") {
-                 this.z = 4;
-               }
-                if (today.getDay() === "Friday") {
-                 this.z = 5;
-               }
-                if (today.getDay() === "Saturday") {
-                 this.z = 6;
-               }
-            // display tutor slots for each day after current day
-            for (let j = 0; j < 6; j++) {
-              if (response.data[i].day == days[j]) {
-                // create date for next day in the week
-                this.thisDay = response.data[i].day;
-
-
-                var tomorrow = new Date();
-                tomorrow.setDate((tomorrow.getDate() + j) - (today.getDay()));
-                var month2 = tomorrow.getUTCMonth() + 1; //months from 1-12
-                if (month2 < 10) {
-                  month2 = "0" + month2;
-                }
-                var day2 = tomorrow.getUTCDate();
-                var year2 = tomorrow.getUTCFullYear();
-                let newdate2 = year2 + "-" + month2 + "-" + day2;
-                let starttime2 = newdate2 + " " + response.data[i].startTime;
-                let endtime2 = newdate2 + " " + response.data[i].endTime;
-                 if (response.data[i].studentID == null && response.data[i].status == "Private Session") {
-                this.name1 = "Open Slot";
-                this.color = "green";
-              this.studentIDForEvent = "";
-
-
-                }
-                else if (response.data[i].status == "Group Session") {
-                this.name1 = "Group Session";
-                this.color = "blue";
-              this.studentIDForEvent = "";
-
-
-                }
-                else if (response.data[i].tutorSlotRequestID == "1"){
-                  this.name1 = "Pending";
-                  this.color = "purple";
-               this.studentIDForEvent = "";
-                }
-                else {
-                  this.name1 = "Booked";
-                  this.color = "red";
-                  this.studentIDForEvent = response.data[i].studentID;
-
-                }
-                this.events.push({
-                  id: response.data[i].tutorSlotID,
-                  studentID: this.studentIDForEvent,
-                  name: this.name1,
-                  date: newdate2,
-                  day: this.thisDay,
-                  start: starttime2,
-                  end: endtime2,
-                  details: response.data[i].startTime + " - " + response.data[i].endTime,
-                  
-                });
-                
-                
-              }
-            }
-          }
-        }
-      );
-    },
       rnd (a, b) {
         return Math.floor((b - a + 1) * Math.random()) + a
       },
@@ -388,11 +400,10 @@
         return arr[this.rnd(0, arr.length - 1)]
       },
     
-     viewSession({ nativeEvent, event }) {
+      async viewSession({ nativeEvent, event }) {
        console.log("here");
         const open = () => {
           this.selectedEvent = event
-          console.log(event.id);
           this.selectedElement = nativeEvent.target
           
           requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
@@ -404,8 +415,10 @@
         } else {
           open()
         }
-        
         nativeEvent.stopPropagation()
+
+        await this.getNames(event);
+
       },
 
       removeTimeSlot(selectedEvent) {
@@ -421,7 +434,7 @@
       
 
           this.selectedOpen = false;
-          //this.$router.go();
+  
       
       },
       confirm(event) {
@@ -434,14 +447,20 @@
              (response) => {
                this.confirmSession = response.data[0];
                this.confirmSession.status = "Upcoming";
-               console.log(this.confirmSession.sessionID + "session ID");
                sessionServices.updateSession(this.confirmSession);
-               this.$router.go();
-             }
+                this.selectedOpen = false;
+
+                this.$router.go(); //will need to show students name
+
+
+}
            )
         }),
+        
           event.color = "red";
           event.name = "Booked";
+
+          
           
 
       },
@@ -453,9 +472,12 @@
           this.confirmTutorSlot.studentID = null;
           TutorSlotServices.updateTutorSlot(this.confirmTutorSlot);
           sessionServices.deleteSessionByTutorSlotID(event.id)
+          this.selectedOpen = false
         }),
           event.color = "green";
           event.name = "Open Slot";
+    
+
 
        },
         checkbox12() {
@@ -482,14 +504,40 @@
                 .then(response => {
                 this.student = response.data;
                 console.log(this.student.fName + "inside loop");
+                this.studentName = this.student.fName + " " + this.student.lName;
 
                 })
-                console.log(this.student.fName + "outside loop");
-
-                this.studentName = this.student.fName + " " + this.student.lName;
-                return this.studentName;
+                  return this.studentName;
         },
-        cancelSession(event){
+         async getNames(event) {
+          let id = event.id;
+           sessionServices.getSessionByTutorSlot(id)
+                .then(response => {
+                  console.log(response.data.length + "length of session array");
+                if (response.data.length != 0) {
+                  this.someValue= "";
+                  for (let i = 0; i < response.data.length; i++) {
+                    this.studentsForGroupSession[i] = response.data[i];
+                    userServices.getUser(this.studentsForGroupSession[i].studentID)
+                    .then(response1 => {
+                      console.log(response1.data.fName + "dudes first name");
+                     this.someValue += response1.data.fName + " " + response1.data.lName + "<br>";
+                  
+                    })
+                    
+                  }
+                  
+                }
+                else {
+                  this.someValue = "0";
+                  
+                }
+                })
+               return this.someValue;
+                },
+
+
+      cancelSession(event){
           let id = event.id;
       if (confirm("Do you really want to cancel this session?")) {
         sessionServices.deleteSessionByTutorSlotID(id);
@@ -500,7 +548,6 @@
             TutorSlotServices.updateTutorSlot(this.tutorSlot)
             .then(() => {
             sessionServices.deleteSession(id)
-            this.$router.go();
             })
 
           .catch((error) => {
@@ -509,6 +556,9 @@
          })
         
       }
+          event.color = "green";
+          event.name = "Open Slot";
+          this.selectedOpen = false
 
         }
       },

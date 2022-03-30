@@ -24,8 +24,7 @@
             <v-col class="d-flex" cols="12" sm="6"> </v-col>
           </v-row>
           <v-row>
-            <v-col>
-            </v-col>
+            <v-col> </v-col>
           </v-row>
           <v-row>
             <v-col>
@@ -49,17 +48,31 @@
             </v-col>
           </v-row>
           <v-row>
-          <v-btn v-if="selected[0] != null" fab text small color="grey darken-2" @click="prev">
-            <v-icon small> mdi-chevron-left </v-icon>
-          </v-btn>
-          <v-btn v-if="selected[0] != null" fab text small color="grey darken-2" @click="next">
-            <v-icon small> mdi-chevron-right </v-icon>
-          </v-btn>
-          <v-col v-if="selected[0] != null">
-            <H2 style="background-color: #1976d2; color: #f2f2f2">
-            {{ month }}
-          </H2>
-          </v-col>
+            <v-btn
+              v-if="selected[0] != null"
+              fab
+              text
+              small
+              color="grey darken-2"
+              @click="prev"
+            >
+              <v-icon small> mdi-chevron-left </v-icon>
+            </v-btn>
+            <v-btn
+              v-if="selected[0] != null"
+              fab
+              text
+              small
+              color="grey darken-2"
+              @click="next"
+            >
+              <v-icon small> mdi-chevron-right </v-icon>
+            </v-btn>
+            <v-col v-if="selected[0] != null">
+              <H2 style="background-color: #1976d2; color: #f2f2f2">
+                {{ month }}
+              </H2>
+            </v-col>
           </v-row>
           <!-- now is normally calculated by itself, but to keep the calendar in this date range to view events -->
           <br />
@@ -72,7 +85,6 @@
             :events="events"
             @click:event="viewSession"
             :event-color="getEventColor"
-            
             color="blue"
             event-text-color="white"
             :event-ripple="false"
@@ -100,7 +112,7 @@
               
             </v-toolbar>
             <v-card-text>
-               <!-- <span v-if="selectedEvent.name == 'Group Session'" v-html="'Registered/Max Occupancy: ' + this.registered + '/' + this.maxOccupancy"></span> -->
+               <span v-if="selectedEvent.name == 'Group Session'" v-html="'Registered/Max Occupancy: ' + selectedEvent.registered + '/' + this.maxOccupancy"></span>
                <br>
               <span v-html="selectedEvent.details"></span>
             </v-card-text>
@@ -113,7 +125,7 @@
               >
                 Book
               </v-btn>
-              <v-btn v-if="selectedEvent.name == 'Group Session' && (this.registered != this.maxOccupancy)"
+              <v-btn v-if="selectedEvent.name == 'Group Session' && (selectedEvent.registered != this.maxOccupancy)"
                 text
                 color="primary"
                 selectedOpen = true;
@@ -131,6 +143,7 @@
             </v-card-actions>
           </v-card>
         </v-menu>
+        <v-btn @click="sendReminder">Try it</v-btn>
         </v-form>
       </v-app>
     </div>
@@ -139,12 +152,12 @@
 
 <script>
 import subjectServices from "@/services/subjectServices.js";
-import TutorSlotServices from "@/services/tutorSlotServices.js"
+import TutorSlotServices from "@/services/tutorSlotServices.js";
 import UserServices from "@/services/UserServices.js";
 import userOrgServices from "@/services/userOrgServices.js";
 import Utils from '@/config/utils.js';
 import SessionServices from "@/services/sessionServices.js";
-
+import smsServices from "@/services/smsServices.js";
 
 export default {
   data() {
@@ -157,8 +170,21 @@ export default {
       levels: ["Math", 2, 3, 4],
       level: "",
       value: "",
-      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-      month: '',
+      months: [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ],
+      month: "",
       headers: [
         {
           text: "First Name",
@@ -182,6 +208,7 @@ export default {
           value: "tutorSubject.subject.name",
         },
       ],
+      user: [],
       users: [{}],
       usersOrg: [{}],
       usersOrgID: 0,
@@ -199,16 +226,15 @@ export default {
 
     };
   },
-
-
- async created() {
-    this.user = Utils.getStore('user');
+  async created() {
+    this.user = Utils.getStore("user");
     let id = this.user.userID;
     let d = new Date();
     this.month = this.months[d.getMonth()];
-      // function to get users org
-    userOrgServices.getUsersOrgID(id)
-    .then((response) => {
+    // function to get users org
+    userOrgServices
+      .getUsersOrgID(id)
+      .then((response) => {
         this.usersOrg = response.data;
         for( let i = 0; i < response.data.length; i++) {
         this.usersOrgID = this.usersOrg[i].orgID;
@@ -231,7 +257,7 @@ export default {
       .catch((error) => {
         console.log(error);
       });
-      await subjectServices
+    await subjectServices
       .getSubjects()
       .then((response) => {
         this.subjects = response.data;
@@ -239,7 +265,7 @@ export default {
       .catch((error) => {
         console.log(error);
       });
-      
+
     this.user = Utils.getStore("user");
   },
 
@@ -264,6 +290,7 @@ export default {
     scheduleSession(selectedEvent, session, selected, selectedOpen) {
       if (selectedEvent.name != "Booked" || selectedEvent.name != "Pending") {
       if (confirm("Do you want to book this time slot?")) {
+        
          this.user = Utils.getStore('user');
          this.session = session;
          this.session.studentID = this.user.userID;
@@ -271,10 +298,14 @@ export default {
          this.session.scheduledStart = selectedEvent.start;
          this.session.scheduledEnd = selectedEvent.end;
          this.session.status = "Pending";
+         let d = new Date(selectedEvent.start);
+         console.log(d);
+         this.sendReminder(d);
+         this.sendNotification(null);
          //this.session.locationID = "1";
          if (selectedEvent.name != "Group Session") {
-         selectedEvent.name = "Pending";
-         selectedEvent.color = "purple";
+         selectedEvent.name = "Booked";
+         selectedEvent.color = "red";
          }
          this.selectedOpen = selectedOpen;
          this.selectedOpen = false;
@@ -300,8 +331,16 @@ export default {
     },
 
     signUp(selectedEvent, session, selected, selectedOpen) {
-       if (selectedEvent.name != "Booked") {
       if (confirm("Do you want to sign up for this group session?")) {
+        this.user = Utils.getStore('user');
+        let isIn = false;
+        SessionServices.getSessionByTutorSlot(selectedEvent.id).then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+        if (this.user.userID == response.data[i].studentID) {
+          isIn = true;
+        }
+        }
+        if (isIn == false) {
          this.user = Utils.getStore('user');
          this.session = session;
          this.session.studentID = this.user.userID;
@@ -309,7 +348,7 @@ export default {
          this.session.scheduledStart = selectedEvent.start;
          this.session.scheduledEnd = selectedEvent.end;
          this.session.status = "Upcoming";
-         this.session.locationID = "1";
+        // this.session.locationID = "1";
          if (selectedEvent.name != "Group Session") {
          selectedEvent.name = "Booked";
          selectedEvent.color = "red";
@@ -317,22 +356,27 @@ export default {
          this.selectedOpen = selectedOpen;
          this.selectedOpen = false;
          this.session.tutorSlotID = selectedEvent.id;
+         
        //  this.session.date = selectedEvent.date;
          SessionServices.addSession(this.session);
+
+         
          //this.registered++;
-        //this.tutorSlot.studentID = this.user.userID;
-        //this.tutorSlot.tutorSlotID = selectedEvent.id;
+        this.tutorSlot.numOfRegistered = selectedEvent.registered + 1;
+        this.tutorSlot.tutorSlotID = selectedEvent.id;
 
 
-         //TutorSlotServices.updateTutorSlot(this.tutorSlot);
-      }
-      }
-      else {
+         TutorSlotServices.updateTutorSlot(this.tutorSlot);
+          this.getTutorSlots(selected);
+        }
+         else {
         alert(
-            "This session is already booked!"
+            "You are already booked for this session!"
 
           );
           this.selectedOpen = false;
+      }
+        })
       }
 
     },
@@ -401,8 +445,12 @@ export default {
               
               if (response.data[i].day == days[j]) {
                 // create date for next day in the week
-                
-              
+                if (response.data[i].numOfRegistered != null) {
+                this.count = response.data[i].numOfRegistered;
+                }
+                else {
+                  this.count = 0;
+                }
                 console.log(response.data[i].day)
                 var tomorrow = new Date();
 
@@ -433,7 +481,7 @@ export default {
                 this.color = "blue";
 
                 }
-                else if (response.data[i].tutorSlotRequestID == "1"){
+                else if (response.data[i].tutorSlotRequestID == "1" && response.data[i].studentID == this.user.userID){
                   this.name1 = "Pending";
                   this.color = "purple";
                 }
@@ -453,6 +501,7 @@ export default {
                   start: starttime2,
                   color: this.color,
                   end: endtime2,
+                  registered: this.count,
                   details: response.data[i].startTime + " - " + response.data[i].endTime,
                   
                 });
@@ -477,6 +526,26 @@ export default {
         }
       );
     },
+    sendNotification(waitTime) {
+      UserServices.getUser(this.user.userID)
+      .then((user) => {
+        console.log(user.data.phoneNumber + " " + user.data.email);
+        if(waitTime == null)
+          smsServices.sendMessage(user.data);
+        else
+        {
+          setTimeout(() => {smsServices.sendMessage(user.data)}, waitTime);
+          console.log("Scheduled Message Time Reached");
+        }
+      });
+    },
+    sendReminder(waitDate) {
+      waitDate = new Date(waitDate - (15 * 60 * 1000));
+      console.log(waitDate);
+      let scheduledTime = waitDate - Date.now();
+      console.log(scheduledTime);
+      this.sendNotification(scheduledTime);
+    },
     prev() {
       this.$refs.calendar.prev();
     },
@@ -485,8 +554,6 @@ export default {
     },
   },
 };
-
-
 </script>
 
 <style  scoped>
