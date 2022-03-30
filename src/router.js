@@ -22,6 +22,7 @@ import SessionView from "./views/sessionView.vue";
 import userProfileView from "./views/Users/userProfile.vue";
 import becomeTutor from "./views/Students/becomeTutor.vue";
 import tutorsessionlist from  "./views/Tutors/tutorSessionList.vue";
+import SessionsCalender from "./views/Students/SessionsCalender.vue"
 import tutorsessiondetails from "./views/Tutors/tutorViewSession.vue";
 //User Crud
 import UserList from "./views/Users/userList.vue";
@@ -37,6 +38,8 @@ import StudentAdd from "./views/Students/addStudent.vue";
 import StudentEdit from "./views/Students/studentEdit.vue";
 import StudentView from "./views/Students/studentView.vue";
 import StudentList from "./views/Students/studentList.vue";
+import StudentFeedback from "./views/Students/studentGiveFeedback.vue"
+import StudentSessionCalender from "./views/Students/SessionsCalender.vue"
 
 //Mentee Crud
 import MenteeAdd from "./views/Mentees/addMentee.vue";
@@ -99,6 +102,11 @@ export default new Router({
       path: "/student/sessions",
       name: "studentSessions",
       component: SessionList,
+    },
+    {
+      path: "/student/sessionsCalender",
+      name: "studentsessionscalender",
+      component: StudentSessionCalender,
     },
 
     //Needs schedule sessions
@@ -192,6 +200,18 @@ export default new Router({
       path: "/students-edit/:id",
       name: "editStudent",
       component: StudentEdit,
+      props: true,
+    },
+    {
+      path: "/student/sessionsCalender",
+      name: "sessionsCalender",
+      component: SessionsCalender
+
+    },
+    {
+      path: "/session/GiveFeedback/:id",
+      name: "giveFeedback",
+      component: StudentFeedback,
       props: true,
     },
     {
