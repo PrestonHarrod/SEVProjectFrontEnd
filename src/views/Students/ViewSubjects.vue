@@ -280,9 +280,7 @@ export default {
        else if (event.name == "Booked"){
          this.color = "red";
        }
-        else if (event.name == "Pending"){
-         this.color = "purple";
-       }
+
 
 
         return event.color;
@@ -298,6 +296,7 @@ export default {
          this.session.scheduledStart = selectedEvent.start;
          this.session.scheduledEnd = selectedEvent.end;
          this.session.status = "Pending";
+         this.session.Type = "Private Session";
          let d = new Date(selectedEvent.start);
          console.log(d);
          this.sendReminder(d);
@@ -347,6 +346,7 @@ export default {
          this.session.tutorID = selected[0].userID;
          this.session.scheduledStart = selectedEvent.start;
          this.session.scheduledEnd = selectedEvent.end;
+         this.session.Type = "Group Session";
          this.session.status = "Upcoming";
         // this.session.locationID = "1";
          if (selectedEvent.name != "Group Session") {
@@ -481,10 +481,7 @@ export default {
                 this.color = "blue";
 
                 }
-                else if (response.data[i].tutorSlotRequestID == "1" && response.data[i].studentID == this.user.userID){
-                  this.name1 = "Pending";
-                  this.color = "purple";
-                }
+
                 else {
                   this.name1 = "Booked";
                   this.color = "red";
@@ -558,4 +555,3 @@ export default {
 
 <style  scoped>
 </style>
-

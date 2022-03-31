@@ -84,6 +84,14 @@
               >
                 Remove
               </v-btn>
+               <v-btn
+                v-if="selectedEvent.day == selectedEvent.sessionDay"
+                text
+                color="error"
+                @click="removeTimeSlot(selectedEvent)"
+              >
+                Mark Complete
+              </v-btn>
               <v-btn
                 v-if="selectedEvent.numRegistered > 0"
                 text
@@ -307,8 +315,8 @@ export default {
                 start: starttime2,
                 end: endtime2,
                 numRegistered: this.numReg,
-                details:
-                  response.data[i].startTime + " - " + response.data[i].endTime,
+                sessionDay: today.getDay(),
+                details: response.data[i].startTime + " - " + response.data[i].endTime,
               });
             }
           }
@@ -640,4 +648,3 @@ export default {
 
 <style  scoped>
 </style>
-
