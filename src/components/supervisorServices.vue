@@ -16,13 +16,23 @@
           Students
         </div>
         <div class="menu-item" v-on:click.prevent="goToTutors()">Tutors</div>
-        <div class="menu-item" v-if="isSS()" v-on:click.prevent="goToMentees()">Mentees</div>
-       <div class="menu-item" v-if="isSS()" v-on:click.prevent="goToDropIn()">Drop In Tutoring</div>    
+        <div class="menu-item" v-if="isSS()" v-on:click.prevent="goToMentees()">
+          Mentees
+        </div>
+        <div class="menu-item" v-if="isSS()" v-on:click.prevent="goToDropIn()">
+          Drop In Tutoring
+        </div>
         <div class="menu-item" v-on:click.prevent="goToSessions()">
           Sessions
         </div>
         <div class="menu-item" v-on:click.prevent="goToRequests()">
           Requests
+        </div>
+        <div class="menu-item" v-on:click.prevent="goToLocations()">
+          Locations
+        </div>
+        <div class="menu-item" v-on:click.prevent="goToSubjects()">
+          Subjects
         </div>
       </div>
     </transition>
@@ -48,9 +58,9 @@ export default {
           console.log(error);
         });
     },
-    isSS(){
-       var currentOrg = Utils.getStore("currentOrg");
-      return  currentOrg == 1;
+    isSS() {
+      var currentOrg = Utils.getStore("currentOrg");
+      return currentOrg == 1;
     },
     goToStudents() {
       this.$router
@@ -76,7 +86,23 @@ export default {
           console.log(error);
         });
     },
-     goToDropIn() {
+    goToLocations() {
+      this.$router
+        .push({ name: "locations" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+     goToSubjects() {
+      this.$router
+        .push({ name: "subjects" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToDropIn() {
       this.$router
         .push({ name: "dropInList" })
         .then(() => {})
