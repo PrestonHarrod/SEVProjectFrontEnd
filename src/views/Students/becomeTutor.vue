@@ -45,7 +45,7 @@
             <v-radio label="Writing Center" color="red darken-3" value="2"></v-radio>
             <v-radio label="New College" color="indigo" value="3"></v-radio>
          </v-radio-group>
-            <v-btn @click="createRequest()" color="primary">
+            <v-btn class='centered-btns' @click="createRequest()" color="primary">
                Submit
             </v-btn>
         </v-form>

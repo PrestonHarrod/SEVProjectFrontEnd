@@ -1,7 +1,7 @@
 <template>
   <div>
        <br>
-    <H1 style="background-color: #1976d2; color: #f2f2f2">Profile</H1>
+    <H1>Profile</H1>
     <br />
     <v-form>
       <v-col>
@@ -86,8 +86,4 @@ export default {
 </script>
 
 <style>
-th {
-  text-align: left;
-  font-size: 1.5rem !important;
-}
 </style>

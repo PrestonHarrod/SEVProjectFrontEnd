@@ -2,7 +2,6 @@
 
 <template>
   <nav id="vue">
-     <p id="orgText"></p>
     <div class="menu-item" v-on:click.prevent="goToHome()">Home</div>
     <AdminServices title="Admin" v-if="this.getAuth(1)" />
     <SupervisorServices title="Supervisor" v-if="this.getAuth(1)" />
@@ -14,8 +13,8 @@
       Switch Organization
     </div>
     <div class="menu-item" v-on:click.prevent="goToLogin()">Logout</div>
-
   </nav>
+  
 </template>
 
 <script>
@@ -102,29 +101,4 @@ export default {
 </script>
 
 <style>
-nav {
-  width: 100vw;
-  background-color: #0d0d0e;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-nav .menu-item {
-  color: #fff;
-  padding: 25px 40px;
-  position: relative;
-  text-align: center;
-  border-bottom: 5px solid transparent;
-  display: flex;
-  transition: 0.4s;
-}
-nav .menu-item.active,
-nav .menu-item:hover {
-  background-color: #232325;
-  border-bottom-color: #1976d2;
-}
-nav .menu-item a {
-  color: inherit;
-  text-decoration: none;
-}
 </style>

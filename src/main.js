@@ -3,6 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store/store.js";
 import vuetify from "./plugins/vuetify";
+import './assets/stylesheet.css'
 
 import GoogleAuth from "@/config/google_oAuth.js";
 const gauthOption = {

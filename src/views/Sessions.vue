@@ -1,12 +1,12 @@
 <template>
-  <v-container fluid fill-height>
+  <v-container>
     <div>
-      <H1 style="background-color: #1976d2; color: #f2f2f2">Your Sessions</H1>
+      <H1>Your Sessions</H1>
       <br />
       <br />
       <br />
 
-      <h2 style="background-color: #1976d2; color: #f2f2f2">
+      <h2>
         Pending Sessions
       </h2>
       <v-card width="100vw">
@@ -36,7 +36,7 @@
          
       </v-card>
       <br />
-      <h2 style="background-color: #1976d2; color: #f2f2f2">
+      <h2>
         Upcoming Sessions
       </h2>
       <v-card width="100vw">
@@ -219,12 +219,4 @@ this.sessions = this.completedSessions;
 </script>
 
 <style>
-H1 {
-  text-align: center;
-  font-size: 3.5rem !important;
-}
-th {
-  text-align: left;
-  font-size: 1.5rem !important;
-}
 </style>

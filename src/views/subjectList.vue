@@ -1,25 +1,24 @@
 <template>
-<v-app>
-  <v-container fluid fill-height>
+  <v-container>
       <v-row>
         <v-col>
-          <H1 style="background-color: #1976d2; color: #f2f2f2"
-            >Manage Subjects</H1
+          <H1>Manage Subjects</H1
           >
         </v-col>
       </v-row>
       <v-row>
         <v-col>
-          <H2 style="background-color: #1976d2; color: #f2f2f2">
+          <H2>
             My Subjects
           </H2>
         </v-col>
       </v-row>
       <div v-for="subject in mySubjects" v-bind:key="subject.id">
         <v-btn
+        class='centered-btns'
           v-on:click.prevent="moveToSubjects(subjects, mySubjects, subject)"
           rounded
-          color="#1976d2"
+          color="#247b7b"
           dark
         >
           {{ subject.name }} <v-icon>mdi-close-circle-outline</v-icon>
@@ -28,7 +27,7 @@
 
       <v-row>
         <v-col>
-          <H2 style="background-color: #1976d2; color: #f2f2f2"> Subjects </H2>
+          <H2> Subjects </H2>
         </v-col>
       </v-row>
       <v-row>
@@ -61,14 +60,13 @@
           "
           v-on:click.prevent="moveToMySubjects(mySubjects, subjects, subject)"
           rounded
-          color="#1976d2"
+          color="#247b7b"
           dark
         >
           {{ subject.name }}
         </v-btn>
       </div>
   </v-container>
-  </v-app>
 </template>
 
 <script>
@@ -193,12 +191,4 @@ export default {
 </script>
 
 <style>
-H1 {
-  text-align: center;
-  font-size: 3.5rem !important;
-}
-th {
-  text-align: left;
-  font-size: 1.5rem !important;
-}
 </style>

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <H1 style="background-color: #1976d2; color: #f2f2f2">Supervisor View</H1>
+    <H1>Supervisor View</H1>
     <br />
     <h2>
       <v-btn
-        :style="{ left: '50%', transform: 'translateX(-50%)' }"
+      class='centered-btns'
         v-on:click.prevent="cancel()"
         color="black"
         text
@@ -14,7 +14,7 @@
     </h2>
     <h3>
       <v-btn
-        :style="{ left: '50%', transform: 'translateX(-50%)' }"
+      class='centered-btns'
         v-on:click.prevent="updateSupervisor(supervisor)"
         text
         rounded
@@ -23,8 +23,8 @@
 
       <br />
       <v-btn
+      class='centered-btns'
         color="#E53935"
-        :style="{ left: '50%', transform: 'translateX(-50%)' }"
         v-on:click.prevent="deleteSupervisor(supervisor)"
         text
         rounded
@@ -129,8 +129,4 @@ export default {
 </script>
 
 <style>
-th {
-  text-align: left;
-  font-size: 1.5rem !important;
-}
 </style>
