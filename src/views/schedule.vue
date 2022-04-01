@@ -646,10 +646,12 @@ export default {
     },
     markComplete(event) {
       let id = event.id;
+      if (confirm("Do you want to mark this session complete?")) {
       sessionServices.getSessionByTutorSlot(id).then((response) => {
         for (let i = 0; i < response.data.length; i++) {
         this.sessionComplete[i] = response.data[i];
         this.sessionComplete[i].status = "Complete";
+        this.sessionComplete[i].tutorSlotID = null;
         sessionServices.updateSession(this.sessionComplete[i]);
         }
       })
@@ -657,8 +659,13 @@ export default {
       this.tutorSlot.numOfRegistered = null;
       this.tutorSlot.tutorSlotID = id;
       TutorSlotServices.updateTutorSlot(this.tutorSlot);
+      this.$router.go();
 
+      }
+      else {
+      this.selectedOpen = false;
 
+      }
     },
   },
 };
