@@ -7,7 +7,7 @@
             <Avatar class="avatar" />
             <NavBar class="navbarCenter" />
           </div>
-          <p  id="orgText">testing</p>
+          <p id="orgText">testing</p>
           <router-view />
         </v-app>
       </v-flex>
@@ -18,7 +18,7 @@
 <script>
 import NavBar from "./components/NavBar.vue";
 import Avatar from "./components/avatar.vue";
-import Utils from "@/config/utils.js";
+// import Utils from "@/config/utils.js";
 
 export default {
   name: "App",
@@ -31,21 +31,6 @@ export default {
   },
   methods: {
     isLogin() {
-      var org = Utils.getStore("currentOrg");
-      switch (org) {
-        case 1:
-          document.getElementById("orgText").innerHTML = "Student Success";
-          break;
-        case 2:
-          document.getElementById("orgText").innerHTML = "Writing Center";
-          break;
-        case 3:
-          document.getElementById("orgText").innerHTML = "New College";
-          break;
-        default:
-          document.getElementById("orgText").innerHTML =
-            "Welcome to the Team 3 Website";
-      }
       return this.$route.name != "login" && this.$route.name != "selectOrg";
     },
   },
