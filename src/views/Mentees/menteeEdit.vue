@@ -41,14 +41,14 @@
         />
         </v-col>
         <v-btn
-          :style="{ transform: 'translateX(-50%)' }"
+        class='centered-btns'
           v-on:click.prevent="updateMentee()"
           text
           rounded
           >Submit</v-btn
         >
         <v-btn
-          :style="{ transform: 'translateX(-50%)' }"
+        class='centered-btns'
           v-on:click.prevent="cancel()"
           color="black"
           text

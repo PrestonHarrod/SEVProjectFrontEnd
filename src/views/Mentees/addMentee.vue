@@ -41,14 +41,12 @@
         />
       </v-col>
       <v-btn
-        :style="{ left: '50%', transform: 'translateX(-50%)' }"
         v-on:click.prevent="addStudent()"
         text
         rounded
         >Submit</v-btn
       >
       <v-btn
-        :style="{ left: '50%', transform: 'translateX(-50%)' }"
         v-on:click.prevent="cancel()"
         color="black"
         text

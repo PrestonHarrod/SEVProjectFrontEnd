@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H1 style="background-color: #1976d2; color: #f2f2f2">Add New Subject</H1>
+    <H1>Add New Subject</H1>
     <v-form>
       <v-col>
         <!-- <v-text-field label="UserID" v-model="tutor.userID" type="text" id="userID"/> -->
@@ -34,14 +34,14 @@
           />
       </v-col>
       <v-btn
-        :style="{ left: '50%', transform: 'translateX(-50%)' }"
+      class='centered-btns'
         v-on:click.prevent="addSubject()"
         text
         rounded
         >Submit</v-btn
       >
       <v-btn
-        :style="{ left: '50%', transform: 'translateX(-50%)' }"
+      class='centered-btns'
         v-on:click.prevent="cancel()"
         color="black"
         text

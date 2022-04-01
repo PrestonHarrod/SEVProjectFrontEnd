@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H1 style="background-color: #1976d2; color: #f2f2f2">Location Edit</H1>
+    <H1>Location Edit</H1>
     <v-app>
       <v-form>
         <v-col>
@@ -27,14 +27,14 @@
         />
         </v-col>
         <v-btn
-          :style="{ transform: 'translateX(-50%)' }"
+          class='centered-btns'
           v-on:click.prevent="updateLocation()"
           text
           rounded
           >Submit</v-btn
         >
         <v-btn
-          :style="{ transform: 'translateX(-50%)' }"
+          class='centered-btns'
           v-on:click.prevent="cancel()"
           color="black"
           text

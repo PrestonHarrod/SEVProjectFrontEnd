@@ -1,19 +1,15 @@
 <template>
-  <v-container fluid fill-height>
+  <v-container>
     <div>
-      <H1 style="background-color: #1976d2; color: #f2f2f2">Subjects</H1>
-      <br />
-      <br />
-      <h2>
+      <H1>Subjects</H1>
         <v-btn
-          :style="{ left: '50%', transform: 'translateX(-50%)' }"
+        class='centered-btns'
           @click="goToAdd()"
           color="black"
           text
           rounded
           >Add Subject</v-btn
         >
-      </h2>
       <br />
       <v-card width="100vw">
         <v-card-title>
@@ -116,12 +112,4 @@ export default {
 </script>
 
 <style>
-H1 {
-  text-align: center;
-  font-size: 3.5rem !important;
-}
-th {
-  text-align: left;
-  font-size: 1.5rem !important;
-}
 </style>

@@ -1,7 +1,7 @@
 <template>
 
   <v-container>
-     <H1 style="background-color: #1976d2; color: #f2f2f2"
+     <H1 
       >Contact Office</H1
     >
     <div>
@@ -47,7 +47,7 @@
             <v-radio label="Writing Center" color="red darken-3" value="2"></v-radio>
             <v-radio label="New College" color="indigo" value="3"></v-radio>
          </v-radio-group>
-            <v-btn @click="createRequest()" color="primary">
+            <v-btn class='centered-btns' @click="createRequest()" >
                Submit
             </v-btn>
         </v-form>

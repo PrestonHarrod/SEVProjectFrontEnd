@@ -1,9 +1,9 @@
 <template>
   <div>
-<H1 style="background-color: #1976d2; color:#f2f2f2">Session View</H1>
+<H1>Session View</H1>
 <br>
- <h2><v-btn :style="{left: '50%', transform:'translateX(-50%)'}" v-on:click.prevent="cancel()" color="black" text rounded>Go Back</v-btn></h2>
-    <h3><v-btn :style="{left: '50%', transform:'translateX(-50%)'}" v-on:click.prevent="deleteSession(session)" color="red" text rounded>Cancel Session</v-btn></h3>
+ <h2><v-btn  class='centered-btns' v-on:click.prevent="cancel()" color="black" text rounded>Go Back</v-btn></h2>
+    <h3><v-btn  class='centered-btns' v-on:click.prevent="deleteSession(session)" color="red" text rounded>Cancel Session</v-btn></h3>
     <br>
   <v-form>
         <v-col>
@@ -116,8 +116,4 @@ export default {
 </script>
 
 <style>
-th {
-  text-align: left;
-  font-size: 1.5rem !important;
-}
 </style> 
