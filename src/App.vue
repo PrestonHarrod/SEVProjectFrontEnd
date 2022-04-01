@@ -7,7 +7,7 @@
             <Avatar class="avatar" />
             <NavBar class="navbarCenter" />
           </div>
-          <p orgCheck() id="orgText">testing</p>
+          <p id="orgText">testing</p>
           <router-view />
         </v-app>
       </v-flex>
