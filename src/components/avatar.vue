@@ -12,7 +12,7 @@
             v-on="on"
           >
             <v-avatar
-              color="#2c9292"
+              color="#118acb"
               size="48"
             >
               <span color="#fffcff">{{ firstInitial }}{{lastInitial }}</span>
@@ -23,7 +23,7 @@
           <v-list-item-content class="justify-center">
             <div class="mx-auto text-center">
               <v-avatar
-                color="#2c9292"
+                color="#118acb"
               >
                 <span color="#fffcff">{{ firstInitial }}{{lastInitial }}</span>
               </v-avatar>

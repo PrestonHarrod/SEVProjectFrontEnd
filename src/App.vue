@@ -47,7 +47,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: #ebe8eb;
+  background-color: #eaf3ff;
 }
 
 .avatar {
@@ -59,25 +59,25 @@ export default {
 
 h1 {
   color: #fffcff;
-  background-color: #69626d;
+  background-color: #811429;
   /* background-color: #2c9292; */
 }
 h2 {
-  background-color: #69626d;
+  background-color: #811429;
   color: #f2f2f2;
 }
 
 /* NavBar */
 nav {
   width: 100vw;
-  background-color: #69626d;
+  background-color: #811429;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 nav .menu-item {
   color: #fff;
-  background-color: #69626d;
+  background-color: #811429;
   padding: 25px 40px;
   position: relative;
   text-align: center;
@@ -87,8 +87,8 @@ nav .menu-item {
 }
 nav .menu-item.active,
 nav .menu-item:hover {
-  background-color: #555058;
-  border-bottom-color: #2c9292;
+  background-color: #48111c;
+  border-bottom-color: #708e9a;
 }
 nav .menu-item a {
   color: inherit;
