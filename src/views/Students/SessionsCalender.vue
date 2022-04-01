@@ -1,3 +1,4 @@
+
 <template>
   <v-row class="fill-height">
     <v-col>
@@ -137,6 +138,9 @@
         .then((response) => {
             this.tutorSlot = response.data[0];
             this.tutorSlot.studentID = null;
+            if (selectedEvent.name != "Pending") {
+            this.tutorSlot.numOfRegistered = response.data[0].numOfRegistered - 1;
+            }
             TutorSlotServices.updateTutorSlot(this.tutorSlot)
             .then(() => {
             SessionServices.deleteSession(selectedEvent.id)
@@ -167,6 +171,7 @@
       },
       getLocation(selectedEvent) {
         console.log("HERE")
+        if (selectedEvent.locationID != null) {
         LocationServices.getLocation(selectedEvent.locationID).then(
             (response) => {
               console.log(response)
@@ -174,6 +179,10 @@
               this.room = response.data.roomNum
         })
         return this.build + ', ' + this.room
+        }
+        else {
+          return "Not set at this time.";
+        }
       },
       
       viewSession({ nativeEvent, event }) {
@@ -198,6 +207,7 @@
 
       SessionServices.getSessions()
       .then((response) => {
+        console.log(response.data);
           for (this.i = 0; this.i < response.data.length; this.i++) {
             console.log(response.data.length)
           if (this.user.userID == response.data[this.i].studentID) {
@@ -207,11 +217,14 @@
             starttime1 = starttime1.replace('Z', '')
             starttime1 = starttime1.replace('T', ' ')
             starttime1 = starttime1.replace('.', '')
+            console.log(starttime1 + "testing");
             starttime1 = starttime1.substring(0, starttime1.length)
             
             let endtime = response.data[this.i].scheduledEnd
             endtime = endtime.replace('Z', '')
             endtime = endtime.replace('T', ' ')
+            console.log(endtime + "testing");
+
             endtime = endtime.replace('.', '')
             endtime = endtime.substring(0, endtime.length)
 
