@@ -1,9 +1,10 @@
 <template>
   <v-app id="inspire">
     
-
+    
     <v-main class="grey lighten-3">
       <v-container>
+        
         <v-row >
           <v-col
             cols="10"
@@ -38,15 +39,15 @@
             cols="12"
             sm="8"
           >
-          
-            <v-sheet 
+
+            <v-sheet
               min-height="70vh"
               rounded="lg"
               
             >
            
-            
-            <v-btn 
+            Welcome, {{this.user.user}}!
+            <v-btn v-if="getAuth(4)"
             large=true
             class="d-flex flex-column"  
             color="primary"
@@ -55,19 +56,14 @@
             >
                Find A Tutor
             </v-btn>
-            <p 
             
-            :style="{left: '15%', transform:'translateY(+200%)'}"
-            class="font-weight-bold">
-              Welcome, {{this.user.user}}!
-            </p>
-            <p 
+            <p v-if="getAuth(4)"
             
             :style="{left: '35%', transform:'translateY(+1100%)'}"
             class="font-weight-bold">
               OR
             </p>
-            <v-btn 
+            <v-btn v-if="getAuth(4)"
             large=true
             class="d-flex flex-column"  
             color="primary"
