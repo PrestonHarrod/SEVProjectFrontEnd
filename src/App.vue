@@ -5,8 +5,9 @@
         <v-app>
           <div v-if="isLogin()">
             <Avatar class="avatar" />
-            <NavBar class="navbarCenter"/>
+            <NavBar class="navbarCenter" />
           </div>
+          <p orgCheck() id="orgText">testing</p>
           <router-view />
         </v-app>
       </v-flex>
@@ -17,18 +18,20 @@
 <script>
 import NavBar from "./components/NavBar.vue";
 import Avatar from "./components/avatar.vue";
+// import Utils from "@/config/utils.js";
 
 export default {
   name: "App",
+  created() {
+
+  },
   components: {
     NavBar,
     Avatar,
   },
   methods: {
     isLogin() {
-      return this.$route.name != "login" && this.$route.name != "selectOrg";
     },
-
   },
 };
 </script>
@@ -37,7 +40,7 @@ export default {
 /* app.vue */
 
 #app {
-  font-family: 'Trebuchet MS', sans-serif;
+  font-family: "Trebuchet MS", sans-serif;
   /* font-family: Arial, sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -46,31 +49,27 @@ export default {
   background-color: #ebe8eb;
 }
 
-.avatar{
+.avatar {
   margin-left: 25px;
-
 }
 .navbarCenter {
   margin-top: -65px;
 }
 
 h1 {
-  color:#fffcff; 
+  color: #fffcff;
   background-color: #69626d;
   /* background-color: #2c9292; */
-
-  
-  
 }
 h2 {
-  background-color: #69626d; 
-  color: #f2f2f2
+  background-color: #69626d;
+  color: #f2f2f2;
 }
 
 /* NavBar */
 nav {
   width: 100vw;
-  background-color: #69626d; 
+  background-color: #69626d;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -240,7 +239,4 @@ th {
   margin-top: 10px;
   margin-left: 50px;
 }
-
-
-
 </style>

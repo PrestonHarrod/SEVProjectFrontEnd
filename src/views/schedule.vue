@@ -18,7 +18,7 @@
         <v-calendar
           ref="calendar"
           v-model="value"
-          color="#247b7b"
+          color="#2c9292"
           type="week"
           :first-interval="6"
           :interval-count="19"
@@ -48,7 +48,7 @@
           offset-x
         >
           <v-card color="grey lighten-4" min-width="350px" flat>
-            <v-toolbar style="background-color: #247b7b; color: #f2f2f2">
+            <v-toolbar style="background-color: #2c9292; color: #f2f2f2">
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>

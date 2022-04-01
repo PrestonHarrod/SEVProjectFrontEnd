@@ -2,7 +2,6 @@
 
 <template>
   <nav id="vue">
-     <p id="orgText"></p>
     <div class="menu-item" v-on:click.prevent="goToHome()">Home</div>
     <AdminServices title="Admin" v-if="this.getAuth(1)" />
     <SupervisorServices title="Supervisor" v-if="this.getAuth(1)" />
@@ -14,8 +13,8 @@
       Switch Organization
     </div>
     <div class="menu-item" v-on:click.prevent="goToLogin()">Logout</div>
-
   </nav>
+  
 </template>
 
 <script>
