@@ -1,5 +1,4 @@
-import {apiClient} from './apiClient.js'
-
+import { apiClient } from "./apiClient.js";
 
 export default {
   getLocations() {
@@ -17,4 +16,4 @@ export default {
   deleteLocation(locationID) {
     return apiClient.delete("locations/" + locationID);
   },
-}
+};

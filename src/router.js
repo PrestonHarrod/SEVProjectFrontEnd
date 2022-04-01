@@ -1,32 +1,67 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import Home from './views/Home.vue'
-import Login from './views/Login.vue'
-import StudentSubjectView from './views/Students/ViewSubjects.vue'
+import Home from "./views/Home.vue";
+import Login from "./views/Login.vue";
+import StudentHome from "./views/Students/studentHome.vue";
+import AdminHome from "./views/Admins/adminHome.vue";
+import TutorHome from "./views/Tutors/tutorHome.vue";
+import StudentSubjectView from "./views/Students/ViewSubjects.vue";
+import Request from "./views/Students/Request.vue"
 
-
-
-import StudentHome from "./views/studentHome.vue";
-import AdminHome from "./views/adminHome.vue";
-import TutorHome from "./views/tutorHome.vue";
 import Schedule from "./views/schedule.vue";
 import Availability from "./views/availability.vue";
 import Attendance from "./views/attendance.vue";
 import SubjectList from "./views/subjectList.vue";
 import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
-import SessionList from "./views/Sessions.vue"
 //apply for tutor?
-import StudentList from "./views/studentList.vue";
-import TutorList from "./views/tutorList.vue";
-import Mentees from "./views/mentees.vue";
+import studentSessionView from "./views/Students/studentViewSession";
+import SessionList from "./views/Sessions.vue";
+import SessionView from "./views/sessionView.vue";
+import userProfileView from "./views/Users/userProfile.vue";
+import becomeTutor from "./views/Students/becomeTutor.vue";
+import tutorsessionlist from  "./views/Tutors/tutorSessionList.vue";
+import SessionsCalender from "./views/Students/SessionsCalender.vue"
+import tutorsessiondetails from "./views/Tutors/tutorViewSession.vue";
+//User Crud
+import UserList from "./views/Users/userList.vue";
 
+//Tutor Crud
+import TutorAdd from "./views/Tutors/addTutor.vue";
+import TutorEdit from "./views/Tutors/tutorEdit.vue";
+import TutorView from "./views/Tutors/tutorView.vue";
+import TutorList from "./views/Tutors/tutorList.vue";
+
+//Student crud
+import StudentAdd from "./views/Students/addStudent.vue";
+import StudentEdit from "./views/Students/studentEdit.vue";
+import StudentView from "./views/Students/studentView.vue";
+import StudentList from "./views/Students/studentList.vue";
+import StudentFeedback from "./views/Students/studentGiveFeedback.vue"
+import StudentSessionCalender from "./views/Students/SessionsCalender.vue"
+
+//Mentee Crud
+import MenteeAdd from "./views/Mentees/addMentee.vue";
+import MenteeEdit from "./views/Mentees/menteeEdit.vue";
+import MenteeView from "./views/Mentees/menteeView.vue";
+import Mentees from "./views/Mentees/mentees.vue";
+
+//Supervisor Crud
+import SupervisorAdd from "./views/Supervisors/addSupervisor.vue";
+import SupervisorEdit from "./views/Supervisors/supervisorEdit.vue";
+import SupervisorView from "./views/Supervisors/supervisorView.vue";
+import Supervisors from "./views/Supervisors/supervisors.vue";
+
+import SelectOrg from "./views/selectOrgPage.vue";
+//Drop in tutoring
+import DropInTutoring from "./views/Students/dropInTutoring.vue";
+import DropInTutorList from "./views/Supervisors/dropInTutorList.vue";
 
 Vue.use(Router);
 export default new Router({
-  mode: "history",
-  base: process.env.NODE_ENV === "development" ? "/" : "/tutorapp/",
+  mode: "hash",
+  base: process.env.NODE_ENV === "development" ? "/" : "/tutor-frontend/",
   routes: [
     {
       path: "/home",
@@ -41,8 +76,8 @@ export default new Router({
     },
 
     {
-      path: '/student/subjects',
-      name: 'studentSubjectView',
+      path: "/student/subjects",
+      name: "studentSubjectView",
       component: StudentSubjectView,
     },
     //Student Routes
@@ -50,6 +85,12 @@ export default new Router({
       path: "/student",
       name: "student",
       component: StudentHome,
+    },
+    {
+      path: "/request",
+      name: "request",
+      component: Request,
+      props: true
     },
     //do we include subjects or tutors as a page or on booking?
     {
@@ -59,9 +100,16 @@ export default new Router({
     },
     {
       path: "/student/sessions",
-      name: "sessions",
+      name: "studentSessions",
       component: SessionList,
     },
+    {
+      path: "/student/sessionsCalender",
+      name: "studentsessionscalender",
+      component: StudentSessionCalender,
+    },
+
+    //Needs schedule sessions
 
     //Admin Routes
     {
@@ -70,27 +118,160 @@ export default new Router({
       component: AdminHome,
     },
     {
-      path: "/admin/students",
+      path: "/students",
       name: "students",
       component: StudentList,
     },
+
+    //users
     {
-      path: "/admin/tutors",
+      path: "/users",
+      name: "users",
+      component: UserList,
+    },
+    // {
+    //   path: "/admin/users-edit/:id",
+    //   name: "editUser",
+    //   component: UserEdit,
+    //   props: true
+    // },
+    // {
+    //   path: "/admin/users/:id",
+    //   name: "viewUser",
+    //   component: UserView,
+    //   props: true
+    // },
+    // {
+    //   path: "/admin/addUser/",
+    //   name: "addUser",
+    //   component: UserAdd,
+    // },
+
+    //Supervisors
+    //Tutor
+    {
+      path: "/admin/supervisors",
+      name: "supervisors",
+      component: Supervisors,
+    },
+    {
+      path: "/admin/supervisors-edit/:id",
+      name: "editSupervisor",
+      component: SupervisorEdit,
+      props: true,
+    },
+    {
+      path: "/admin/supervisors/:id",
+      name: "viewSupervisor",
+      component: SupervisorView,
+      props: true,
+    },
+    {
+      path: "/admin/addSupervisor/",
+      name: "addSupervisor",
+      component: SupervisorAdd,
+    },
+
+    //Tutor
+    {
+      path: "/tutors",
       name: "tutors",
       component: TutorList,
     },
     {
-      path: "/admin/mentees",
+      path: "/tutors-edit/:id",
+      name: "editTutor",
+      component: TutorEdit,
+      props: true,
+    },
+    {
+      path: "/tutors/:id",
+      name: "viewTutor",
+      component: TutorView,
+      props: true,
+    },
+    {
+      path: "/addTutor/",
+      name: "addTutor",
+      component: TutorAdd,
+    },
+    //Student
+    {
+      path: "/students-edit/:id",
+      name: "editStudent",
+      component: StudentEdit,
+      props: true,
+    },
+    {
+      path: "/student/sessionsCalender",
+      name: "sessionsCalender",
+      component: SessionsCalender
+
+    },
+    {
+      path: "/session/GiveFeedback/:id",
+      name: "giveFeedback",
+      component: StudentFeedback,
+      props: true,
+    },
+    {
+      path: "/tutors/:id",
+      name: "viewTutor",
+      component: TutorView,
+      props: true,
+    },
+    {
+      path: "/addStudent/",
+      name: "addStudent",
+      component: StudentAdd,
+    },
+    {
+      path: "/students/:id",
+      name: "viewStudent",
+      component: StudentView,
+      props: true,
+    },
+
+    {
+      path: "/SelectOrg",
+      name: "selectOrg",
+      component: SelectOrg,
+      props: true,
+    },
+
+    //Mentees
+    {
+      path: "/mentees",
       name: "mentees",
       component: Mentees,
     },
     {
-      path: "/admin/sessions",
-      name: "sessions",
+
+      path: "/addMentee",
+      name: "addMentee",
+      component: MenteeAdd,
+    },
+    {
+      path: "/Mentees/:id",
+      name: "viewMentee",
+      component: MenteeView,
+      props: true,
+    },
+
+    {
+      path: "/Mentee-Edit/:id",
+      name: "editMentee",
+      component: MenteeEdit,
+      props: true,
+    },
+
+    {
+      path: "/sessions", //what is this? is there a difference for the sessions?
+      name: "adminSessions",
       component: SessionList,
     },
     {
-      path: "/admin/requests",
+      path: "/requests",
       name: "requests",
       component: Requests,
     },
@@ -127,8 +308,58 @@ export default new Router({
     },
     {
       path: "/tutor/sessions",
-      name: "sessions",
+
+      name: "tutorSessions",
       component: SessionList,
     },
+    {
+      path: "/tutor/session/:id",
+      name: "sessionView",
+      component: SessionView,
+      props: true,
+    },
+    {
+      path: "/student/viewSessionDetails/",
+      name: "studentSessionView",
+      component: studentSessionView,
+      props: true,
+    },
+    {
+      path: "/userProfile//",
+      name: "userprofile",
+      component: userProfileView,
+      props: true,
+    },
+    {
+      path: "/user/student/becomeTutor",
+      name: "becometutor",
+      component: becomeTutor,
+      props: true,
+    },
+    {
+      path: "/user/tutor/sessionlist",
+      name: "tutorsessionlist",
+      component: tutorsessionlist,
+      props: true,
+    },
+    {
+      path: "/user/tutor/sessionlist/session/",
+      name: "tutorsessiondetails",
+      component: tutorsessiondetails,
+      props: true,
+    },
+    {
+      path: "/student/DropIn",
+      name: "dropInTutoring",
+      component: DropInTutoring,
+      props: true,
+    },
+    {
+      path: "/supervisor/DropIn",
+      name: "dropInList",
+      component: DropInTutorList,
+      props: true,
+    },
+
   ],
 });

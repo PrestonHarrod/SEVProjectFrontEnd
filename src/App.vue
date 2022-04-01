@@ -1,34 +1,34 @@
 <template>
-<v-container fluid>
-  <v-layout>
+  <v-container fluid>
+    <v-layout>
       <v-flex>
-        <div>
-          <div v-if= "isLogin()">
-          <Nav/>
-            <NavBar/>
+        <v-app>
+          <div v-if="isLogin()">
+            <h1><Avatar /></h1>
+            <p><NavBar /></p>
           </div>
           <router-view />
-          
-        </div>
+        </v-app>
       </v-flex>
-  </v-layout>
-</v-container>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
+import NavBar from "./components/NavBar.vue";
+import Avatar from "./components/avatar.vue";
 
-import Nav from "./components/Nav.vue"
-import NavBar from "./components/NavBar.vue"
 export default {
   name: "App",
   components: {
-    Nav,
     NavBar,
+    Avatar,
   },
-  methods : {
+  methods: {
     isLogin() {
-     return this.$route.name != 'login';
-    }
+      return this.$route.name != "login" && this.$route.name != "selectOrg";
+    },
+
   },
 };
 </script>
@@ -41,5 +41,13 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+p {
+  margin-top: -65px;
+}
+
+h1 {
+  margin-left: 25px;
 }
 </style>

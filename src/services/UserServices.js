@@ -1,11 +1,18 @@
-import {apiClient} from "./apiClient.js";
+import { apiClient } from "./apiClient.js";
 
 export default {
+  //Basic CRUD for users
   getUsers() {
     return apiClient.get("users/");
   },
-  getTutors() {
-    return apiClient.get("users/roleID/" + roleID);
+  getTutors(roleID, orgID) {
+    return apiClient.get("users/tutors/" + roleID + orgID);
+  },
+  getUsersByRole(roleID, orgID) {
+    return apiClient.get("users/tutorRole/" + roleID + orgID);
+  },
+  getStudents(roleID) {
+    return apiClient.get("users/studentRole/" + roleID);
   },
   getUser(id) {
     return apiClient.get("users/" + id);
@@ -19,4 +26,8 @@ export default {
   deleteUser(userID) {
     return apiClient.delete("users/" + userID);
   },
+  getUsersForGroupSession(id) {
+    return apiClient.get("users/groupSessionStudentNames/" + id);
+
+  }
 };

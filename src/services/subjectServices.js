@@ -1,5 +1,4 @@
-import {apiClient} from './apiClient.js'
-
+import { apiClient } from "./apiClient.js";
 
 export default {
   getSubjects() {
@@ -17,4 +16,4 @@ export default {
   deleteSubject(subjectID) {
     return apiClient.delete("subjects/" + subjectID);
   },
-}
+};

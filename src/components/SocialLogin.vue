@@ -1,7 +1,7 @@
 <template>
   <div>
     <h3>{{ message }}</h3>
-    <v-btn class="ma-2" outlined color="indigo" @click="loginWithGoogle()">
+    <v-btn class="ma-2" outlined color="indigo"  @click="loginWithGoogle();" >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="18"
@@ -65,7 +65,8 @@ export default {
               console.log("Returned User:" + user);
               //               this.$store.commit('setLoginUser', user);
               Utils.setStore("user", user);
-              this.$router.push({ name: "home" });
+              console.log("logged in: " + user);
+              this.$router.push({ name: "selectOrg" });
             })
             .catch((error) => {
               console.log(error);

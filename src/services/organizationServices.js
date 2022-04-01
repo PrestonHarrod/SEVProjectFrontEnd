@@ -1,5 +1,4 @@
-import {apiClient} from './apiClient.js'
-
+import { apiClient } from "./apiClient.js";
 
 export default {
   getOrgs() {
@@ -17,4 +16,4 @@ export default {
   deleteOrg(orgID) {
     return apiClient.delete("organizations/" + orgID);
   },
-}
+};

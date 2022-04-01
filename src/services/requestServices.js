@@ -1,5 +1,4 @@
-import {apiClient} from './apiClient.js'
-
+import { apiClient } from "./apiClient.js";
 
 export default {
   getRequests() {
@@ -17,4 +16,4 @@ export default {
   deleteRequest(requestID) {
     return apiClient.delete("requests/" + requestID);
   },
-}
+};
