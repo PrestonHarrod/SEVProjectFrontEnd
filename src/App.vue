@@ -35,6 +35,7 @@ export default {
 
 <style>
 /* app.vue */
+
 #app {
   font-family: 'Trebuchet MS', sans-serif;
   /* font-family: Arial, sans-serif; */
@@ -42,7 +43,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color: #fffcff;
+  background-color: #ebe8eb;
 }
 
 .avatar{
@@ -55,7 +56,9 @@ export default {
 
 h1 {
   color:#fffcff; 
-  background-color: #69626d
+  background-color: #69626d;
+  /* background-color: #2c9292; */
+
   
   
 }
@@ -74,6 +77,7 @@ nav {
 }
 nav .menu-item {
   color: #fff;
+  background-color: #69626d;
   padding: 25px 40px;
   position: relative;
   text-align: center;
@@ -83,7 +87,7 @@ nav .menu-item {
 }
 nav .menu-item.active,
 nav .menu-item:hover {
-  background-color: #232325;
+  background-color: #555058;
   border-bottom-color: #2c9292;
 }
 nav .menu-item a {
@@ -197,12 +201,7 @@ nav .menu-item .sub-menu {
 .sub-menu {
   cursor: pointer;
 }
-/* supervisorServices.vue */
-/* Same as above */
-/* tutorServices.vue */
-/* Same as above */
 
-/* locations.vue */
 H1 {
   text-align: center;
   font-size: 3.5rem !important;
@@ -211,38 +210,6 @@ th {
   text-align: left;
   font-size: 1.5rem !important;
 }
-/* locationView.vue */
-/* Same th */
-
-/* mentees.vue */
-/* Same as locations */
-
-/* menteeView.vue */
-/* studentList.vue */
-/* Same as locations */
-
-/* studentView.vue */
-
-/* studentViewSessions */
-
-/* subjects.vue */
-/* Same as locations */
-
-/* subjectView.vue */
-
-/* dropInTutorList.vue */
-
-/* supervisors.vue */
-/* Same as locations */
-
-/* supervisorView.vue */
-
-/* tutorList.vue */
-/* Same as locations */
-
-/* tutorSessionList.vue */
-
-/* tutorView.vue */
 
 /* tutorViewShedule.vue */
 .my-event {
@@ -266,9 +233,6 @@ th {
   right: 4px;
   margin-right: 0px;
 }
-/* tutorViewSession.vue */
-
-/* userProfile.vue */
 
 /* selectOrgPage.vue */
 .orgButtons {
@@ -276,12 +240,6 @@ th {
   margin-top: 10px;
   margin-left: 50px;
 }
-/* sessions.vue */
-/* Same as locations */
-
-/* sessionView.vue */
-
-/* subjectList.vue */
 
 
 
