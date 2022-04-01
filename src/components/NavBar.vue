@@ -14,8 +14,8 @@
       Switch Organization
     </div>
     <div class="menu-item" v-on:click.prevent="goToLogin()">Logout</div>
-
   </nav>
+  
 </template>
 
 <script>
@@ -57,7 +57,7 @@ export default {
     },
     goToHome() {
       this.$router
-        .push({ name: "/" })
+        .push({ name: "home" })
         .then(() => {})
         .catch((error) => {
           console.log(error);
