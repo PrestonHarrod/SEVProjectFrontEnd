@@ -85,10 +85,10 @@
                 Remove
               </v-btn>
                <v-btn
-                v-if="selectedEvent.day == selectedEvent.sessionDay"
+                v-if="(selectedEvent.day == selectedEvent.today) && (selectedEvent.numRegistered > 0)"
                 text
-                color="error"
-                @click="removeTimeSlot(selectedEvent)"
+                color="black"
+                @click="markComplete(selectedEvent)"
               >
                 Mark Complete
               </v-btn>
@@ -219,7 +219,7 @@ export default {
     dialogm1: "",
     someLocation: "",
     dialog: false,
-
+    sessionComplete: [{}],
     studentsForGroupSession: [{}],
   }),
   created() {
@@ -244,27 +244,29 @@ export default {
           ];
           var today = new Date();
           today.getDay();
-          if (today.getDay() === "Sunday") {
-            this.z = 0;
+          console.log(today.getDay() + "today");
+          if (today.getDay() === 0) {
+            this.z = "Sunday";
           }
-          if (today.getDay() === "Monday") {
-            this.z = 1;
+          if (today.getDay() === 1) {
+            this.z = "Monday";
           }
-          if (today.getDay() === "Tuesday") {
-            this.z = 2;
+          if (today.getDay() === 2) {
+            this.z = "Tuesday";
           }
-          if (today.getDay() === "Wednesday") {
-            this.z = 3;
+          if (today.getDay() === 3) {
+            this.z = "Wednesday";
           }
-          if (today.getDay() === "Thursday") {
-            this.z = 4;
+          if (today.getDay() === 4) {
+            this.z = "Thursday";
           }
-          if (today.getDay() === "Friday") {
-            this.z = 5;
+          if (today.getDay() === 5) {
+            this.z = "Friday";
           }
-          if (today.getDay() === "Saturday") {
-            this.z = 6;
+          if (today.getDay() === 6) {
+            this.z = "Saturday";
           }
+          console.log(this.z +  "todays date return");
           // display tutor slots for each day after current day
           for (let j = 0; j < 6; j++) {
             if (response.data[i].day == days[j]) {
@@ -315,7 +317,7 @@ export default {
                 start: starttime2,
                 end: endtime2,
                 numRegistered: this.numReg,
-                sessionDay: today.getDay(),
+                today: this.z,
                 details: response.data[i].startTime + " - " + response.data[i].endTime,
               });
             }
@@ -641,6 +643,22 @@ export default {
     },
     getLocations(location) {
       return location.building + ": " + location.roomNum;
+    },
+    markComplete(event) {
+      let id = event.id;
+      sessionServices.getSessionByTutorSlot(id).then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+        this.sessionComplete[i] = response.data[i];
+        this.sessionComplete[i].status = "Complete";
+        sessionServices.updateSession(this.sessionComplete[i]);
+        }
+      })
+      this.tutorSlot.studentID = null;
+      this.tutorSlot.numOfRegistered = null;
+      this.tutorSlot.tutorSlotID = id;
+      TutorSlotServices.updateTutorSlot(this.tutorSlot);
+
+
     },
   },
 };
