@@ -37,6 +37,7 @@ export default {
 /* app.vue */
 #app {
   font-family: 'Trebuchet MS', sans-serif;
+  /* font-family: Arial, sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -58,7 +59,10 @@ h1 {
   
   
 }
-
+h2 {
+  background-color: #69626d; 
+  color: #f2f2f2
+}
 
 /* NavBar */
 nav {
@@ -79,8 +83,8 @@ nav .menu-item {
 }
 nav .menu-item.active,
 nav .menu-item:hover {
-  background-color: #37333a;;
-  border-bottom-color: #247b7b;
+  background-color: #232325;
+  border-bottom-color: #2c9292;
 }
 nav .menu-item a {
   color: inherit;
@@ -94,7 +98,7 @@ nav .menu-item svg {
 }
 nav .menu-item .sub-menu {
   position: absolute;
-  background-color: #37333a;;
+  background-color: #222;
   top: calc(100% + 5px);
   left: 50%;
   transform: translateX(-50%);

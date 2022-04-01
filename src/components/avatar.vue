@@ -12,10 +12,10 @@
             v-on="on"
           >
             <v-avatar
-              color="#cbd4c2"
+              color="#2c9292"
               size="48"
             >
-              <span color="FFFFFF">{{ firstInitial }}{{lastInitial }}</span>
+              <span color="#fffcff">{{ firstInitial }}{{lastInitial }}</span>
             </v-avatar>
           </v-btn>
         </template>
@@ -23,9 +23,9 @@
           <v-list-item-content class="justify-center">
             <div class="mx-auto text-center">
               <v-avatar
-                color="#cbd4c2"
+                color="#2c9292"
               >
-                <span color="FFFFFF">{{ firstInitial }}{{lastInitial }}</span>
+                <span color="#fffcff">{{ firstInitial }}{{lastInitial }}</span>
               </v-avatar>
               <p class="text-caption mt-1">
                 {{ users.email }}
