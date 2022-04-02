@@ -3,7 +3,7 @@
 <H1>Session View</H1>
 <br>
  <h2><v-btn class='centered-btns'  v-on:click.prevent="cancel()" color="black" text rounded>Go Back</v-btn></h2>
-  <!-- <h2><v-btn v-if="session.status == 'Complete'" class='centered-btns'  v-on:click.prevent="deleteSession()" color="black" text rounded>Delete</v-btn></h2> -->
+  <h2><v-btn v-if="session.status == 'Complete'" class='centered-btns'  v-on:click.prevent="deleteSession(session)" color="black" text rounded>Delete</v-btn></h2>
 
     <br>
   <v-form>
@@ -27,7 +27,6 @@
 import sessionServices from '@/services/sessionServices.js'
 import userServices from '@/services/UserServices.js'
 import locationServices from '@/services/locationServices.js'
-import TutorSlotServices from "@/services/tutorSlotServices.js"
 import Utils from '@/config/utils.js'
 export default {
     props: ['id'],
@@ -88,28 +87,16 @@ export default {
     },
     async deleteSession(session) {
       let id = session.sessionID;
-      if (confirm("Do you really want to cancel this session?")) {
-        TutorSlotServices.cancelSlot(session.tutorSlotID)
-        .then((response) => {
-            this.tutorSlot = response.data[0];
-            this.tutorSlot.studentID = null;
-            TutorSlotServices.updateTutorSlot(this.tutorSlot)
-            .then(() => {
+      if (confirm("Do you really want to delete this session?")) {
+        
             sessionServices.deleteSession(id)
-            })
+            
         
           .then(() => {
-            this.$router.push({ name: "studentSessions" });
+            this.$router.push({ name: "supervisorSessions" });
           })
 
-          .catch((error) => {
-            console.log(error);
-          });
-         })
-          .catch((error) => {
-          console.log(error);
-          });
-        
+         
       }
     },
     

@@ -328,7 +328,7 @@ export default new Router({
 },
 ////////////////
     {
-      path: "/sessions", //what is this? is there a difference for the sessions?
+      path: "/supervisor/sessions", //what is this? is there a difference for the sessions?
       name: "supervisorSessions",
       component: SupervisorSessionList,
     },
