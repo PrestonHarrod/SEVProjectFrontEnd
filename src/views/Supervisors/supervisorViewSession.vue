@@ -3,6 +3,8 @@
 <H1>Session View</H1>
 <br>
  <h2><v-btn class='centered-btns'  v-on:click.prevent="cancel()" color="black" text rounded>Go Back</v-btn></h2>
+  <!-- <h2><v-btn v-if="session.status == 'Complete'" class='centered-btns'  v-on:click.prevent="deleteSession()" color="black" text rounded>Delete</v-btn></h2> -->
+
     <br>
   <v-form>
         <v-col>
@@ -15,6 +17,7 @@
             <v-text-field readonly label="Status" v-model="session.status" type="text" id="status" />
             <v-text-field readonly label="Scheduled Start" v-model="start" type="text" id="scheduledStart" />
             <v-text-field readonly label="Scheduled End" v-model="end" type="text" id="scheduledEnd" />
+            <v-text-field readonly label="Student's Feedback" v-model="session.feedback" type="text" id="feedback" />
        </v-col>
     </v-form>
   </div>
