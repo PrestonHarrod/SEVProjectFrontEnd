@@ -8,7 +8,8 @@ import AdminHome from "./views/Admins/adminHome.vue";
 import TutorHome from "./views/Tutors/tutorHome.vue";
 import StudentSubjectView from "./views/Students/ViewSubjects.vue";
 import Request from "./views/Students/Request.vue"
-
+import SupervisorSessionList from "./views/Supervisors/supervisorSessionList.vue";
+import supervisorViewSession from "./views/Supervisors/supervisorViewSession.vue";
 import Schedule from "./views/schedule.vue";
 import Availability from "./views/availability.vue";
 import Attendance from "./views/attendance.vue";
@@ -328,8 +329,8 @@ export default new Router({
 ////////////////
     {
       path: "/sessions", //what is this? is there a difference for the sessions?
-      name: "adminSessions",
-      component: SessionList,
+      name: "supervisorSessions",
+      component: SupervisorSessionList,
     },
     {
       path: "/requests",
@@ -419,6 +420,12 @@ export default new Router({
       path: "/supervisor/DropIn",
       name: "dropInList",
       component: DropInTutorList,
+      props: true,
+    },
+    {
+      path: "/supervisor/supervisorViewSession/:id",
+      name: "supervisorViewSession",
+      component: supervisorViewSession,
       props: true,
     },
 
