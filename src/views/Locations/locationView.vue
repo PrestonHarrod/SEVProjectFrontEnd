@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H1>Tutor View</H1>
+    <H1>Location View</H1>
     <br />
     <h2>
       <v-btn
@@ -15,7 +15,7 @@
     <h3>
       <v-btn
       class='centered-btns'
-        v-on:click.prevent="updateTutor(tutor)"
+        v-on:click.prevent="updateLocation(location)"
         text
         rounded
         >Edit</v-btn
@@ -25,7 +25,7 @@
       <v-btn
       class='centered-btns'
         color="#E53935"
-        v-on:click.prevent="deleteTutor(tutor)"
+        v-on:click.prevent="deleteLocation(location)"
         text
         rounded
         >Delete</v-btn
@@ -34,44 +34,28 @@
     <v-form>
       <v-col>
         <v-text-field
-          label="First Name"
-          placeholder="John"
-          v-model="tutor.fName"
+          label="Building"
+          placeholder="Garvey"
+          v-model="location.building"
           readonly
           type="text"
-          id="fName"
+          id="building"
         />
         <v-text-field
-          label="Last Name"
-          placeholder="Smith"
-          v-model="tutor.lName"
+          label="Room Number"
+          placeholder="107b"
+          v-model="location.roomNum"
           readonly
           type="text"
-          id="lName"
+          id="roomNum"
         />
         <v-text-field
-          label="Email"
-          placeholder="john.smith@eagles.oc.edu"
-          readonly
-          v-model="tutor.email"
-          type="text"
-          id="email"
-        />
-        <v-text-field
-          label="Level"
-          placeholder="1000"
-          v-model="tutor.level"
+          label="Description"
+          placeholder="This is a description"
+          v-model="location.desc"
           readonly
           type="text"
-          id="level"
-        />
-        <v-text-field
-          label="Phone Number"
-          placeholder="405-555-5943"
-          v-model="tutor.phoneNumber"
-          readonly
-          type="text"
-          id="phoneNumber"
+          id="desc"
         />
       </v-col>
     </v-form>
@@ -80,7 +64,7 @@
 </template>
 
 <script>
-import UserServices from "@/services/UserServices.js";
+import LocationServices from "@/services/locationServices.js"
 import ConfirmDialog from "@/components/ConfirmDialog.vue";
 import Utils from "@/config/utils.js";
 export default {
@@ -89,44 +73,44 @@ export default {
   data() {
     return {
       user: {},
-      tutor: {},
+      location: {},
     };
   },
   created() {
     this.user = Utils.getStore("user");
-    console.log(this.id + ": The Tutor's id");
-    UserServices.getUser(this.id)
+    console.log(this.id + ": The locations's id");
+    LocationServices.getLocation(this.id)
       .then((response) => {
-        this.tutor = response.data;
+        this.location = response.data;
       })
 
       .catch((error) => {
-        console.log("Error Retrieving the tutor:", error.response);
+        console.log("Error Retrieving the location:", error.response);
       });
   },
   methods: {
     addForm() {
-      this.addStudentDisplay = true;
+      this.addLocationDisplay = true;
     },
 
-    updateTutor(tutor) {
-      console.log(tutor);
+    updateLocation(location) {
+      console.log(location);
       this.$router
-        .push({ name: "editTutor", params: { id: tutor.userID } })
+        .push({ name: "editLocation", params: { id: location.locationID } })
         .then(() => {})
         .catch((error) => {
           console.log(error);
         });
     },
     cancel() {
-      this.$router.push({ name: "tutors" });
+      this.$router.push({ name: "locations" });
     },
-    async deleteTutor(tutor) {
-      let id = tutor.userID;
-      if (confirm("Do you really want to delete this tutor?")) {
-        UserServices.deleteUser(id)
+    async deleteLocation(location) {
+      let id = location.locationID;
+      if (confirm("Do you really want to delete this location?")) {
+        LocationServices.deleteLocation(id)
           .then(() => {
-            this.$router.push({ name: "tutors" });
+            this.$router.push({ name: "locations" });
           })
 
           .catch((error) => {

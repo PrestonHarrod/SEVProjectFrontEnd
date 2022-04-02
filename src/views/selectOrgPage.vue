@@ -1,23 +1,22 @@
 <template>
   <div>
-    <H1 style="background-color: #1976d2; color: #f2f2f2"
-      >Select Organization</H1
+    <H1>Select Organization</H1
     >
-    <v-btn
+    <v-btn class="orgButtons"
       elevation="2"
       v-on:click.prevent="selectOrg(1)"
       v-if="this.getOrgs(1)"
       x-large
       >Student Success Center</v-btn
     >
-    <v-btn
+    <v-btn class="orgButtons"
       elevation="2"
       v-on:click.prevent="selectOrg(2)"
       v-if="this.getOrgs(2)"
       x-large
       >Writing Center</v-btn
     >
-    <v-btn
+    <v-btn class="orgButtons"
       elevation="2"
       v-on:click.prevent="selectOrg(3)"
       v-if="this.getOrgs(3)"
@@ -45,9 +44,4 @@ export default {
 };
 </script>
 <style>
-.v-btn {
-  margin-right: 50px;
-  margin-top: 10px;
-  margin-left: 50px;
-}
 </style>

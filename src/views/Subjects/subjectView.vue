@@ -1,6 +1,6 @@
 <template>
   <div>
-    <H1>Tutor View</H1>
+    <H1>Subject View</H1>
     <br />
     <h2>
       <v-btn
@@ -15,7 +15,7 @@
     <h3>
       <v-btn
       class='centered-btns'
-        v-on:click.prevent="updateTutor(tutor)"
+        v-on:click.prevent="updateSubject(subject)"
         text
         rounded
         >Edit</v-btn
@@ -25,7 +25,7 @@
       <v-btn
       class='centered-btns'
         color="#E53935"
-        v-on:click.prevent="deleteTutor(tutor)"
+        v-on:click.prevent="deleteSubject(subject)"
         text
         rounded
         >Delete</v-btn
@@ -34,44 +34,32 @@
     <v-form>
       <v-col>
         <v-text-field
-          label="First Name"
-          placeholder="John"
-          v-model="tutor.fName"
-          readonly
-          type="text"
-          id="fName"
-        />
-        <v-text-field
-          label="Last Name"
-          placeholder="Smith"
-          v-model="tutor.lName"
-          readonly
-          type="text"
-          id="lName"
-        />
-        <v-text-field
-          label="Email"
-          placeholder="john.smith@eagles.oc.edu"
-          readonly
-          v-model="tutor.email"
-          type="text"
-          id="email"
-        />
-        <v-text-field
-          label="Level"
+          label="level"
           placeholder="1000"
-          v-model="tutor.level"
-          readonly
+          v-model="subject.level"
           type="text"
           id="level"
         />
         <v-text-field
-          label="Phone Number"
-          placeholder="405-555-5943"
-          v-model="tutor.phoneNumber"
-          readonly
+          label="Subject Area"
+          placeholder="101"
+          v-model="subject.subjectGenre"
           type="text"
-          id="phoneNumber"
+          id="subjectGenre"
+        />
+        <v-text-field
+          label="name"
+          placeholder="Math Functions and Modelling"
+          v-model="subject.name"
+          type="text"
+          id="name"
+        />
+        <v-text-field
+          label="teacher"
+          placeholder="Professor North"
+          v-model="subject.teacher"
+          type="text"
+          id="teacher"
         />
       </v-col>
     </v-form>
@@ -80,7 +68,7 @@
 </template>
 
 <script>
-import UserServices from "@/services/UserServices.js";
+import SubjectServices from "@/services/subjectServices.js";
 import ConfirmDialog from "@/components/ConfirmDialog.vue";
 import Utils from "@/config/utils.js";
 export default {
@@ -89,44 +77,44 @@ export default {
   data() {
     return {
       user: {},
-      tutor: {},
+      subject: {},
     };
   },
   created() {
     this.user = Utils.getStore("user");
-    console.log(this.id + ": The Tutor's id");
-    UserServices.getUser(this.id)
+    console.log(this.id + ": The subject's id");
+    SubjectServices.getSubject(this.id)
       .then((response) => {
-        this.tutor = response.data;
+        this.subject = response.data;
       })
 
       .catch((error) => {
-        console.log("Error Retrieving the tutor:", error.response);
+        console.log("Error Retrieving the subject:", error.response);
       });
   },
   methods: {
     addForm() {
-      this.addStudentDisplay = true;
+      this.addSubjectDisplay = true;
     },
 
-    updateTutor(tutor) {
-      console.log(tutor);
+    updateSubject(subject) {
+      console.log(subject);
       this.$router
-        .push({ name: "editTutor", params: { id: tutor.userID } })
+        .push({ name: "editSubject", params: { id: subject.subjectID } })
         .then(() => {})
         .catch((error) => {
           console.log(error);
         });
     },
     cancel() {
-      this.$router.push({ name: "tutors" });
+      this.$router.push({ name: "subjects" });
     },
-    async deleteTutor(tutor) {
-      let id = tutor.userID;
-      if (confirm("Do you really want to delete this tutor?")) {
-        UserServices.deleteUser(id)
+    async deleteSubject(subject) {
+      let id = subject.subjectID;
+      if (confirm("Do you really want to delete this subject?")) {
+        SubjectServices.deleteSubject(id)
           .then(() => {
-            this.$router.push({ name: "tutors" });
+            this.$router.push({ name: "subjects" });
           })
 
           .catch((error) => {

@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div>
-      <H1 style="background-color: #1976d2; color: #f2f2f2"
+      <H1
         >Schedule Session</H1
       >
       <br />

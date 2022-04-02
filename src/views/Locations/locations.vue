@@ -1,7 +1,15 @@
 <template>
   <v-container>
     <div>
-      <H1>Drop Ins</H1>
+      <H1>Locations</H1>
+      <v-btn
+      class="centered-btns"
+          @click="goToAdd()"
+          color="black"
+          text
+          rounded
+          >Add Location</v-btn
+        >
       <br />
       <v-card width="100vw">
         <v-card-title>
@@ -18,10 +26,11 @@
           show-select
           single-select
           :headers="headers"
-          :items="DropIns"
-          item-key="lname"
+          :items="locations"
+          item-key="building"
           :items-per-page="25"
           :search="search"
+          @click:row="viewLocation"
         >
         </v-data-table>
       </v-card>
@@ -30,62 +39,43 @@
 </template>
 
 <script>
-
-import DropInServices from "@/services/dropInServices.js";
-
+import Utils from "@/config/utils.js";
+import LocationServices from "@/services/locationServices.js"
 export default {
   components: {},
   data() {
     return {
       selected: [],
-      DropIn: {},
+      location: {},
       search: "",
       headers: [
         {
-          text: "First Name",
+          text: "Building",
           align: "start",
           filterable: true,
-          value: "fname",
+          value: "building",
         },
         {
-          text: "Last Name",
+          text: "Room Number",
           align: "start",
-          filterable: true,
-          value: "lname",
+          filterable: false,
+          value: "roomNum",
         },
         {
-          text: "Email",
+          text: "Description",
           align: "start",
           filterable: false,
-          value: "email",
-        },
-        {
-          text: "Date",
-          align: "start",
-          filterable: false,
-          value: "date",
-        },
-          {
-          text: "Student ID",
-          align: "start",
-          filterable: false,
-          value: "studentIDNum",
-        },
-         {
-          text: "Subject",
-          align: "start",
-          filterable: false,
-          value: "subject",
+          value: "desc",
         },
       ],
-      DropIns: [{}],
+      locations: [{}],
     };
   },
   created() {
-    //Grab all of the Drop Ins Created
-    DropInServices.getDropIns()
+    this.user = Utils.getStore("user");
+    LocationServices.getLocations()
       .then((response) => {
-        this.DropIns = response.data;
+        this.locations = response.data;
       })
 
       .catch((error) => {
@@ -93,7 +83,23 @@ export default {
       });
   },
   methods: {
-
+    goToAdd() {
+      this.$router
+        .push({ name: "addLocation" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    viewLocation(location) {
+      let id = location.locationID;
+      this.$router
+        .push({ name: "viewLocation", params: { id: id } })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
   },
 };
 </script>

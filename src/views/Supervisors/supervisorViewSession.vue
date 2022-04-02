@@ -2,8 +2,7 @@
   <div>
 <H1>Session View</H1>
 <br>
- <h2><v-btn  class='centered-btns' v-on:click.prevent="cancel()" color="black" text rounded>Go Back</v-btn></h2>
-    <h3><v-btn  class='centered-btns' v-on:click.prevent="deleteSession(session)" color="red" text rounded>Cancel Session</v-btn></h3>
+ <h2><v-btn class='centered-btns'  v-on:click.prevent="cancel()" color="black" text rounded>Go Back</v-btn></h2>
     <br>
   <v-form>
         <v-col>
@@ -82,7 +81,7 @@ export default {
   },
   methods: {
     cancel() {
-      this.$router.push({ name: 'tutorsessionlist' })
+      this.$router.push({ name: 'supervisorSessions' })
     },
     async deleteSession(session) {
       let id = session.sessionID;
@@ -97,7 +96,7 @@ export default {
             })
         
           .then(() => {
-            this.$router.push({ name: "tutorsessionlist" });
+            this.$router.push({ name: "studentSessions" });
           })
 
           .catch((error) => {

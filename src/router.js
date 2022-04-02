@@ -8,7 +8,8 @@ import AdminHome from "./views/Admins/adminHome.vue";
 import TutorHome from "./views/Tutors/tutorHome.vue";
 import StudentSubjectView from "./views/Students/ViewSubjects.vue";
 import Request from "./views/Students/Request.vue"
-
+import SupervisorSessionList from "./views/Supervisors/supervisorSessionList.vue";
+import supervisorViewSession from "./views/Supervisors/supervisorViewSession.vue";
 import Schedule from "./views/schedule.vue";
 import Availability from "./views/availability.vue";
 import Attendance from "./views/attendance.vue";
@@ -47,6 +48,16 @@ import MenteeEdit from "./views/Mentees/menteeEdit.vue";
 import MenteeView from "./views/Mentees/menteeView.vue";
 import Mentees from "./views/Mentees/mentees.vue";
 
+//location Crud
+import LocationAdd from "./views/Locations/addLocation.vue";
+import LocationEdit from "./views/Locations/locationEdit.vue";
+import LocationView from "./views/Locations/locationView.vue";
+import Locations from "./views/Locations/locations.vue";
+//subject crud
+import SubjectAdd from "./views/Subjects/addSubject.vue";
+import SubjectEdit from "./views/Subjects/subjectEdit.vue";
+import SubjectView from "./views/Subjects/subjectView.vue";
+import Subjects from "./views/Subjects/subjects.vue";
 //Supervisor Crud
 import SupervisorAdd from "./views/Supervisors/addSupervisor.vue";
 import SupervisorEdit from "./views/Supervisors/supervisorEdit.vue";
@@ -264,11 +275,62 @@ export default new Router({
       component: MenteeEdit,
       props: true,
     },
+    //Locations
+    {
+      path: "/locations",
+      name: "locations",
+      component: Locations,
+    },
+    {
+
+      path: "/addLocation",
+      name: "addLocation",
+      component: LocationAdd,
+    },
+    {
+      path: "/Locations/:id",
+      name: "viewLocation",
+      component: LocationView,
+      props: true,
+    },
 
     {
+      path: "/Location-Edit/:id",
+      name: "editLocation",
+      component: LocationEdit,
+      props: true,
+    },
+////////////////
+//Subjects
+{
+  path: "/subjects",
+  name: "subjects",
+  component: Subjects,
+},
+{
+
+  path: "/addSubject",
+  name: "addSubject",
+  component: SubjectAdd,
+},
+{
+  path: "/Subjects/:id",
+  name: "viewSubject",
+  component: SubjectView,
+  props: true,
+},
+
+{
+  path: "/Subject-Edit/:id",
+  name: "editSubject",
+  component: SubjectEdit,
+  props: true,
+},
+////////////////
+    {
       path: "/sessions", //what is this? is there a difference for the sessions?
-      name: "adminSessions",
-      component: SessionList,
+      name: "supervisorSessions",
+      component: SupervisorSessionList,
     },
     {
       path: "/requests",
@@ -358,6 +420,12 @@ export default new Router({
       path: "/supervisor/DropIn",
       name: "dropInList",
       component: DropInTutorList,
+      props: true,
+    },
+    {
+      path: "/supervisor/supervisorViewSession/:id",
+      name: "supervisorViewSession",
+      component: supervisorViewSession,
       props: true,
     },
 

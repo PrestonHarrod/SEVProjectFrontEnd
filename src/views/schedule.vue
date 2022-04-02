@@ -18,7 +18,7 @@
         <v-calendar
           ref="calendar"
           v-model="value"
-          color="primary"
+          color="#2c9292"
           type="week"
           :first-interval="6"
           :interval-count="19"
@@ -48,7 +48,7 @@
           offset-x
         >
           <v-card color="grey lighten-4" min-width="350px" flat>
-            <v-toolbar style="background-color: #1976d2; color: #f2f2f2">
+            <v-toolbar style="background-color: #2c9292; color: #f2f2f2">
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
               <v-spacer></v-spacer>
             </v-toolbar>
@@ -129,7 +129,7 @@
                   </v-card-text>
                   <v-card-actions>
                     <v-btn
-                      color="primary"
+                      color="#247b7b"
                       text
                       @click="setLocation(selectedEvent, location)"
                     >
@@ -158,7 +158,7 @@
               >
                 Deny
               </v-btn>
-              <v-btn text color="primary" @click="selectedOpen = false">
+              <v-btn text color="#247b7b" @click="selectedOpen = false">
                 Close
               </v-btn>
             </v-card-actions>
@@ -646,10 +646,12 @@ export default {
     },
     markComplete(event) {
       let id = event.id;
+      if (confirm("Do you want to mark this session complete?")) {
       sessionServices.getSessionByTutorSlot(id).then((response) => {
         for (let i = 0; i < response.data.length; i++) {
         this.sessionComplete[i] = response.data[i];
         this.sessionComplete[i].status = "Complete";
+        this.sessionComplete[i].tutorSlotID = null;
         sessionServices.updateSession(this.sessionComplete[i]);
         }
       })
@@ -657,8 +659,13 @@ export default {
       this.tutorSlot.numOfRegistered = null;
       this.tutorSlot.tutorSlotID = id;
       TutorSlotServices.updateTutorSlot(this.tutorSlot);
+      this.$router.go();
 
+      }
+      else {
+      this.selectedOpen = false;
 
+      }
     },
   },
 };

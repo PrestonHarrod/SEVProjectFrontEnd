@@ -1,7 +1,7 @@
 <template>
 
   <v-container>
-     <H1 style="background-color: #1976d2; color: #f2f2f2"
+     <H1
       >Give Feedback</H1
     >
     <div>
@@ -41,7 +41,7 @@
               </template>
               
             </v-textarea>
-            <v-btn v-if="rating != 0" @click="sendFeedback()" color="primary">
+            <v-btn class='centered-btns' v-if="rating != 0" @click="sendFeedback()" color="primary">
                Submit
             </v-btn>
         </v-form>

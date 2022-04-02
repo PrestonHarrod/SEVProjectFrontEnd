@@ -1,8 +1,6 @@
 <template>
   <div>
-    <H1 style="background-color: #1976d2; color: #f2f2f2"
-      >Add New supervisor</H1
-    >
+    <H1>Add New supervisor</H1>
     <v-form>
       <v-col>
         <!-- <v-text-field label="UserID" v-model="tutor.userID" type="text" id="userID"/> -->
@@ -37,23 +35,16 @@
 
         <v-radio-group v-model="supervisor.orgID" column>
           <v-radio label="Student Success" color="red" value="1"></v-radio>
-          <v-radio label="Writing Center" color="red darken-3" value="2"></v-radio>
+          <v-radio
+            label="Writing Center"
+            color="red darken-3"
+            value="2"
+          ></v-radio>
           <v-radio label="New College" color="indigo" value="3"></v-radio>
         </v-radio-group>
       </v-col>
-      <v-btn
-        :style="{ left: '50%', transform: 'translateX(-50%)' }"
-        v-on:click.prevent="addSupervisor()"
-        text
-        rounded
-        >Submit</v-btn
-      >
-      <v-btn
-        :style="{ left: '50%', transform: 'translateX(-50%)' }"
-        v-on:click.prevent="cancel()"
-        color="black"
-        text
-        rounded
+      <v-btn class='centered-btns' v-on:click.prevent="addSupervisor()" text rounded>Submit</v-btn>
+      <v-btn class='centered-btns' v-on:click.prevent="cancel()" color="black" text rounded
         >Cancel</v-btn
       >
     </v-form>
@@ -100,8 +91,6 @@ export default {
             .catch((error) => {
               console.log(error);
             }); //post the userOrg
-            
-           
         })
         .catch((error) => {
           console.log(error);

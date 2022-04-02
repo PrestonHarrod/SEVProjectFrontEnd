@@ -1,48 +1,41 @@
 <template>
   <div>
-    <H1 style="background-color: #1976d2; color: #f2f2f2">Mentee Edit</H1>
+    <H1>Subject Edit</H1>
     <v-app>
       <v-form>
         <v-col>
           <v-text-field
-            label="First Name"
-            placeholder="John"
-            v-model="mentee.fName"
-            type="text"
-            id="fName"
-          />
-          <v-text-field
-            label="Last Name"
-            placeholder="Smith"
-            v-model="mentee.lName"
-            type="text"
-            id="lName"
-          />
-          <v-text-field
-            label="Email"
-            placeholder="john.smith@eagles.oc.edu"
-            v-model="mentee.email"
-            type="text"
-            id="email"
-          />
-          <v-text-field
-            label="Level"
+            label="level"
             placeholder="1000"
-            v-model="mentee.level"
+            v-model="subject.level"
             type="text"
             id="level"
           />
           <v-text-field
-          label="Phone Number"
-          placeholder="405-555-5055"
-          v-model="mentee.phoneNumber"
-          type="text"
-          id="phoneNumber"
-        />
+            label="Subject Area"
+            placeholder="101"
+            v-model="subject.subjectGenre"
+            type="text"
+            id="subjectGenre"
+          />
+          <v-text-field
+            label="name"
+            placeholder="Math Functions and Modelling"
+            v-model="subject.name"
+            type="text"
+            id="name"
+          />
+          <v-text-field
+            label="teacher"
+            placeholder="Professor North"
+            v-model="subject.teacher"
+            type="text"
+            id="teacher"
+          />
         </v-col>
         <v-btn
         class='centered-btns'
-          v-on:click.prevent="updateMentee()"
+          v-on:click.prevent="updateSubject()"
           text
           rounded
           >Submit</v-btn
@@ -60,7 +53,7 @@
   </div>
 </template>
 <script>
-import UserServices from "@/services/UserServices.js";
+import SubjectServices from "@/services/subjectServices.js";
 import Utils from "@/config/utils.js";
 export default {
   props: ["id"],
@@ -68,15 +61,15 @@ export default {
   data() {
     return {
       user: {},
-      mentee: {},
+      subject: {},
       menu: false,
     };
   },
   created() {
     this.user = Utils.getStore("user");
-    UserServices.getUser(this.id)
+    SubjectServices.getSubject(this.id)
       .then((response) => {
-        this.mentee = response.data;
+        this.subject = response.data;
       })
       .catch((error) => {
         console.log("There was an error:", error.response);
@@ -84,18 +77,18 @@ export default {
   },
   methods: {
     cancel() {
-      this.$router.push({ name: "viewMentee" });
+      this.$router.push({ name: "viewSubject" });
     },
-    updateMentee() {
-      this.mentee.userID = this.id;
+    updateSubject() {
+      this.subject.subjectID = this.id;
 
-      UserServices.updateUser(this.mentee)
+      SubjectServices.updateSubject(this.subject)
         .then(() => {
-          this.$router.push({ name: "viewMentee" });
+          this.$router.push({ name: "viewSubject" });
         })
         .catch((error) => {
           console.log("There was an error:", error.response);
-          alert("ERROR:Edit Mentee unsuccessful.");
+          alert("ERROR:Edit Subject unsuccessful.");
         });
     },
   },
