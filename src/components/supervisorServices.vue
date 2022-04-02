@@ -112,7 +112,7 @@ export default {
     },
     goToSessions() {
       this.$router
-        .push({ name: "adminSessions" })
+        .push({ name: "supervisorSessions" })
         .then(() => {})
         .catch((error) => {
           console.log(error);
