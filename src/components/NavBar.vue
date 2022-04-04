@@ -56,7 +56,7 @@ export default {
     },
     goToHome() {
       this.$router
-        .push({ name: "/" })
+        .push({ name: "home" })
         .then(() => {})
         .catch((error) => {
           console.log(error);
