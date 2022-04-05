@@ -143,7 +143,6 @@
             </v-card-actions>
           </v-card>
         </v-menu>
-        <v-btn @click="sendReminder">Try it</v-btn>
         </v-form>
       </v-app>
     </div>
