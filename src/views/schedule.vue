@@ -25,6 +25,7 @@
           :events="events"
           :event-color="getEventColor"
           :event-ripple="false"
+          @change="getTutorSlots"
           @click:event="viewSession"
           @mousedown:event="startDrag"
           @mousedown:time="startTime"
@@ -32,7 +33,10 @@
           @mouseup:time="endDrag"
           @mouseleave.native="cancelDrag"
         >
+          <template v-slot:day-label-header="{}">-</template>
+
           <template v-slot:event="{ event, timed, eventSummary }">
+            
             <div class="v-event-draggable" v-html="eventSummary()"></div>
             <div
               v-if="timed"
@@ -85,21 +89,54 @@
                 Remove
               </v-btn>
                <v-btn
-                v-if="(selectedEvent.day == selectedEvent.today) && (selectedEvent.numRegistered > 0)"
+                v-if="(selectedEvent.today >= selectedEvent.sessionday) && (selectedEvent.numRegistered > 0)"
                 text
                 color="black"
                 @click="markComplete(selectedEvent)"
               >
                 Mark Complete
               </v-btn>
+              <v-dialog v-model="dialog2" hide-overlay scrollable max-width="300px">
+                <template v-slot:activator="{ on, attrs }">
               <v-btn
                 v-if="selectedEvent.numRegistered > 0"
                 text
-                color="error"
-                @click="cancelSession(selectedEvent)"
+                color="black"
+                v-bind="attrs"
+                v-on="on"
               >
-                Cancel
+                Cancel Session
               </v-btn>
+              </template>
+               <v-card>
+        <v-card-text style="height: 300px">
+
+                <v-textarea
+                v-model="session.feedback"
+                  label="Reason for cancellation"
+                ></v-textarea>
+
+ <v-card-actions>
+          <v-divider></v-divider>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog2 = false"
+          >
+            Close
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="cancelSession(selectedEvent, session)"
+          >
+            Confirm Cancellation
+          </v-btn>
+        </v-card-actions>
+        </v-card-text>
+         </v-card>
+              </v-dialog>
+
               <v-dialog v-model="dialog" scrollable max-width="300px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -219,8 +256,11 @@ export default {
     dialogm1: "",
     someLocation: "",
     dialog: false,
+    dialog2: false,
     sessionComplete: [{}],
     studentsForGroupSession: [{}],
+    session: [{}],
+    feedback: "",
   }),
   created() {
     locationServices.getLocations().then((response) => {
@@ -230,7 +270,13 @@ export default {
     });
     this.user = Utils.getStore("user");
 
-    TutorSlotServices.getTutorSlotForTutor(this.user.userID).then(
+    
+  },
+  methods: {
+
+    getTutorSlots() {
+      this.events = [];
+      TutorSlotServices.getTutorSlotForTutor(this.user.userID).then(
       (response) => {
         for (let i = 0; i < response.data.length; i++) {
           var days = [
@@ -242,36 +288,37 @@ export default {
             "Friday",
             "Saturday",
           ];
+          this.thisDay = response.data[i].day;
           var today = new Date();
           today.getDay();
           console.log(today.getDay() + "today");
-          if (today.getDay() === 0) {
-            this.z = "Sunday";
+          if (this.thisDay === "Sunday") {
+            this.sessionDay = "0";
           }
-          if (today.getDay() === 1) {
-            this.z = "Monday";
+          if (this.thisDay === "Monday") {
+            this.sessionDay = "1";
           }
-          if (today.getDay() === 2) {
-            this.z = "Tuesday";
+          if (this.thisDay === "Tuesday") {
+            this.sessionDay = "2";
           }
-          if (today.getDay() === 3) {
-            this.z = "Wednesday";
+          if (this.thisDay === "Wednesday") {
+            this.sessionDay = "3";
           }
-          if (today.getDay() === 4) {
-            this.z = "Thursday";
+          if (this.thisDay === "Thursday") {
+            this.sessionDay = "4";
           }
-          if (today.getDay() === 5) {
-            this.z = "Friday";
+          if (this.thisDay === "Friday") {
+            this.sessionDay = "5";
           }
-          if (today.getDay() === 6) {
-            this.z = "Saturday";
+          if (this.thisDay === "Saturday") {
+            this.sessionDay = "6";
           }
           console.log(this.z +  "todays date return");
           // display tutor slots for each day after current day
           for (let j = 0; j < 6; j++) {
             if (response.data[i].day == days[j]) {
               // create date for next day in the week
-              this.thisDay = response.data[i].day;
+              
 
               var tomorrow = new Date();
               tomorrow.setDate(tomorrow.getDate() + j - today.getDay());
@@ -317,7 +364,8 @@ export default {
                 start: starttime2,
                 end: endtime2,
                 numRegistered: this.numReg,
-                today: this.z,
+                today: today.getDay(),
+                sessionday: this.sessionDay,
                 details: response.data[i].startTime + " - " + response.data[i].endTime,
               });
             }
@@ -325,8 +373,7 @@ export default {
         }
       }
     );
-  },
-  methods: {
+    },
     startDrag({ event, timed }) {
       if (event && timed) {
         this.dragEvent = event;
@@ -418,7 +465,8 @@ export default {
       this.createEvent = null;
       this.createStart = null;
       this.extendOriginal = null;
-      this.$router.go();
+      this.getTutorSlots();
+      //this.$router.go();
     },
     cancelDrag() {
       if (this.createEvent) {
@@ -523,8 +571,8 @@ export default {
           this.confirmSession.status = "Upcoming";
           sessionServices.updateSession(this.confirmSession);
           this.selectedOpen = false;
-
-          this.$router.go(); //will need to show students name
+      this.getTutorSlots();
+         // this.$router.go(); //will need to show students name
         });
       }),
         (event.color = "red");
@@ -589,27 +637,40 @@ export default {
       return this.someValue;
     },
 
-    cancelSession(event) {
+    cancelSession(event, session) {
+      this.session = session;
+      console.log(this.session.feedback + "sessions feedback");
+      console.log(event.id + "sessions feedback");
       let id = event.id;
-      if (confirm("Do you really want to cancel this session?")) {
-        sessionServices.deleteSessionByTutorSlotID(id);
         TutorSlotServices.cancelSlot(id).then((response) => {
           this.tutorSlot = response.data[0];
           this.tutorSlot.studentID = null;
           this.tutorSlot.tutorSlotRequestID = null;
           this.tutorSlot.numOfRegistered = null;
-          TutorSlotServices.updateTutorSlot(this.tutorSlot)
-            .then(() => {
-              sessionServices.deleteSession(id);
+          TutorSlotServices.updateTutorSlot(this.tutorSlot).then(() => {
+              sessionServices.getSessionByTutorSlot(id).then((response1) => {
+                for (let i = 0; i < response1.data.length; i++) {
+                this.session1 = response1.data[i];
+                this.session1.status = "Canceled";
+                this.session1.feedback = this.session.feedback;
+                this.session1.tutorSlotID = null;
+                sessionServices.updateSession(this.session1).then(() => {
+                  this.session = [];
+                  this.dialog2 = false;
+                })
+                }
+              })
             })
 
             .catch((error) => {
               console.log(error);
             });
         });
-      }
+     
+      if (event.name = "Booked") {
       event.color = "green";
       event.name = "Open Slot";
+      }
       this.selectedOpen = false;
     },
 
@@ -644,6 +705,7 @@ export default {
     getLocations(location) {
       return location.building + ": " + location.roomNum;
     },
+
     markComplete(event) {
       let id = event.id;
       if (confirm("Do you want to mark this session complete?")) {
@@ -654,12 +716,14 @@ export default {
         this.sessionComplete[i].tutorSlotID = null;
         sessionServices.updateSession(this.sessionComplete[i]);
         }
-      })
       this.tutorSlot.studentID = null;
       this.tutorSlot.numOfRegistered = null;
       this.tutorSlot.tutorSlotID = id;
       TutorSlotServices.updateTutorSlot(this.tutorSlot);
-      this.$router.go();
+      this.getTutorSlots();
+      //this.$router.go();
+      })
+
 
       }
       else {
