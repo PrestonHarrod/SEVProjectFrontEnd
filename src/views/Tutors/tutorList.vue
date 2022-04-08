@@ -109,7 +109,6 @@ export default {
           if (this.sessions[this.i].rating != null) {
           if (this.sessions[this.i].tutorID == this.tutors[this.j].userID) {
             this.sessionCount++;
-            console.log("HERE")
             this.avgRating += parseInt(this.sessions[this.i].rating);
             
           }
@@ -117,7 +116,12 @@ export default {
         }
         // avgRating = avgRating / sessionCount;
         this.avgRating = this.avgRating / this.sessionCount;
+        
         this.tutors[this.j].rating = this.avgRating.toString()
+        if (this.tutors[this.j].rating == "NaN")
+        {
+          this.tutors[this.j].rating = ""
+        }
         console.log(this.tutors)
         
         }
