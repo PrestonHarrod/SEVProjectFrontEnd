@@ -120,7 +120,7 @@ export default {
         this.tutors[this.j].rating = this.avgRating.toString()
         if (this.tutors[this.j].rating == "NaN")
         {
-          this.tutors[this.j].rating = ""
+          this.tutors[this.j].rating = "N/A"
         }
         console.log(this.tutors)
         
