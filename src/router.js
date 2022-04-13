@@ -69,6 +69,10 @@ import SelectOrg from "./views/selectOrgPage.vue";
 import DropInTutoring from "./views/Students/dropInTutoring.vue";
 import DropInTutorList from "./views/Supervisors/dropInTutorList.vue";
 
+//Add New User
+import AddNewUser from "./views/addNewUser.vue";
+
+
 Vue.use(Router);
 export default new Router({
   mode: "hash",
@@ -119,8 +123,13 @@ export default new Router({
       name: "studentsessionscalender",
       component: StudentSessionCalender,
     },
+    {
+      path: "/login/newUser",
+      name: "addNewUser",
+      component: AddNewUser,
+    },
 
-    //Needs schedule sessions
+    //Add New User
 
     //Admin Routes
     {
