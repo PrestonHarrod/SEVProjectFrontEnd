@@ -704,7 +704,7 @@ export default {
           this.sessLoc = response.data[0].locationID;
           locationServices.getLocation(this.sessLoc).then((response1) => {
             if (response1.data.building == "Virtual" && response.data[0].url != null) {
-            this.someLocation = response1.data.building + "<br>" + "URL: " + "<a href=>" + "http://www." +response.data[0].url +  "</a>";
+            this.someLocation = response1.data.building + "<br>" + "URL: " + "<a href='http://www."+response.data[0].url+"'target='_blank'>" + response.data[0].url+"</a>";
 
 
             }
@@ -758,6 +758,12 @@ export default {
 
       }
     },
+    testFun(link) {
+        var url = link;
+        var win = window.open(url, '_blank');
+        win.focus();
+
+    }
   },
 };
 </script>
