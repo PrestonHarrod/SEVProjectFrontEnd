@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     isLogin() {
-      return this.$route.name != "login" && this.$route.name != "selectOrg";
+      return this.$route.name != "login" && this.$route.name != "selectOrg" && this.$route.name != "addNewUser";
     },
   },
 };
