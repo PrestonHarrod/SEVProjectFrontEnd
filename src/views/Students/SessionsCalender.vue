@@ -144,7 +144,7 @@ import smsServices from "@/services/smsServices.js";
       type: null,
       tutorSlot: null,
       dialog2: false,
-
+    }),
   methods: {
     prev() {
       this.$refs.calendar.prev();
@@ -361,4 +361,5 @@ cancelSession(event, session) {
     },
   },
 };
+
 </script>

@@ -214,7 +214,7 @@
                   </v-btn>
                 </template>
                 <v-card>
-                  <v-textarea v-model="cancelReason" color="teal">
+                  <v-textarea v-model="denyReason" color="teal">
                     <template v-slot:label>
                       <div>Deny Reason</div>
                     </template>
@@ -305,7 +305,8 @@ export default {
     session: [{}],
     virtual: [{}],
     feedback: "",
-    desc: ""
+    desc: "",
+    denyReason: "",
 
   }),
   created() {
@@ -772,8 +773,8 @@ export default {
             " at " +
             startTime +
             " has been cancelled. Reason: " +
-            this.cancelReason;
-          this.cancelReason = "";
+            this.session.feedback;
+          this.denyReason = "";
         } else if (type == "Deny") {
           user.data.subject = "Tutor Session Denied";
           user.data.message =
@@ -781,8 +782,8 @@ export default {
             date +
             " at " +
             startTime +
-            " has been denied. Reason: " + this.cancelReason;
-            this.cancelReason = "";
+            " has been denied. Reason: " + this.denyReason;
+            this.denyReason = "";
         } else if (type == "Confirm") {
           user.data.subject = "Tutor Session Confirmed";
           user.data.message =
