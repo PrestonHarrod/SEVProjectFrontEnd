@@ -13,7 +13,7 @@
           @change="checkbox23"
         ></v-checkbox>
       </v-row>
-      <br>
+      <br />
       <v-sheet height="600">
         <v-calendar
           ref="calendar"
@@ -91,12 +91,14 @@
               </v-btn>
                <v-btn
                 v-if="(selectedEvent.today >= selectedEvent.sessionday) && (selectedEvent.numRegistered > 0)"
+
                 text
                 color="black"
                 @click="markComplete(selectedEvent)"
               >
                 Mark Complete
               </v-btn>
+
               <v-dialog v-if="selectedEvent.numRegistered > 0" v-model="dialog2" hide-overlay scrollable max-width="300px">
                 <template v-slot:activator="{ on, attrs }">
               <v-btn
@@ -136,7 +138,7 @@
         </v-card-text>
          </v-card>
               </v-dialog>
-
+              
               <v-dialog v-if="selectedEvent.numRegistered > 0" v-model="dialog" scrollable max-width="300px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -191,14 +193,47 @@
               >
                 Confirm
               </v-btn>
-              <v-btn
+              <!-- <v-btn
                 v-if="selectedEvent.name == 'Pending'"
                 text
                 color="error"
                 @click="deny(selectedEvent)"
               >
                 Deny
-              </v-btn>
+              </v-btn> -->
+
+              <v-dialog v-if="selectedEvent.name == 'Pending'" v-model="dialog3" scrollable max-width="300px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    text
+                    color="red"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    Deny
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-textarea v-model="cancelReason" color="teal">
+                    <template v-slot:label>
+                      <div>Deny Reason</div>
+                    </template>
+                  </v-textarea>
+                  <v-card-actions>
+                    <v-btn
+                      color="red"
+                      text
+                      @click="deny(selectedEvent)"
+                    >
+                      Deny Session
+                    </v-btn>
+                    <v-btn color="black" text @click="dialog3 = false">
+                      Back
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
               <v-btn text color="#247b7b" @click="selectedOpen = false">
                 Close
               </v-btn>
@@ -216,6 +251,9 @@ import sessionServices from "@/services/sessionServices.js";
 import userServices from "@/services/UserServices.js";
 import Utils from "@/config/utils.js";
 import locationServices from "@/services/locationServices.js";
+import smsServices from "@/services/smsServices.js";
+import SessionServices from "@/services/sessionServices.js";
+import UserServices from "@/services/UserServices.js";
 
 export default {
   data: () => ({
@@ -321,7 +359,7 @@ export default {
           if (this.thisDay === "Saturday") {
             this.sessionDay = "6";
           }
-          console.log(this.z +  "todays date return");
+          console.log(this.z + "todays date return");
           // display tutor slots for each day after current day
           for (let j = 0; j < 6; j++) {
             if (response.data[i].day == days[j]) {
@@ -372,6 +410,7 @@ export default {
                 start: starttime2,
                 end: endtime2,
                 numRegistered: this.numReg,
+
                 today: today.getDay(),
                 sessionday: this.sessionDay,
                 details: response.data[i].startTime + " - " + response.data[i].endTime,
@@ -571,16 +610,36 @@ export default {
     confirm(event) {
       TutorSlotServices.getTutorSlot(event.id).then((response) => {
         this.confirmTutorSlot = response.data;
+        console.log(
+          "Confirm Session Student ID: " + this.confirmTutorSlot.studentID
+        );
+        this.sendNotification(
+          this.confirmTutorSlot.studentID,
+          "Confirm",
+          event,
+          null,
+          null
+        );
         this.confirmTutorSlot.tutorSlotRequestID = null;
         this.confirmTutorSlot.numOfRegistered = "1";
+        console.log("in confirm");
         TutorSlotServices.updateTutorSlot(this.confirmTutorSlot);
         sessionServices.getSessionByTutorSlot(event.id).then((response) => {
           this.confirmSession = response.data[0];
           this.confirmSession.status = "Upcoming";
           sessionServices.updateSession(this.confirmSession);
+          let d = new Date(event.start);
+          console.log(d);
+          console.log("Response Session ID: " + this.confirmSession.sessionID);
+          console.log("Student ID in confirm: " + this.confirmTutorSlot.studentID);
+          this.sendReminder(
+            d,
+            event,
+            this.confirmSession.studentID,
+            this.confirmSession.sessionID
+          );
           this.selectedOpen = false;
       this.getTutorSlots();
-         // this.$router.go(); //will need to show students name
         });
       }),
         (event.color = "red");
@@ -589,6 +648,16 @@ export default {
     deny(event) {
       TutorSlotServices.getTutorSlot(event.id).then((response) => {
         this.confirmTutorSlot = response.data;
+        console.log(
+          "Deny Session Student ID: " + this.confirmTutorSlot.studentID
+        );
+        this.sendNotification(
+          this.confirmTutorSlot.studentID,
+          "Deny",
+          event,
+          null,
+          null
+        );
         this.confirmTutorSlot.tutorSlotRequestID = null;
         this.confirmTutorSlot.studentID = null;
         TutorSlotServices.updateTutorSlot(this.confirmTutorSlot);
@@ -652,6 +721,14 @@ export default {
       let id = event.id;
         TutorSlotServices.cancelSlot(id).then((response) => {
           this.tutorSlot = response.data[0];
+          console.log("Cancel Session Student ID: " + this.tutorSlot.studentID);
+          this.sendNotification(
+            this.tutorSlot.studentID,
+            "Cancel",
+            event,
+            null,
+            null
+          );
           this.tutorSlot.studentID = null;
           this.tutorSlot.tutorSlotRequestID = null;
           this.tutorSlot.numOfRegistered = null;
@@ -680,6 +757,91 @@ export default {
       event.name = "Open Slot";
       }
       this.selectedOpen = false;
+    },
+    sendNotification(userID, type, event, waitTime, sessionID) {
+      console.log("in sendNotification");
+      userServices.getUser(userID).then((user) => {
+        console.log(user.data.phoneNumber + " " + user.data.email);
+        let date = event.start.substring(0, event.start.indexOf(":") - 2);
+        let startTime = event.start.substring(event.start.indexOf(":") - 2);
+        if (type == "Cancel") {
+          user.data.subject = "Tutor Session Cancelled";
+          user.data.message =
+            "Your scheduled session for " +
+            date +
+            " at " +
+            startTime +
+            " has been cancelled. Reason: " +
+            this.cancelReason;
+          this.cancelReason = "";
+        } else if (type == "Deny") {
+          user.data.subject = "Tutor Session Denied";
+          user.data.message =
+            "Your requested session for " +
+            date +
+            " at " +
+            startTime +
+            " has been denied. Reason: " + this.cancelReason;
+            this.cancelReason = "";
+        } else if (type == "Confirm") {
+          user.data.subject = "Tutor Session Confirmed";
+          user.data.message =
+            "Your requested session for " +
+            date +
+            " at " +
+            startTime +
+            " has been accepted.";
+        } else {
+          setTimeout(() => {
+            console.log("Event ID in schedule: " + sessionID);
+            SessionServices.getSession(sessionID).then((session) => {
+              console.log("Session ID: " + session.data.sessionID);
+              console.log("Loction ID 1: " + session.data.locationID);
+              let startTime = event.start.substring(event.start.indexOf(":") - 2);
+              if (session.data.locationID != null) {
+                locationServices
+                  .getLocation(session.data.locationID)
+                  .then((location) => {
+                    console.log("Session ID: " + session.data.sessionID);
+                    console.log("Location ID: " + session.data.locationID);
+                    console.log(location.data.building);
+
+                    user.data.subject = "Tutor Session Reminder";
+                    user.data.message =
+                      "Your scheduled tutor session at " + startTime +  " is starting in 15 minutes in " +
+                      location.data.building +
+                      " " +
+                      location.data.roomNum;
+                    smsServices.sendMessage(user.data);
+                  });
+              } else {
+                UserServices.getUser(this.user.userID).then((tutor) => {
+                  user.data.subject = "Tutor Session Reminder";
+                  user.data.message =
+                  "Your scheduled tutor session " + startTime + " is starting in 15 minutes\nEmail your tutor at " +
+                    tutor.data.email +
+                    " to get the location";
+                  smsServices.sendMessage(user.data);
+                });
+              }
+            });
+          }, waitTime);
+        }
+        if (type != "Reminder") smsServices.sendMessage(user.data);
+      });
+    },
+    sendReminder(waitDate, event, userID, sessionID) {
+      waitDate = new Date(waitDate - 15 * 60 * 1000);
+      console.log("WaitDate: " + waitDate);
+      let scheduledTime = waitDate - Date.now();
+      console.log("Schedule Send Time: " + scheduledTime);
+      this.sendNotification(
+        userID,
+        "Reminder",
+        event,
+        scheduledTime,
+        sessionID
+      );
     },
 
     setLocation(event, location, session) {
@@ -755,7 +917,6 @@ export default {
       }
       else {
       this.selectedOpen = false;
-
       }
     },
     testFun(link) {
