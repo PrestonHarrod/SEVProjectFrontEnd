@@ -51,46 +51,54 @@
               >
                 Give Feedback
               </v-btn>
-              <!-- <v-btn
-                
+
+              <v-dialog v-model="dialog2" hide-overlay scrollable max-width="300px">
+              <template v-slot:activator="{ on, attrs }">
+              <v-btn v-if="selectedEvent.name != 'Completed Session'"
                 text
                 color="error"
-                @click="removeTimeSlot(selectedEvent)"
+                v-bind="attrs"
+                v-on="on"
               >
                 Cancel Session
-              </v-btn> -->
-              <v-dialog v-if="selectedEvent.name != 'Completed Session'" v-model="dialog2" scrollable max-width="300px">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    text
-                    color="red"
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    Cancel Session
-                  </v-btn>
-                </template>
-                <v-card>
-                  <v-textarea v-model="cancelReason" color="teal">
-                    <template v-slot:label>
-                      <div>Cancel Reason</div>
-                    </template>
-                  </v-textarea>
-                  <v-card-actions>
-                    <v-btn
-                      color="red"
-                      text
-                      @click="removeTimeSlot(selectedEvent)"
-                    >
-                      Cancel Session
-                    </v-btn>
-                    <v-btn color="black" text @click="dialog2 = false">
-                      Back
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
+              </v-btn>
+              </template>
+                             <v-card>
+        <v-card-text style="height: 300px">
+
+                <v-textarea
+                v-model="session.feedback"
+                  label="Reason for cancellation"
+                ></v-textarea>
+
+ <v-card-actions>
+          <v-divider></v-divider>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog2 = false"
+          >
+            Close
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="cancelSession(selectedEvent, session)"
+          >
+            Confirm Cancellation
+          </v-btn>
+        </v-card-actions>
+        </v-card-text>
+         </v-card>
               </v-dialog>
-              <v-btn text color="secondary" @click="selectedOpen = false">
+
+
+
+              <v-btn
+                text
+                color="secondary"
+                @click="selectedOpen = false"
+              >
                 Close
               </v-btn>
             </v-card-actions>
@@ -109,46 +117,33 @@ import Utils from "@/config/utils.js";
 import TutorSlotServices from "@/services/tutorSlotServices.js";
 import smsServices from "@/services/smsServices.js";
 
-export default {
-  data: () => ({
-    value: "",
-    events: [],
-    colors: ["#4CAF50"],
-    names: ["Open Slot"],
-    dragEvent: null,
-    dragStart: null,
-    createEvent: null,
-    createStart: null,
-    extendOriginal: null,
-    session: {},
-    months: [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ],
-    month: "",
-    selectedEvent: {},
-    selectedElement: null,
-    selectedOpen: false,
-    i: 0,
-    color: null,
-    name1: null,
-    name2: null,
-    build: null,
-    room: null,
-    type: null,
-    tutorSlot: null,
-    cancelReason: "",
-  }),
+
+  export default {
+    data: () => ({
+      value: '',
+      events: [],
+      colors: ['#4CAF50'],
+      names: ['Open Slot'],
+      dragEvent: null,
+      dragStart: null,
+      createEvent: null,
+      createStart: null,
+      extendOriginal: null,
+      session: {},
+      months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+      month: '',
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false,
+      i: 0,
+      color: null,
+      name1: null,
+      name2: null,
+      build: null,
+      room: null,
+      type: null,
+      tutorSlot: null,
+      dialog2: false,
 
   methods: {
     prev() {
@@ -164,32 +159,38 @@ export default {
         params: { id: selectedEvent.id },
       });
     },
+    
+cancelSession(event, session) {
+      this.session = session;
+      let id = event.id;
+      if (confirm("Do you really want to cancel this session?")) {
+        SessionServices.getSession(id).then((response) => {
+          this.sendNotification(event, event.tutorID);
+          this.sessionToCancel = response.data;
+          this.sessionToCancel.feedback = this.session.feedback;
+          this.sessionToCancel.status = "Canceled";
+          let tsID = this.sessionToCancel.tutorSlotID;
+          this.sessionToCancel.tutorSlotID = null;
+          SessionServices.updateSession(this.sessionToCancel).then(() => {
+            this.session = [];
+          TutorSlotServices.getTutorSlot(tsID).then((response1) => {
+            this.sessionBeingCanceled = response1.data;
+            this.sessionBeingCanceled.studentID = null;
+            this.sessionBeingCanceled.tutorSlotRequestID = null;
+            this.sessionBeingCanceled.numOfRegistered = null;
+            TutorSlotServices.updateTutorSlot(this.sessionBeingCanceled);
+            this.selectedOpen = false;
+            this.dialog2 = false;
 
-    removeTimeSlot(selectedEvent) {
-      if (confirm("Do you want to delete this time slot?")) {
-        TutorSlotServices.cancelSlot(selectedEvent.tutorSlotID).then(
-          (response) => {
-            this.tutorSlot = response.data[0];
-            console.log("Tutor ID: " + selectedEvent.tutorID);
-            this.sendNotification(selectedEvent, selectedEvent.tutorID);
-            this.tutorSlot.studentID = null;
-            if (selectedEvent.name != "Pending") {
-              this.tutorSlot.numOfRegistered =
-                response.data[0].numOfRegistered - 1;
-            }
-            TutorSlotServices.updateTutorSlot(this.tutorSlot).then(() => {
-              SessionServices.deleteSession(selectedEvent.id);
-            });
-          }
-        );
-        for (let i = 0; i < this.events.length; i++) {
-          if (this.events[i].id === selectedEvent.id) {
-            this.events.splice(i, 1);
-          }
-        }
+            this.getSessions();
+
+
+        });
+          
+          })  
+        })
+
       }
-      this.selectedOpen = false;
-      //this.$router.go();
     },
 
     getType(selectedEvent) {
@@ -353,8 +354,7 @@ export default {
             " at " +
             startTime +
             " has been cancelled. Reason: " +
-            this.cancelReason;
-          this.cancelReason = "";
+            this.session.feedback;
           smsServices.sendMessage(tutor.data);
         });
       });

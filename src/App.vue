@@ -240,4 +240,33 @@ th {
   margin-top: 10px;
   margin-left: 50px;
 }
+
+.float-container {
+   
+    
+    padding-left: 200px;
+    padding-right: 200px;
+ 
+}
+.float-child {
+
+width: 46%;
+    float: left;
+    padding: 15px;
+  
+    
+}
+
+/* pasted */
+ul {
+   list-style-type: none;   
+    text-align:left;     
+    border:1px solid gray;
+}
+li {
+   padding-right: 10px;
+    padding-bottom: 20px;
+}
+
+
 </style>

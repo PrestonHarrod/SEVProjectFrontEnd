@@ -41,6 +41,7 @@
 <script>
 import Utils from "@/config/utils.js";
 import UserServices from "@/services/UserServices.js";
+import SessionServices from "@/services/sessionServices.js"
 
 export default {
   components: {},
@@ -74,17 +75,62 @@ export default {
           filterable: false,
           value: "phoneNumber",
         },
+        {
+          text: "Avg Rating",
+          align: "start",
+          filterable: false,
+          value: "rating",
+        },
       ],
       tutors: [{}],
+      rating: 0,
+      i: 0,
+      j: 0,
+      sessionCount: 0,
+      avgRating: 0,
+      sessions: [],
     };
   },
   created() {
     this.user = Utils.getStore("user");
     var currentOrg = Utils.getStore("currentOrg");
-    UserServices.getUsersByRole("3", currentOrg)
+    SessionServices.getSessions()
+      .then(response => {
+        this.sessions = response.data;
+        UserServices.getUsersByRole("3", currentOrg)
       .then((response) => {
         this.tutors = response.data;
+        for (this.j = 0; this.j < this.tutors.length; this.j++) {
+          this.sessionCount = 0;
+          this.avgRating = 0;
+        
+        for (this.i = 0; this.i < this.sessions.length; this.i++) {
+          console.log(this.sessions[this.i].rating)
+          if (this.sessions[this.i].rating != null) {
+          if (this.sessions[this.i].tutorID == this.tutors[this.j].userID) {
+            this.sessionCount++;
+            this.avgRating += parseInt(this.sessions[this.i].rating);
+            
+          }
+          }
+        }
+        // avgRating = avgRating / sessionCount;
+        this.avgRating = this.avgRating / this.sessionCount;
+        
+        this.tutors[this.j].rating = this.avgRating.toString()
+        if (this.tutors[this.j].rating == "NaN")
+        {
+          this.tutors[this.j].rating = "N/A"
+        }
+        console.log(this.tutors)
+        
+        }
+        
       })
+        
+        
+      }) 
+    
 
       .catch((error) => {
         console.log(error);
@@ -109,6 +155,8 @@ export default {
           console.log(error);
         });
     },
+    
+    
   },
 };
 </script>

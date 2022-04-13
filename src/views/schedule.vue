@@ -25,6 +25,7 @@
           :events="events"
           :event-color="getEventColor"
           :event-ripple="false"
+          @change="getTutorSlots"
           @click:event="viewSession"
           @mousedown:event="startDrag"
           @mousedown:time="startTime"
@@ -32,7 +33,10 @@
           @mouseup:time="endDrag"
           @mouseleave.native="cancelDrag"
         >
+          <template v-slot:day-label-header="{}">-</template>
+
           <template v-slot:event="{ event, timed, eventSummary }">
+            
             <div class="v-event-draggable" v-html="eventSummary()"></div>
             <div
               v-if="timed"
@@ -74,6 +78,7 @@
               <span v-html="'Day: ' + selectedEvent.day"></span>
               <br />
               <span v-html="'Time: ' + selectedEvent.details"></span>
+              <br />
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -84,56 +89,56 @@
               >
                 Remove
               </v-btn>
-              <v-btn
-                v-if="
-                  selectedEvent.day == selectedEvent.today &&
-                  selectedEvent.numRegistered > 0
-                "
+               <v-btn
+                v-if="(selectedEvent.today >= selectedEvent.sessionday) && (selectedEvent.numRegistered > 0)"
+
                 text
                 color="black"
                 @click="markComplete(selectedEvent)"
               >
                 Mark Complete
               </v-btn>
-              <!-- <v-btn
-                v-if="selectedEvent.numRegistered > 0"
-                text
-                color="error"
-                @click="cancelSession(selectedEvent)"
-              >
-                Cancel
-              </v-btn> -->
-              <v-dialog v-if="selectedEvent.numRegistered > 0" v-model="dialog2" scrollable max-width="300px">
+
+              <v-dialog v-if="selectedEvent.numRegistered > 0" v-model="dialog2" hide-overlay scrollable max-width="300px">
                 <template v-slot:activator="{ on, attrs }">
-                  <v-btn
-                    text
-                    color="red"
-                    v-bind="attrs"
-                    v-on="on"
-                  >
-                    Cancel
-                  </v-btn>
-                </template>
-                <v-card>
-                  <v-textarea v-model="cancelReason" color="teal">
-                    <template v-slot:label>
-                      <div>Cancel Reason</div>
-                    </template>
-                  </v-textarea>
-                  <v-card-actions>
-                    <v-btn
-                      color="red"
-                      text
-                      @click="cancelSession(selectedEvent)"
-                    >
-                      Cancel Session
-                    </v-btn>
-                    <v-btn color="black" text @click="dialog2 = false">
-                      Back
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
+              <v-btn
+                text
+                color="black"
+                v-bind="attrs"
+                v-on="on"
+              >
+                Cancel Session
+              </v-btn>
+              </template>
+               <v-card>
+        <v-card-text style="height: 300px">
+
+                <v-textarea
+                v-model="session.feedback"
+                  label="Reason for cancellation"
+                ></v-textarea>
+
+ <v-card-actions>
+          <v-divider></v-divider>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="dialog2 = false"
+          >
+            Close
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="cancelSession(selectedEvent, session)"
+          >
+            Confirm Cancellation
+          </v-btn>
+        </v-card-actions>
+        </v-card-text>
+         </v-card>
               </v-dialog>
+              
               <v-dialog v-if="selectedEvent.numRegistered > 0" v-model="dialog" scrollable max-width="300px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
@@ -159,12 +164,17 @@
                       outlined
                     >
                     </v-select>
+                    <v-textarea v-if="location == '6'"
+                     v-model="session.desc"
+                  label="Paste URL for virtual session">
+
+                    </v-textarea>
                   </v-card-text>
                   <v-card-actions>
                     <v-btn
                       color="#247b7b"
                       text
-                      @click="setLocation(selectedEvent, location)"
+                      @click="setLocation(selectedEvent, location, session)"
                     >
                       Save
                     </v-btn>
@@ -292,7 +302,11 @@ export default {
     dialog3: false,
     sessionComplete: [{}],
     studentsForGroupSession: [{}],
-    cancelReason: "",
+    session: [{}],
+    virtual: [{}],
+    feedback: "",
+    desc: ""
+
   }),
   created() {
     locationServices.getLocations().then((response) => {
@@ -302,7 +316,13 @@ export default {
     });
     this.user = Utils.getStore("user");
 
-    TutorSlotServices.getTutorSlotForTutor(this.user.userID).then(
+    
+  },
+  methods: {
+
+    getTutorSlots() {
+      this.events = [];
+      TutorSlotServices.getTutorSlotForTutor(this.user.userID).then(
       (response) => {
         for (let i = 0; i < response.data.length; i++) {
           var days = [
@@ -314,36 +334,37 @@ export default {
             "Friday",
             "Saturday",
           ];
+          this.thisDay = response.data[i].day;
           var today = new Date();
           today.getDay();
           console.log(today.getDay() + "today");
-          if (today.getDay() === 0) {
-            this.z = "Sunday";
+          if (this.thisDay === "Sunday") {
+            this.sessionDay = "0";
           }
-          if (today.getDay() === 1) {
-            this.z = "Monday";
+          if (this.thisDay === "Monday") {
+            this.sessionDay = "1";
           }
-          if (today.getDay() === 2) {
-            this.z = "Tuesday";
+          if (this.thisDay === "Tuesday") {
+            this.sessionDay = "2";
           }
-          if (today.getDay() === 3) {
-            this.z = "Wednesday";
+          if (this.thisDay === "Wednesday") {
+            this.sessionDay = "3";
           }
-          if (today.getDay() === 4) {
-            this.z = "Thursday";
+          if (this.thisDay === "Thursday") {
+            this.sessionDay = "4";
           }
-          if (today.getDay() === 5) {
-            this.z = "Friday";
+          if (this.thisDay === "Friday") {
+            this.sessionDay = "5";
           }
-          if (today.getDay() === 6) {
-            this.z = "Saturday";
+          if (this.thisDay === "Saturday") {
+            this.sessionDay = "6";
           }
           console.log(this.z + "todays date return");
           // display tutor slots for each day after current day
           for (let j = 0; j < 6; j++) {
             if (response.data[i].day == days[j]) {
               // create date for next day in the week
-              this.thisDay = response.data[i].day;
+              
 
               var tomorrow = new Date();
               tomorrow.setDate(tomorrow.getDate() + j - today.getDay());
@@ -389,17 +410,17 @@ export default {
                 start: starttime2,
                 end: endtime2,
                 numRegistered: this.numReg,
-                today: this.z,
-                details:
-                  response.data[i].startTime + " - " + response.data[i].endTime,
+
+                today: today.getDay(),
+                sessionday: this.sessionDay,
+                details: response.data[i].startTime + " - " + response.data[i].endTime,
               });
             }
           }
         }
       }
     );
-  },
-  methods: {
+    },
     startDrag({ event, timed }) {
       if (event && timed) {
         this.dragEvent = event;
@@ -491,7 +512,8 @@ export default {
       this.createEvent = null;
       this.createStart = null;
       this.extendOriginal = null;
-      this.$router.go();
+      this.getTutorSlots();
+      //this.$router.go();
     },
     cancelDrag() {
       if (this.createEvent) {
@@ -606,8 +628,6 @@ export default {
           this.confirmSession = response.data[0];
           this.confirmSession.status = "Upcoming";
           sessionServices.updateSession(this.confirmSession);
-
-          this.selectedOpen = false;
           let d = new Date(event.start);
           console.log(d);
           console.log("Response Session ID: " + this.confirmSession.sessionID);
@@ -618,7 +638,8 @@ export default {
             this.confirmSession.studentID,
             this.confirmSession.sessionID
           );
-          //this.$router.go(); //will need to show students name
+          this.selectedOpen = false;
+      this.getTutorSlots();
         });
       }),
         (event.color = "red");
@@ -693,10 +714,11 @@ export default {
       return this.someValue;
     },
 
-    cancelSession(event) {
+    cancelSession(event, session) {
+      this.session = session;
+      console.log(this.session.feedback + "sessions feedback");
+      console.log(event.id + "sessions feedback");
       let id = event.id;
-      if (confirm("Do you really want to cancel this session?")) {
-        sessionServices.deleteSessionByTutorSlotID(id);
         TutorSlotServices.cancelSlot(id).then((response) => {
           this.tutorSlot = response.data[0];
           console.log("Cancel Session Student ID: " + this.tutorSlot.studentID);
@@ -710,18 +732,30 @@ export default {
           this.tutorSlot.studentID = null;
           this.tutorSlot.tutorSlotRequestID = null;
           this.tutorSlot.numOfRegistered = null;
-          TutorSlotServices.updateTutorSlot(this.tutorSlot)
-            .then(() => {
-              sessionServices.deleteSession(id);
+          TutorSlotServices.updateTutorSlot(this.tutorSlot).then(() => {
+              sessionServices.getSessionByTutorSlot(id).then((response1) => {
+                for (let i = 0; i < response1.data.length; i++) {
+                this.session1 = response1.data[i];
+                this.session1.status = "Canceled";
+                this.session1.feedback = this.session.feedback;
+                this.session1.tutorSlotID = null;
+                sessionServices.updateSession(this.session1).then(() => {
+                  this.session = [];
+                  this.dialog2 = false;
+                })
+                }
+              })
             })
 
             .catch((error) => {
               console.log(error);
             });
         });
-      }
+     
+      if (event.name = "Booked") {
       event.color = "green";
       event.name = "Open Slot";
+      }
       this.selectedOpen = false;
     },
     sendNotification(userID, type, event, waitTime, sessionID) {
@@ -809,14 +843,18 @@ export default {
         sessionID
       );
     },
-    setLocation(event, location) {
+
+    setLocation(event, location, session) {
       console.log(event.id + " " + location + "setLocation");
       sessionServices.getSessionByTutorSlot(event.id).then((response) => {
         for (let i = 0; i < response.data.length; i++) {
           this.sessionForLocation = response.data[i];
           this.sessionForLocation.locationID = location;
+          this.sessionForLocation.url = session.desc;
           sessionServices.updateSession(this.sessionForLocation);
         }
+        this.session = [];
+        this.dialog = false;
         this.selectedOpen = false;
       });
     },
@@ -827,9 +865,20 @@ export default {
           this.someLocation = "";
           this.sessLoc = response.data[0].locationID;
           locationServices.getLocation(this.sessLoc).then((response1) => {
+            if (response1.data.building == "Virtual" && response.data[0].url != null) {
+            this.someLocation = response1.data.building + "<br>" + "URL: " + "<a href='http://www."+response.data[0].url+"'target='_blank'>" + response.data[0].url+"</a>";
+
+
+            }
+            else if (response1.data.building == "Virtual" && response.data[0].url == null) {
+            this.someLocation = response1.data.building + ", URL: Not yet set.";
+
+            }
+            else if (response1.data.building != "Virtual" && response1.data.building != null) {
             this.build = response1.data.building;
             this.room = response1.data.roomNum;
             this.someLocation = this.build + ": " + this.room;
+            }
           });
         } else {
           this.someLocation = "None";
@@ -838,28 +887,44 @@ export default {
       return this.someLocation;
     },
     getLocations(location) {
+      if (location.building == "Virtual") {
+        return location.building;
+      }
+      else {
       return location.building + ": " + location.roomNum;
+      }
     },
+
     markComplete(event) {
       let id = event.id;
       if (confirm("Do you want to mark this session complete?")) {
-        sessionServices.getSessionByTutorSlot(id).then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.sessionComplete[i] = response.data[i];
-            this.sessionComplete[i].status = "Complete";
-            this.sessionComplete[i].tutorSlotID = null;
-            sessionServices.updateSession(this.sessionComplete[i]);
-          }
-        });
-        this.tutorSlot.studentID = null;
-        this.tutorSlot.numOfRegistered = null;
-        this.tutorSlot.tutorSlotID = id;
-        TutorSlotServices.updateTutorSlot(this.tutorSlot);
-        this.$router.go();
-      } else {
-        this.selectedOpen = false;
+      sessionServices.getSessionByTutorSlot(id).then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+        this.sessionComplete[i] = response.data[i];
+        this.sessionComplete[i].status = "Complete";
+        this.sessionComplete[i].tutorSlotID = null;
+        sessionServices.updateSession(this.sessionComplete[i]);
+        }
+      this.tutorSlot.studentID = null;
+      this.tutorSlot.numOfRegistered = null;
+      this.tutorSlot.tutorSlotID = id;
+      TutorSlotServices.updateTutorSlot(this.tutorSlot);
+      this.getTutorSlots();
+      //this.$router.go();
+      })
+
+
+      }
+      else {
+      this.selectedOpen = false;
       }
     },
+    testFun(link) {
+        var url = link;
+        var win = window.open(url, '_blank');
+        win.focus();
+
+    }
   },
 };
 </script>

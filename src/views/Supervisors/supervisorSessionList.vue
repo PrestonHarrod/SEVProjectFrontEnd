@@ -64,6 +64,35 @@
         
         </v-data-table>
       </v-card>
+      <br />
+      <h2>
+        Canceled Sessions
+      </h2>
+      <v-card width="100vw">
+        <v-card-title>
+          <v-text-field
+            v-model="search2"
+            append-icon="mdi-magnify"
+            label="Search by Session Date"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
+        <v-data-table
+          v-model="selected"
+          :headers="headers"
+          :items="sessions3"
+          item-key="sessionID"
+          :items-per-page="25"
+          :single-select="singleSelect"
+          show-select
+          :search="search"
+          @click:row="viewSession3"
+          class="elevation-1"
+        >
+        
+        </v-data-table>
+      </v-card>
     </div>
   </v-container>
 </template>
@@ -110,8 +139,10 @@ export default {
       allSessions: [{}],
       upcomingSessions: [{}],
       completedSessions: [{}],
+      canceledSessions: [{}],
       sessions: [{}],
       sessions2: [{}],
+      sessions3:[{}],
       testArray: [{}],
       i: 0,
       k: 0,
@@ -133,32 +164,30 @@ export default {
     console.log(id + "users ID");
 
     await userOrgServices
-      .getUsersOrgID(id).then((response) => { 
-        this.usersOrg = response.data[0];
-        this.usersOrgID = this.usersOrg.orgID;
-        console.log(this.usersOrgID + "users org ID");
-        UserServices.getUsersByRole("3", this.usersOrgID) .then((response) => {
+    var currentOrg = Utils.getStore("currentOrg");
+
+        UserServices.getUsersByRole("3", currentOrg) .then((response) => {
             for (let i = 0; i < response.data.length; i++) {
             this.tutorsForOrg[i] = response.data[i];
             SessionServices.getSessionsForTutor(this.tutorsForOrg[i].userID).then((response1) => {
         this.i = 0;
         for (this.i = 0; this.i < response1.data.length; this.i++) {
             if (response1.data[this.i].status === "Upcoming") {
-              this.upcomingSessions[this.l] = response1.data[this.i];
+              this.upcomingSessions[this.j] = response1.data[this.i];
+              this.j++;
+            }
+             else if (response1.data[this.i].status === "Canceled") {
+              this.canceledSessions[this.k] = response1.data[this.i];
+              this.k++;
+            }
+            else if (response1.data[this.i].status === "Complete") {
+              this.completedSessions[this.l] = response1.data[this.i];
               this.l++;
             }
          
           
         }
-        this.i = 0;
-        for (this.i = 0; this.i < response1.data.length; this.i++) {
-            if (response1.data[this.i].status === "Complete") {
-              this.completedSessions[this.k] = response1.data[this.i];
-              this.k++;
-            }
-           
-          
-        }
+       
 if (JSON.stringify(this.upcomingSessions[0]) === "{}") {
   this.upcomingSessions.pop();
   this.sessions2 = this.upcomingSessions;
@@ -172,6 +201,13 @@ if (JSON.stringify(this.completedSessions[0]) === "{}") {
 }
 else {
 this.sessions = this.completedSessions;
+}
+if (JSON.stringify(this.canceledSessions[0]) === "{}") {
+  this.canceledSessions.pop();
+  this.sessions3 = this.canceledSessions;
+}
+else {
+this.sessions3 = this.canceledSessions;
 }
         // Change location and user ID's to their corresponding 
         // actual names
@@ -204,6 +240,20 @@ this.sessions = this.completedSessions;
               }
             )
         }
+        for (let n = 0; n < this.sessions3.length; n++) {
+          UserServices.getUser(this.sessions3[n].tutorID).then(
+            (response) => {
+              this.tutor = response.data.fName + " " + response.data.lName;;
+              this.sessions3[n].tutorID = this.tutor;
+            },
+          );
+           LocationServices.getLocation(this.sessions3[n].locationID).then(
+              (response) => {
+                this.location = response.data.building + ": " + response.data.roomNum;
+                this.sessions3[n].locationID = this.location;
+              }
+            )
+        }
       })
             .catch((error) => {
         console.log(error);
@@ -215,7 +265,7 @@ this.sessions = this.completedSessions;
 
 
 
-      })
+      
     
   },
 
@@ -231,6 +281,15 @@ this.sessions = this.completedSessions;
     },
     viewSession2(session2) {
         let id = session2.sessionID
+          this.$router.push({ name: 'supervisorViewSession', params: {id: id}})
+        .then(() => {
+        })
+        .catch(error => {
+         console.log(error)
+        })
+    },
+        viewSession3(session3) {
+        let id = session3.sessionID
           this.$router.push({ name: 'supervisorViewSession', params: {id: id}})
         .then(() => {
         })

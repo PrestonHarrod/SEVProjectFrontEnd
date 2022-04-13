@@ -13,11 +13,18 @@ export default {
   updateUserOrg(userOrg) {
     return apiClient.put("userOrgs/" + userOrg.orgID, userOrg);
   },
+  //this deletes ALL the userOrgs
   deleteUserOrg(orgID) {
-    return apiClient.delete("userOrgs/" + orgID);
+    return apiClient.delete("userOrgs/deleteAll/" + orgID);
   },
   getUsersOrgID(id) {
     return apiClient.get("userOrgs/student/" + id);
   },
+
+  deleteSpecificUserOrg(uID, oID) {
+    return apiClient.delete(
+      "userOrgs?userID=" + uID + "&orgID=" + oID
+    );
+  }
 
 };
