@@ -96,10 +96,9 @@
               >
                 Mark Complete
               </v-btn>
-              <v-dialog v-model="dialog2" hide-overlay scrollable max-width="300px">
+              <v-dialog v-if="selectedEvent.numRegistered > 0" v-model="dialog2" hide-overlay scrollable max-width="300px">
                 <template v-slot:activator="{ on, attrs }">
               <v-btn
-                v-if="selectedEvent.numRegistered > 0"
                 text
                 color="black"
                 v-bind="attrs"
@@ -137,10 +136,9 @@
          </v-card>
               </v-dialog>
 
-              <v-dialog v-model="dialog" scrollable max-width="300px">
+              <v-dialog v-if="selectedEvent.numRegistered > 0" v-model="dialog" scrollable max-width="300px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn
-                    v-if="selectedEvent.numRegistered > 0"
                     text
                     color="black"
                     v-bind="attrs"
