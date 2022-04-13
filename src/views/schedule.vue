@@ -78,6 +78,7 @@
               <span v-html="'Day: ' + selectedEvent.day"></span>
               <br />
               <span v-html="'Time: ' + selectedEvent.details"></span>
+              <br />
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -161,12 +162,17 @@
                       outlined
                     >
                     </v-select>
+                    <v-textarea v-if="location == '6'"
+                     v-model="session.desc"
+                  label="Paste URL for virtual session">
+
+                    </v-textarea>
                   </v-card-text>
                   <v-card-actions>
                     <v-btn
                       color="#247b7b"
                       text
-                      @click="setLocation(selectedEvent, location)"
+                      @click="setLocation(selectedEvent, location, session)"
                     >
                       Save
                     </v-btn>
@@ -255,10 +261,14 @@ export default {
     someLocation: "",
     dialog: false,
     dialog2: false,
+    dialog3: false,
     sessionComplete: [{}],
     studentsForGroupSession: [{}],
     session: [{}],
+    virtual: [{}],
     feedback: "",
+    desc: ""
+
   }),
   created() {
     locationServices.getLocations().then((response) => {
@@ -672,14 +682,17 @@ export default {
       this.selectedOpen = false;
     },
 
-    setLocation(event, location) {
+    setLocation(event, location, session) {
       console.log(event.id + " " + location + "setLocation");
       sessionServices.getSessionByTutorSlot(event.id).then((response) => {
         for (let i = 0; i < response.data.length; i++) {
           this.sessionForLocation = response.data[i];
           this.sessionForLocation.locationID = location;
+          this.sessionForLocation.url = session.desc;
           sessionServices.updateSession(this.sessionForLocation);
         }
+        this.session = [];
+        this.dialog = false;
         this.selectedOpen = false;
       });
     },
@@ -690,9 +703,20 @@ export default {
           this.someLocation = "";
           this.sessLoc = response.data[0].locationID;
           locationServices.getLocation(this.sessLoc).then((response1) => {
+            if (response1.data.building == "Virtual" && response.data[0].url != null) {
+            this.someLocation = response1.data.building + "<br>" + "URL: " + "<a href=>" + "http://www." +response.data[0].url +  "</a>";
+
+
+            }
+            else if (response1.data.building == "Virtual" && response.data[0].url == null) {
+            this.someLocation = response1.data.building + ", URL: Not yet set.";
+
+            }
+            else if (response1.data.building != "Virtual" && response1.data.building != null) {
             this.build = response1.data.building;
             this.room = response1.data.roomNum;
             this.someLocation = this.build + ": " + this.room;
+            }
           });
         } else {
           this.someLocation = "None";
@@ -701,7 +725,12 @@ export default {
       return this.someLocation;
     },
     getLocations(location) {
+      if (location.building == "Virtual") {
+        return location.building;
+      }
+      else {
       return location.building + ": " + location.roomNum;
+      }
     },
 
     markComplete(event) {
