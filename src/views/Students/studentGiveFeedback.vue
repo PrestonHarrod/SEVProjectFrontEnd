@@ -43,14 +43,14 @@
          </v-radio-group>
          <v-radio-group v-model="question3" column>
              How knowledgeable was the tutor on the subjects discussed?
-            <v-radio label="Outstanding: very knowledgeable" color="red" value="Outstanding, very knowledgeable"></v-radio>
-            <v-radio label="Good: knows most of the material" color="red darken-3" value="Good, knows most of the material"></v-radio>
-            <v-radio label="Poor: does not know material" color="red darken-3" value="Poor, does not know material"></v-radio>
+            <v-radio label="Outstanding: very knowledgeable" color="red" value="Outstanding: very knowledgeable"></v-radio>
+            <v-radio label="Good: knows most of the material" color="red darken-3" value="Good: knows most of the material"></v-radio>
+            <v-radio label="Poor: does not know material" color="red darken-3" value="Poor: does not know material"></v-radio>
          </v-radio-group>
          <v-radio-group v-model="question4" column>
              How well was your tutor able to explain the material?
-            <v-radio label="Outstanding: it was explain very well" color="red" value="Outstanding, it was explain very well"></v-radio>
-            <v-radio label="Good: but I still had questions" color="red darken-3" value="Good, but I still had questions"></v-radio>
+            <v-radio label="Outstanding: it was explain very well" color="red" value="Outstanding: it was explain very well"></v-radio>
+            <v-radio label="Good: but I still had questions" color="red darken-3" value="Good: but I still had questions"></v-radio>
             <v-radio label="Poor: I did not learn much" color="red darken-3" value="Poor, I did not learn much"></v-radio>
          </v-radio-group>
          <v-radio-group v-model="question5" column>
@@ -60,9 +60,9 @@
          </v-radio-group>
          <v-radio-group v-model="question6" column>
              How did the tutor treat you?
-            <v-radio label="Outstanding: I knew the tutor cared about my success" color="red" value="Outstanding, I knew the tutor cared about my success"></v-radio>
-            <v-radio label="Good: the tutor was professional" color="red darken-3" value="Good, the tutor was professional"></v-radio>
-            <v-radio label="Poor: the tutor was rude" color="red darken-3" value="Poor, the tutor was rude"></v-radio>
+            <v-radio label="Outstanding: I knew the tutor cared about my success" color="red" value="Outstanding: I knew the tutor cared about my success"></v-radio>
+            <v-radio label="Good: the tutor was professional" color="red darken-3" value="Good: the tutor was professional"></v-radio>
+            <v-radio label="Poor: the tutor was rude" color="red darken-3" value="Poor: the tutor was rude"></v-radio>
          </v-radio-group>
          <v-radio-group v-model="question7" column>
              What impact do you anticipate tutoring will have on your performance in this course?
@@ -133,14 +133,14 @@ export default {
     },
     sendFeedback() {
       let str = ""
-      str = str + "Did your tutor work with you to identify the topics that would be covered in the session?"  + this.question1 + ", "
-      str = str + "Was your tutor on time?" + this.question2 + ", "
-      str = str + "How knowledgeable was the tutor on the subjects discussed?" + this.question3 + ", "
-      str = str + "How well was your tutor able to explain the material?" + this.question4 + ", "
-      str = str + "Did your tutor ask you questions to make sure you understood and could explain the topics discussed?" + this.question5 + ", "
-      str = str + "How did the tutor treat you?" + this.question6 + ", "
-      str = str + "What impact do you anticipate tutoring will have on your performance in this course?" + this.question7 + ", "
-      str = str + "Would you recommend this tutor to other students?" + this.question8 + ", "
+      str = str + "Did your tutor work with you to identify the topics that would be covered in the session? "  + this.question1  + "\n "
+      str = str + "Was your tutor on time? " + this.question2  + "\n "
+      str = str + "How knowledgeable was the tutor on the subjects discussed? " + this.question3  + "\n "
+      str = str + "How well was your tutor able to explain the material? " + this.question4  + "\n "
+      str = str + "Did your tutor ask you questions to make sure you understood and could explain the topics discussed? " + this.question5  + "\n "
+      str = str + "How did the tutor treat you? " + this.question6  + "\n "
+      str = str + "What impact do you anticipate tutoring will have on your performance in this course? " + this.question7 + "\n "
+      str = str + "Would you recommend this tutor to other students? " + this.question8  + "\n "
       str = str + "Please provide any additional comments here:" + this.desc
 
       console.log(str)
