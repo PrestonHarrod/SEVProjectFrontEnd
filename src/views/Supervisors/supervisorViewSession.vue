@@ -17,7 +17,15 @@
             <v-text-field readonly label="Status" v-model="session.status" type="text" id="status" />
             <v-text-field readonly label="Scheduled Start" v-model="start" type="text" id="scheduledStart" />
             <v-text-field readonly label="Scheduled End" v-model="end" type="text" id="scheduledEnd" />
-            <v-text-field readonly label="Student's Feedback" v-model="session.feedback" type="text" id="feedback" />
+            <v-textarea
+              readonly label="Feedback"
+              type="text"
+              v-model="session.feedback"
+              id="feedback"
+            >
+              
+            </v-textarea>
+            
        </v-col>
     </v-form>
   </div>
@@ -42,6 +50,7 @@ export default {
       location: {},
       start: {},
       end: {},
+      newFeedback: ""
     }
   },
   created() {
@@ -50,6 +59,11 @@ export default {
       sessionServices.getSession(this.id)
       .then(response => {
         this.session = response.data;
+        
+
+
+
+
         let s = this.session.scheduledStart;
         let i = s.indexOf("T");
         console.log(s.substr(0, i));
