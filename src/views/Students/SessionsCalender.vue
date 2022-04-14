@@ -41,6 +41,9 @@
               <span v-html="'Type: ' + getType(selectedEvent)"></span>
               <br />
               <span v-html="'Location: ' + getLocation(selectedEvent)"></span>
+                            <br />
+              <span v-html="'Time: ' + selectedEvent.startTime"></span>
+              <br />
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -144,6 +147,7 @@ import smsServices from "@/services/smsServices.js";
       type: null,
       tutorSlot: null,
       dialog2: false,
+      urlForSession: "",
     }),
   methods: {
     prev() {
@@ -211,7 +215,12 @@ cancelSession(event, session) {
           (response) => {
             console.log(response);
             this.build = response.data.building;
+            if (this.build == "Virtual") {
+              this.room = "<br>" + "URL: " + "<a href='http://www."+selectedEvent.link +"'target='_blank'>" + selectedEvent.link +"</a>";
+            }
+            else {
             this.room = response.data.roomNum;
+            }
           }
         );
         return this.build + ", " + this.room;
@@ -254,6 +263,7 @@ cancelSession(event, session) {
               starttime1 = starttime1.replace(".", "");
               console.log(starttime1 + "testing");
               starttime1 = starttime1.substring(0, starttime1.length);
+             let starttime2 = starttime1.substring(10, starttime1.length)
 
               let endtime = response.data[this.i].scheduledEnd;
               endtime = endtime.replace("Z", "");
@@ -267,6 +277,7 @@ cancelSession(event, session) {
                 id: response.data[this.i].sessionID,
                 name: "Completed Session",
                 start: starttime1,
+                startTime: starttime2,
                 end: endtime,
                 color: "grey",
                 details: "tutor name and session location",
@@ -282,18 +293,26 @@ cancelSession(event, session) {
               starttime1 = starttime1.replace("T", " ");
               starttime1 = starttime1.replace(".", "");
               starttime1 = starttime1.substring(0, starttime1.length);
-
+             let starttime2 = starttime1.substring(10, starttime1.length)
               let endtime = response.data[this.i].scheduledEnd;
               endtime = endtime.replace("Z", "");
               endtime = endtime.replace("T", " ");
               endtime = endtime.replace(".", "");
               endtime = endtime.substring(0, endtime.length);
+              if (response.data[this.i].url != null) {
+              this.urlForSession = response.data[this.i].url;
+              }
+              else {
+              this.urlForSession = "URL not yet set."
+              }
 
               this.events.push({
                 id: response.data[this.i].sessionID,
                 name: "Upcoming Session",
                 start: starttime1,
+                startTime: starttime2,
                 end: endtime,
+                link: this.urlForSession,
                 color: "blue",
                 details: "tutor name and session location",
                 locationID: response.data[this.i].locationID,
@@ -310,6 +329,7 @@ cancelSession(event, session) {
               starttime1 = starttime1.replace("T", " ");
               starttime1 = starttime1.replace(".", "");
               starttime1 = starttime1.substring(0, starttime1.length);
+             let starttime2 = starttime1.substring(10, starttime1.length)
 
               let endtime = response.data[this.i].scheduledEnd;
               endtime = endtime.replace("Z", "");
@@ -321,6 +341,7 @@ cancelSession(event, session) {
                 id: response.data[this.i].sessionID,
                 name: "Pending Session",
                 start: starttime1,
+                startTime: starttime2,
                 end: endtime,
                 color: "purple",
                 details: "tutor name and session location",
