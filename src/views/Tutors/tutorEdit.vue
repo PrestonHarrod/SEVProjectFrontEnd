@@ -39,32 +39,32 @@
             type="text"
             id="phoneNumber"
           />
-        <v-btn
-          :style="{ transform: 'translateX(-50%)' }"
-          v-on:click.prevent="updateTutor()"
-          text
-          rounded
-          >Submit</v-btn
-        >
-        <v-btn
-          :style="{ transform: 'translateX(-50%)' }"
-          v-on:click.prevent="cancel()"
-          color="black"
-          text
-          rounded
-          >Cancel</v-btn
-        >
+          <v-btn
+            :style="{ transform: 'translateX(-50%)' }"
+            v-on:click.prevent="updateTutor()"
+            text
+            rounded
+            >Submit</v-btn
+          >
+          <v-btn
+            :style="{ transform: 'translateX(-50%)' }"
+            v-on:click.prevent="cancel()"
+            color="black"
+            text
+            rounded
+            >Cancel</v-btn
+          >
           <!-- parent -->
           <div class="float-container">
             <!-- first -->
-            <div class ="float-child">
+            <div class="float-child">
               <div>
                 <h3>Roles:</h3>
                 <ul>
                   <li v-for="role in roles" :key="role.id">
                     <input
                       type="checkbox"
-                      :id="role.id"
+                      :id="'checkbox' + role.id"
                       :value="role"
                       v-model="selectedRoles"
                     />
@@ -75,13 +75,13 @@
             </div>
 
             <!-- second -->
-            <div class ="float-child">
+            <div class="float-child">
               <h3>Organizations:</h3>
               <ul>
                 <li v-for="org in orgs" :key="org.id">
                   <input
                     type="checkbox"
-                    :id="org.id"
+                    :id="'checkbox2' + org.id"
                     :value="org"
                     v-model="selectedOrgs"
                   />
@@ -90,9 +90,7 @@
               </ul>
             </div>
           </div>
-          
         </v-col>
-
       </v-form>
     </v-app>
   </div>
@@ -109,6 +107,8 @@ export default {
     return {
       user: {},
       tutor: {},
+      checkedRoles: [],
+      checkedOrgs: [],
       menu: false,
       orgs: [
         { title: "Student Success Center", id: "1" },
@@ -135,6 +135,42 @@ export default {
       .catch((error) => {
         console.log("There was an error:", error.response);
       });
+    //grab each role that the tutor has and loop through the checkboxes and check the ones in the system
+    console.log("user's ID " + this.id);
+    UserRoleServices.getRolesFromUser(this.id)
+      .then((response) => {
+        console.log(response.data.length + "number of roles");
+        for (let i = 0; i < response.data.length; i++) {
+          this.checkedRoles[i] = response.data[i];
+          var input = document.getElementById(
+            "checkbox" + this.checkedRoles[i].roleID
+          );
+          input.checked = true;
+          console.log("im in the created loop");
+          // let num = this.checkedRoles[i];
+          // this.$refs.num.checked = true;
+        }
+      })
+      .catch((error) => {
+        console.log("There was an error:", error);
+      });
+    //loop through the checkedroles and mark the checkboxes as checked
+
+    //loop through each of the orgs and check the boxes for the orgs returned
+    UserOrgServices.getUsersOrgID(this.id)
+      .then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+          this.checkedOrgs[i] = response.data[i];
+          var input = document.getElementById(
+            "checkbox2" + this.checkedOrgs[i].orgID
+          );
+          input.checked = true;
+        }
+      })
+      .catch((error) => {
+        console.log("There was an error:", error.response);
+      });
+    //loop through all the orgs and check the org
   },
   methods: {
     cancel() {
@@ -147,8 +183,7 @@ export default {
       UserRoleServices.deleteUserRole(this.tutor.userID)
         .then(() => {
           console.log(
-            "called to delete all the userRoles for user: " +
-              this.tutor.userID
+            "called to delete all the userRoles for user: " + this.tutor.userID
           );
         })
 
