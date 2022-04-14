@@ -10,6 +10,7 @@
               </v-toolbar>
               <v-card-text>
                 <SocialLogin />
+                <div v-on:click.prevent="goToNewUser()">New User</div>
               </v-card-text>
             </v-card>
           </v-flex>
@@ -23,6 +24,16 @@
 import SocialLogin from "@/components/SocialLogin";
 export default {
   name: "login",
+  methods: {
+    goToNewUser() {
+      this.$router
+        .push({ name: "addNewUser" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
   components: {
     SocialLogin,
   },
