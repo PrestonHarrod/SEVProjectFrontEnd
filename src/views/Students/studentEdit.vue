@@ -81,7 +81,7 @@
                 <li v-for="org in orgs" :key="org.id">
                   <input
                     type="checkbox"
-                    :id="'checkbox' + org.id"
+                    :id="'checkbox2' + org.id"
                     :value="org"
                     v-model="selectedOrgs"
                   />
@@ -141,23 +141,22 @@ export default {
       console.log("user's ID " + this.id);
       UserRoleServices.getRolesFromUser(this.id)
       .then((response) => {
-        console.log(response.data);
-        this.checkedRoles = response.data;
-      })
-      .catch((error) => {
-        console.log("There was an error:", error.response);
-      });
-    //loop through the checkedroles and mark the checkboxes as checked
-    console.log("checkedroles: " + this.checkedRoles[1]);
-      for(let i = 0; i < this.checkedRoles.length; i++)
+        console.log(response.data.length + "number of roles");
+        for(let i = 0; i < response.data.length; i++)
       {
-
-        var input = document.getElementById("checkbox" + checkedRoles[i])
+        this.checkedRoles[i] = response.data[i];
+        var input = document.getElementById("checkbox" + this.checkedRoles[i].roleID);
         input.checked = true;
-          // console.log("im in the created loop")
+        console.log("im in the created loop");
           // let num = this.checkedRoles[i];
           // this.$refs.num.checked = true;
       }
+      })
+      .catch((error) => {
+        console.log("There was an error:", error);
+      });
+    //loop through the checkedroles and mark the checkboxes as checked
+      
 
 
 
@@ -165,20 +164,16 @@ export default {
       //loop through each of the orgs and check the boxes for the orgs returned
       UserOrgServices.getUsersOrgID(this.id)
       .then((response) => {
-        this.checkedOrgs = response.data;
+        for (let i = 0; i < response.data.length; i++) {
+        this.checkedOrgs[i] = response.data[i];
+        var input = document.getElementById("checkbox2" + this.checkedOrgs[i].orgID);
+        input.checked = true;
+        }
       })
       .catch((error) => {
         console.log("There was an error:", error.response);
       });
       //loop through all the orgs and check the org
-      for(let i = 0; i < this.checkedRoles.length; i++)
-      {
-        var input = document.getElementById("checkbox" + checkedOrgs[i])
-        input.checked = true;
-          
-      }
-
-
   },
   methods: {
     cancel() {
