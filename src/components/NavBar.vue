@@ -2,6 +2,29 @@
 
 <template>
   <nav id="vue">
+      <div class="menu-item" @click="isOpen = !isOpen">
+        {{ orgText }}
+    <svg viewBox="0 0 1030 638" width="10">
+      <path
+        d="M1017 68L541 626q-11 12-26 12t-26-12L13 68Q-3 49 6 24.5T39 0h952q24 0 33 24.5t-7 43.5z"
+        fill="#FFF"
+      ></path>
+    </svg>
+    <transition name="fade" apear>
+      <div class="sub-menu" v-if="isOpen">
+        <div class="menu-item" v-if="orgText != 'Student Success'" v-on:click.prevent="changeOrg(1)">
+          Student Success
+        </div>
+        <div class="menu-item" v-if="orgText != 'Writing Center'" v-on:click.prevent="changeOrg(2)">
+          Writing Center
+        </div>
+        <div class="menu-item" v-if="orgText != 'New College'" v-on:click.prevent="changeOrg(3)">
+          New College
+        </div>
+      </div>
+    </transition>
+  </div>
+    </div>
     <div class="menu-item" v-on:click.prevent="goToHome()">Home</div>
     <AdminServices title="Admin" v-if="this.getAuth(1)" />
     <SupervisorServices title="Supervisor" v-if="this.getAuth(1)" />
@@ -9,9 +32,7 @@
     <TutorServices title="Tutor" v-if="this.getAuth(3)" />
     <StudentServices title="Student" v-if="this.getAuth(3)" />
     <StudentServices title="Student" v-else-if="this.getAuth(4)" />
-    <div class="menu-item" v-on:click.prevent="goToOrgSelect()">
-      Switch Organization
-    </div>
+    
     <div class="menu-item" v-on:click.prevent="goToLogin()">Logout</div>
   </nav>
   
@@ -22,6 +43,7 @@ import AdminServices from "../components/adminServices";
 import StudentServices from "../components/studentServices";
 import TutorServices from "../components/tutorServices";
 import SupervisorServices from "../components/supervisorServices";
+import organizationServices from "@/services/organizationServices";
 //import UserRoleServices from "@/services/userRoleServices.js";
 import Utils from "@/config/utils.js";
 import { mdiAccount } from "@mdi/js";
@@ -31,8 +53,11 @@ export default {
     icons: {
       mdiAccount,
     },
+    orgText: "",
+    isOpen: false,
   }),
   name: "navbar",
+  
   components: {
     AdminServices,
     TutorServices,
@@ -41,7 +66,10 @@ export default {
   },
   created() {
     this.user = Utils.getStore("user"); //gets the user that is logged in
-
+    organizationServices.getOrg(Utils.getStore("currentOrg")).then((org) => {
+      console.log("Org Name: " + org.data.name);
+      this.orgText = org.data.name;
+    });
   },
   methods: {
     goToProfile() {
@@ -93,6 +121,14 @@ export default {
           document.getElementById("orgText").innerHTML =
             "Welcome to the Team 3 Website";
       }
+    },
+    changeOrg(orgNum) {
+      organizationServices.getOrg(orgNum).then((org) => {
+      console.log("Org Name: " + org.data.name);
+      this.orgText = org.data.name;
+      Utils.setStore("currentOrg", orgNum);
+      this.$router.go();
+    });
     },
   },
 };
