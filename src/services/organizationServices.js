@@ -5,7 +5,7 @@ export default {
     return apiClient.get("organizations/");
   },
   getOrg(id) {
-    return apiClient.get("organizations/" + id);
+    return apiClient.get("orgs/" + id);
   },
   addOrg(org) {
     return apiClient.post("organizations/", org);
