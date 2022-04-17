@@ -6,6 +6,8 @@
           <div v-if="isLogin()">
             <Avatar class="avatar" />
             <NavBar class="navbarCenter" />
+            <!-- <br> -->
+            <div id="orgText" ref="orgText">{{ orgText }}</div>
           </div>
           <!-- <p id="orgText">testing</p> -->
           <router-view />
@@ -18,20 +20,41 @@
 <script>
 import NavBar from "./components/NavBar.vue";
 import Avatar from "./components/avatar.vue";
-// import Utils from "@/config/utils.js";
+import Utils from "@/config/utils.js";
 
 export default {
   name: "App",
-  created() {
-
-  },
+  orgText: "",
+  created() {},
   components: {
     NavBar,
     Avatar,
   },
   methods: {
     isLogin() {
-      return this.$route.name != "login" && this.$route.name != "selectOrg" && this.$route.name != "addNewUser";
+      //check the org logged in and display the name of the org
+      var currentOrg = Utils.getStore("currentOrg");
+      if (currentOrg == 1)
+      {
+        this.orgText = "Student Success";
+        
+      }
+      else if (currentOrg == 2)
+      {
+        this.orgText = "Writing Center";
+      }
+      else if (currentOrg == 3)
+      {
+         this.orgText = "New College";
+      }
+      else{
+        this.$refs.orgText = "";
+      }
+      return (
+        this.$route.name != "login" &&
+        this.$route.name != "selectOrg" &&
+        this.$route.name != "addNewUser"
+      );
     },
   },
 };
@@ -242,31 +265,23 @@ th {
 }
 
 .float-container {
-   
-    
-    padding-left: 200px;
-    padding-right: 200px;
- 
+  padding-left: 200px;
+  padding-right: 200px;
 }
 .float-child {
-
-width: 46%;
-    float: left;
-    padding: 15px;
-  
-    
+  width: 46%;
+  float: left;
+  padding: 15px;
 }
 
 /* pasted */
 ul {
-   list-style-type: none;   
-    text-align:left;     
-    border:1px solid gray;
+  list-style-type: none;
+  text-align: left;
+  border: 1px solid gray;
 }
 li {
-   padding-right: 10px;
-    padding-bottom: 20px;
+  padding-right: 10px;
+  padding-bottom: 20px;
 }
-
-
 </style>

@@ -7,7 +7,7 @@
           <v-text-field
             label="First Name"
             placeholder="John"
-            v-model="Supervisor.fName"
+            v-model="supervisor.fName"
             type="text"
             id="fName"
           />
