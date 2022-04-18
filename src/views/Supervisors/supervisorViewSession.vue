@@ -59,6 +59,8 @@ export default {
       sessionServices.getSession(this.id)
       .then(response => {
         this.session = response.data;
+
+        console.log(this.session.feedback)
         
 
 
