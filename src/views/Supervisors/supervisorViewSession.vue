@@ -2,8 +2,8 @@
   <div>
 <H1>Session View</H1>
 <br>
- <h2><v-btn class='centered-btns'  v-on:click.prevent="cancel()" color="black" text rounded>Go Back</v-btn></h2>
-  <h2><v-btn v-if="session.status == 'Complete'" class='centered-btns'  v-on:click.prevent="deleteSession(session)" color="black" text rounded>Delete</v-btn></h2>
+ <v-btn class='centered-btns'  v-on:click.prevent="cancel()" color="black" text rounded>Go Back</v-btn>
+  <v-btn v-if="session.status == 'Complete'" class='centered-btns'  v-on:click.prevent="deleteSession(session)" color="black" text rounded>Delete</v-btn>
 
     <br>
   <v-form>
@@ -59,6 +59,8 @@ export default {
       sessionServices.getSession(this.id)
       .then(response => {
         this.session = response.data;
+
+        console.log(this.session.feedback)
         
 
 

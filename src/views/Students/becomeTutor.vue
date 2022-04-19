@@ -89,11 +89,12 @@ export default {
          this.submitRequest.type = "Becoming a tutor";
          this.submitRequest.desc = this.desc;
          this.submitRequest.orgID = this.selectedOrg;
-         this.submitRequest.studentID = this.user.userID
+         this.submitRequest.studentID = this.user.userID;
+         this.submitRequest.status = "Open";
          console.log(this.submitRequest)
 
          requestServices.addRequest(this.submitRequest)
-         this.$router.push({ name: "/" });
+         this.$router.push({ name: "home" });
       
       }
    }

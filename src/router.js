@@ -16,6 +16,7 @@ import Attendance from "./views/attendance.vue";
 import SubjectList from "./views/subjectList.vue";
 import Requests from "./views/requestList.vue";
 import Booking from "./views/booking.vue";
+import RequestView from "./views/viewRequest.vue";
 //apply for tutor?
 import studentSessionView from "./views/Students/studentViewSession";
 import SessionList from "./views/Sessions.vue";
@@ -437,6 +438,13 @@ export default new Router({
       component: supervisorViewSession,
       props: true,
     },
+    {
+      path: "/supervisor/supervisorViewRequest/:id",
+      name: "supervisorViewRequest",
+      component: RequestView,
+      props: true,
+    },
+    
 
   ],
 });
