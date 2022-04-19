@@ -40,24 +40,18 @@
               >
                 Edit Account
               </v-btn>
-              <v-divider class="my-3"></v-divider>
-              <v-btn @click="goToLogout()"
-                depressed
-                rounded
-                text
-              >
-                Contracts
-              </v-btn>
-              <v-divider class="my-3"></v-divider>
-              <v-btn @click="goToBecomeTutor()"
+              <v-divider v-if="this.exclusivelyStudent == true" class="my-3"></v-divider>
+              <v-btn v-if="this.exclusivelyStudent == true"
+               @click="goToBecomeTutor()"
                 depressed
                 rounded
                 text
               >
                 Become a Tutor
               </v-btn>
-              <v-divider class="my-3"></v-divider>
-              <v-btn @click="goToRequest()"
+              <v-divider v-if="this.exclusivelyStudent == true" class="my-3"></v-divider>
+              <v-btn v-if="this.exclusivelyStudent == true"
+              @click="goToRequest()"
                 depressed
                 rounded
                 text
@@ -82,13 +76,15 @@
 <script>
 import Utils from '@/config/utils.js';
 import UserServices from "@/services/UserServices.js";
+import userRoleServices from "@/services/userRoleServices.js";
 
 export default {
   data: () => ({
     user:{},
       users: {},
       firstInitial: "",
-      lastInitial: ""
+      lastInitial: "",
+      exclusivelyStudent: true,
     }),
     created() {
     this.user = Utils.getStore("user");
@@ -97,6 +93,16 @@ export default {
         this.users = response.data;
         this.firstInitial = this.users.fName.charAt(0);
         this.lastInitial = this.users.lName.charAt(0);
+
+        userRoleServices.getRolesFromUser(this.user.userID).then((response1) => {
+          this.roles = response1.data;
+          for (let i = 0; i < response1.data.length; i++) {
+            console.log(this.roles[i].roleID + " roleID");
+            if (this.roles[i].roleID == 2 || this.roles[i].roleID == 3) {
+                this.exclusivelyStudent = false;
+            }
+          }
+        })
 
 
       })
