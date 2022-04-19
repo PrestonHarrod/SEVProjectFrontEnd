@@ -15,6 +15,7 @@
 <div
   class="drag-el"
   v-for="item in listOne"
+  style="cursor: grab"
   :key="item.id"
   draggable
    @click="test(item.id)"
@@ -37,6 +38,7 @@
       <div
   class="drag-el"
   v-for="item in listTwo"
+  style="cursor: grab"
   :key="item.id"
   draggable
    @click="test(item.id)"
@@ -59,6 +61,7 @@
 <div
   class="drag-el"
   v-for="item in listThree"
+  style="cursor: grab"
   :key="item.id"
   draggable
    @click="test(item.id)"
@@ -203,7 +206,7 @@ data () {
 </script>
 <style scoped>
   .drop-zone {
-    background-color: #811429;
+    background-color: #708e9a;
     margin-bottom: 10px;
     padding: 10px;
   }

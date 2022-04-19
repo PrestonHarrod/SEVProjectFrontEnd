@@ -38,7 +38,7 @@ export default {
     },
     selectOrg(org) {
       Utils.setStore("currentOrg", org);
-      this.$router.push({ name: "/"});
+      this.$router.push({ name: "home"});
     },
   },
 };
