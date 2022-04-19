@@ -64,7 +64,7 @@ export default {
    data() {
       return {
          requestTypes: ["I'm looking for a class that doesn't exist",
-                        "No tutors are avalible",
+                        "No tutors are available",
                         "No open slots fit my schedule",
                         "Other"],
          request: "",
