@@ -12,19 +12,18 @@
     </svg>
     <transition name="fade" apear>
       <div class="sub-menu" v-if="isOpen">
-        <div class="menu-item" v-if="orgText != 'Student Success'" v-on:click.prevent="changeOrg(1)">
+        <div class="menu-item" v-if="orgText != 'Student Success' && getOrgs(1)" v-on:click.prevent="changeOrg(1)">
           Student Success
         </div>
-        <div class="menu-item" v-if="orgText != 'Writing Center'" v-on:click.prevent="changeOrg(2)">
+        <div class="menu-item" v-if="orgText != 'Writing Center' && getOrgs(2)" v-on:click.prevent="changeOrg(2)">
           Writing Center
         </div>
-        <div class="menu-item" v-if="orgText != 'New College'" v-on:click.prevent="changeOrg(3)">
+        <div class="menu-item" v-if="orgText != 'New College' && getOrgs(3)" v-on:click.prevent="changeOrg(3)">
           New College
         </div>
       </div>
     </transition>
   </div>
-    
     <div class="menu-item" v-on:click.prevent="goToHome()">Home</div>
     <AdminServices title="Admin" v-if="this.getAuth(1)" />
     <SupervisorServices title="Supervisor" v-if="this.getAuth(1)" />
@@ -129,6 +128,10 @@ export default {
       Utils.setStore("currentOrg", orgNum);
       this.$router.go();
     });
+    },
+    getOrgs(num) {
+      console.log("orgs: " + this.user.orgs);
+      return this.user.orgs.includes(num); //return if it includes the role responsible
     },
   },
 };
