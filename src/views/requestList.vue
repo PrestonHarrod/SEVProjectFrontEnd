@@ -189,7 +189,7 @@ data () {
           }
           else if (list == 3) {
             this.request.status = "Completed";
-            this.request.supervisorID = this.user.userID;
+            //this.request.supervisorID = this.user.userID;
             requestServices.updateRequest(this.request);
 
 
