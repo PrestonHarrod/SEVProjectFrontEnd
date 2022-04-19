@@ -25,6 +25,9 @@
         <div class="menu-item" v-on:click.prevent="goToSessions()">
           Sessions
         </div>
+        <div class="menu-item" v-on:click.prevent="goToSubject()">
+          Tutor Subjects
+        </div>
         <div class="menu-item" v-on:click.prevent="goToRequests()">
           Requests
         </div>
@@ -97,6 +100,14 @@ export default {
      goToSubjects() {
       this.$router
         .push({ name: "subjects" })
+        .then(() => {})
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    goToSubject() {
+      this.$router
+        .push({ name: "subject" })
         .then(() => {})
         .catch((error) => {
           console.log(error);

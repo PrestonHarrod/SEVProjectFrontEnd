@@ -7,7 +7,7 @@
             <Avatar class="avatar" />
             <NavBar class="navbarCenter" />
             <!-- <br> -->
-            <div id="orgText" ref="orgText">{{ orgText }}</div>
+            
           </div>
           <!-- <p id="orgText">testing</p> -->
           <router-view />
