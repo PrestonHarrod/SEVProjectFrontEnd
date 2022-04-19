@@ -89,9 +89,10 @@ export default {
          this.submitRequest.type = this.selected;
          this.submitRequest.desc = this.desc;
          this.submitRequest.orgID = this.selectedOrg;
-         this.submitRequest.studentID = this.user.userID
+         this.submitRequest.studentID = this.user.userID;
+         this.submitRequest.status = "Open";
          requestServices.addRequest(this.submitRequest)
-         this.$router.push({ name: "/" });
+         this.$router.push({ name: "home" });
       
       }
    }
