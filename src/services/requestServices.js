@@ -16,4 +16,8 @@ export default {
   deleteRequest(requestID) {
     return apiClient.delete("requests/" + requestID);
   },
+  getRequestsForOrg(orgID) {
+    return apiClient.get("requests/org/" + orgID);
+
+  }
 };
