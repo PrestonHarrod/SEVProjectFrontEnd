@@ -360,8 +360,9 @@ export default {
               this.tutorSlot.numOfRegistered = selectedEvent.registered + 1;
               this.tutorSlot.tutorSlotID = selectedEvent.id;
 
-              TutorSlotServices.updateTutorSlot(this.tutorSlot);
+              TutorSlotServices.updateTutorSlot(this.tutorSlot).then(()=> {
               this.getTutorSlots(selected);
+              })
             } else {
               alert("You are already booked for this session!");
               this.selectedOpen = false;
