@@ -507,13 +507,14 @@ export default {
       } else if (this.checkbox2) {
         this.tutorSlot.status = "Group Session";
       }
-      TutorSlotServices.addTutorSlot(this.tutorSlot);
+      TutorSlotServices.addTutorSlot(this.tutorSlot).then(()=> {
       this.dragTime = null;
       this.dragEvent = null;
       this.createEvent = null;
       this.createStart = null;
       this.extendOriginal = null;
       this.getTutorSlots();
+      })
       //this.$router.go();
     },
     cancelDrag() {
