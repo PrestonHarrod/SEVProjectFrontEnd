@@ -14,9 +14,6 @@
         <div class="menu-item" v-on:click.prevent="goToSchedule()">
           Schedule
         </div>
-        <div class="menu-item" v-on:click.prevent="goToSubjects()">
-          Subjects
-        </div>
         
         <div class="menu-item" v-on:click.prevent="goToTutorSessions()">
           Sessions
