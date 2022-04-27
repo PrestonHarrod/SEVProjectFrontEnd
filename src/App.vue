@@ -51,7 +51,8 @@ export default {
         this.$refs.orgText = "";
       }
       return (
-        this.$route.name != "login" &&
+        this.$route.name != "login" 
+        &&
         this.$route.name != "selectOrg" &&
         this.$route.name != "addNewUser"
       );

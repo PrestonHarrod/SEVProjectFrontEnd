@@ -88,6 +88,8 @@ export default {
     }),
     created() {
     this.user = Utils.getStore("user");
+    if(this.user == null)
+      this.$router.push({name: 'login'})
     UserServices.getUser(this.user.userID)
       .then((response) => {
         this.users = response.data;
