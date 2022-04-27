@@ -46,7 +46,7 @@
               type="checkbox"
               :id="'checkbox2' + org.id"
               :value="org"
-              v-model="selectedOrgs"
+              v-model="checkedOrgs"
             />
             <label :for="org.title">{{ org.title }}</label>
           </li> 
@@ -107,7 +107,8 @@ export default {
         for (let i = 0; i < response.data.length; i++) {
         this.checkedOrgs[i] = response.data[i];
         var input = document.getElementById("checkbox2" + this.checkedOrgs[i].orgID);
-        this.selectedOrgs.push(this.orgs[this.checkedOrgs[i].orgID]);
+        input.checked = true;
+        //this.selectedOrgs.push(this.orgs[this.checkedOrgs[i].orgID]);
         }
       })
       .catch((error) => {
@@ -125,20 +126,16 @@ export default {
           console.log(
             "called to delete all the userOrgs for user: " + this.user.userID
           );
-        })
-
-        .catch((error) => {
-          console.log(error);
-        });
-      let os = "";
+                let os = "";
       //Then add like this
-      for (let i = 0; i < this.selectedOrgs.length; i++) {
-        if(this.selectedOrgs[i].id != null) {
-        os = os + "," + this.selectedOrgs[i].id;
+      for (let i = 0; i < this.orgs.length; i++) {
+        if(document.getElementById("checkbox2" + this.orgs[i].id).checked) {
+        os = os + "," + this.orgs[i].id;
         let userOrg = {
           userID: this.user.userID,
-          orgID: this.selectedOrgs[i].id,
+          orgID: this.orgs[i].id,
         };
+        console.log(userOrg);
         UserOrgServices.addUserOrg(userOrg)
           .then(() => {
             console.log("user org called...");
@@ -149,12 +146,18 @@ export default {
       this.user.orgs = os;
       Utils.setStore("user", this.user);
       if(!os.includes(Utils.getStore("currentOrg"))) {
-        Utils.setStore("currentOrg", this.selectedOrgs[0].id);
+        Utils.setStore("currentOrg", this.checkedOrgs[0].id);
       }
+        })
+
+        .catch((error) => {
+          console.log(error);
+        });
+
       //finally, update the main components of the student
       UserServices.updateUser(this.u)
         .then(() => {
-          //  this.$router.push({ name: "home" });
+           this.$router.push({ name: "home" });
         })
         .catch((error) => {
           console.log("There was an error:", error.response);

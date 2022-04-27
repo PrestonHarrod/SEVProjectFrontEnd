@@ -113,7 +113,7 @@ export default {
       checkedOrgs: [],
       menu: false,
       orgs: [
-        { title: "Student Success Center", id: "1" },
+        { title: "Student Success Center", id: 1 },
         { title: "Writing Center", id: 2 },
         { title: "New College", id: 3 },
       ],
