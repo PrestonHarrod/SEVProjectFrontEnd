@@ -157,7 +157,7 @@ export default {
       //finally, update the main components of the student
       UserServices.updateUser(this.u)
         .then(() => {
-           this.$router.push({ name: "home" });
+           this.$router.go();
         })
         .catch((error) => {
           console.log("There was an error:", error.response);
