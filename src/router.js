@@ -375,7 +375,7 @@ export default new Router({
     },
     {
       path: "/tutor/requests",
-      name: "request",
+      name: "tutorrequest",
       component: Requests,
     },
     {

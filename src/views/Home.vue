@@ -170,7 +170,7 @@ export default {
       }
       else {
         this.functions = [ [{name: "Sessions", link: "sessionsCalender"}, {name: "Schedule Session", link: "studentSubjectView"}, {name: "Edit Account", link: "userprofile"}],
-                           [{name: "", link: 6}, {name: "Logout", link: "login"}, {name: "", link: 6}],
+                           [{name: "Become a Tutor", link: "becometutor"}, {name: "Contact Office", link: "request"}, {name: "Logout", link: "login"}],
                            [{name: "", link: 6}, {name: "", link: 6}, {name: "", link: 6}] ];  
       }
     },
