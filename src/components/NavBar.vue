@@ -24,15 +24,15 @@
       </div>
     </transition>
   </div>
-    <div class="menu-item" v-on:click.prevent="goToHome()">Home</div>
-    <AdminServices title="Admin" v-if="this.getAuth(1)" />
-    <SupervisorServices title="Supervisor" v-if="this.getAuth(1)" />
-    <SupervisorServices title="Supervisor" v-else-if="this.getAuth(2)" />
-    <TutorServices title="Tutor" v-if="this.getAuth(3)" />
-    <StudentServices title="Student" v-if="this.getAuth(3)" />
-    <StudentServices title="Student" v-else-if="this.getAuth(4)" />
+    <div class="menu-item" v-if="isHome()" v-on:click.prevent="goToHome()">Home</div>
+    <AdminServices title="Admin" v-if="isHome() && this.getAuth(1)" />
+    <SupervisorServices title="Supervisor" v-if="isHome() && this.getAuth(1)" />
+    <SupervisorServices title="Supervisor" v-else-if="isHome() && this.getAuth(2)" />
+    <TutorServices title="Tutor" v-if="isHome() && this.getAuth(3)" />
+    <StudentServices title="Student" v-if="isHome() && this.getAuth(3)" />
+    <StudentServices title="Student" v-else-if="isHome() && this.getAuth(4)" />
     
-    <div class="menu-item" v-on:click.prevent="goToLogin()">Logout</div>
+    <div class="menu-item" v-if="isHome()" v-on:click.prevent="goToLogin()">Logout</div>
   </nav>
   
 </template>
@@ -64,11 +64,13 @@ export default {
     SupervisorServices,
   },
   created() {
+    
     this.user = Utils.getStore("user"); //gets the user that is logged in
     organizationServices.getOrg(Utils.getStore("currentOrg")).then((org) => {
       console.log("Org Name: " + org.data.name);
       this.orgText = org.data.name;
     });
+    console.log("Name of Current Route: " + $router.currentRoute);  
   },
   methods: {
     goToProfile() {
@@ -133,6 +135,9 @@ export default {
       console.log("orgs: " + this.user.orgs);
       return this.user.orgs.includes(num); //return if it includes the role responsible
     },
+    isHome() {
+      return this.$route.name != 'home';
+    }
   },
 };
 
