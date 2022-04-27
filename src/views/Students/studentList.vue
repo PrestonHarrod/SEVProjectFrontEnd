@@ -1,6 +1,16 @@
 <template>
   <v-container >
     <div>
+      <v-row>
+      <v-combobox
+        @input="changeOrgItem"
+        v-model="orgItem"
+        :items="orgItems"
+        item-text="name"
+        item-value="link"
+        label="Organization Items"
+      ></v-combobox>
+    </v-row>
       <H1>Students</H1>
       <v-btn
       class='centered-btns'
@@ -76,6 +86,8 @@ export default {
         },
       ],
       students: [{}],
+      orgItems: [],
+      orgItem: "",
     };
   },
   created() {
@@ -89,6 +101,12 @@ export default {
       .catch((error) => {
         console.log(error);
       });
+      if(Utils.getStore("currentOrg") == 1)
+        this.orgItems = [{name: "Users", link: "users"}, {name: "Students", link: "students"}, {name: "Tutors", link: "tutors"},
+                     {name: "Mentees", link: "mentees"}, {name: "Locations", link: "locations"}, {name: "Subjects", link: "subjects"}];
+      else
+        this.orgItems = [{name: "Users", link: "users"}, {name: "Students", link: "students"}, {name: "Tutors", link: "tutors"},
+                        {name: "Locations", link: "locations"}, {name: "Subjects", link: "subjects"}];
   },
   methods: {
     goToAdd() {
@@ -108,6 +126,9 @@ export default {
           console.log(error);
         });
     },
+    changeOrgItem() {
+      this.$router.push({ name: this.orgItem.link})
+    }
   },
 };
 </script>

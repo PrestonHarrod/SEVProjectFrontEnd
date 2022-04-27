@@ -11,14 +11,7 @@
     </svg>
     <transition name="fade" apear>
       <div class="sub-menu" v-if="isOpen">
-        <div class="menu-item" v-on:click.prevent="goToUsers()">Users</div>
-        <div class="menu-item" v-on:click.prevent="goToStudents()">
-          Students
-        </div>
-        <div class="menu-item" v-on:click.prevent="goToTutors()">Tutors</div>
-        <div class="menu-item" v-if="isSS()" v-on:click.prevent="goToMentees()">
-          Mentees
-        </div>
+        <div class="menu-item" v-on:click.prevent="goToUsers()">Manage Organization</div>
         <div class="menu-item" v-if="isSS()" v-on:click.prevent="goToDropIn()">
           Drop In Tutoring
         </div>
@@ -30,12 +23,6 @@
         </div>
         <div class="menu-item" v-on:click.prevent="goToRequests()">
           Requests
-        </div>
-        <div class="menu-item" v-on:click.prevent="goToLocations()">
-          Locations
-        </div>
-        <div class="menu-item" v-on:click.prevent="goToSubjects()">
-          Subjects
         </div>
       </div>
     </transition>
